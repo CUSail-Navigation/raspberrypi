@@ -20,7 +20,7 @@ class NMEA:
         ValueError: If the input is not a valid NMEA sentence.
 
     Attributes:
-        utc (:obj:`UTC`): The UTC time at which the NMEA sentence was generated.
+        utc (UTC): The UTC time at which the NMEA sentence was generated.
         status (bool): Whether the NMEA sentence contained valid data.
         latitude (float): The numeric latititude measurement.
         north (bool): Whether the latitude is N (true) or S (false).
@@ -65,11 +65,11 @@ class NMEA:
         we will ignore since we have no use for it. These values are stored
         as attributes of the NMEA object.
         """
-        self.utc = UTC(self.fields[1])
+        self.utc = self.UTC(self.fields[1])
         self.status = 'A' in self.fields[2]
-        self.latitude = int(self.fields[3])
+        self.latitude = float(self.fields[3])
         self.north = 'N' in self.fields[4]
-        self.longitude = int(self.fields[5])
+        self.longitude = float(self.fields[5])
         self.west = 'W' in self.fields[6]
 
     def parseVTG(self):
@@ -91,10 +91,10 @@ class NMEA:
         satellite data, which we will ignore since we have no use for it. These 
         values are stored as attributes of the NMEA object.
         """
-        self.utc = UTC(self.fields[1])
-        self.latitude = int(self.fields[2])
+        self.utc = self.UTC(self.fields[1])
+        self.latitude = float(self.fields[2])
         self.north = 'N' in self.fields[3]
-        self.longitude = int(self.fields[4])
+        self.longitude = float(self.fields[4])
         self.west = 'W' in self.fields[5]
         self.status = not '0' in self.fields[6]
 
@@ -128,11 +128,11 @@ class NMEA:
         we will ignore since we have no use for it. These values are stored
         as attributes of the NMEA object.
         """
-        self.latitude = int(self.fields[1])
+        self.latitude = float(self.fields[1])
         self.north = 'N' in self.fields[2]
-        self.longitude = int(self.fields[3])
+        self.longitude = float(self.fields[3])
         self.west = 'W' in self.fields[4]
-        self.utc = UTC(self.fields[5])
+        self.utc = self.UTC(self.fields[5])
         self.status = 'A' in self.fields[6]
 
     class UTC():
@@ -151,7 +151,7 @@ class NMEA:
         """
         def __init__(self, time):
             """ Initializes a UTC object with the given time. """
-            if not isinstance(sentence, str):
+            if not isinstance(time, str):
                 raise TypeError('Input time must be a string.')
 
             self.hour = int(time[0:2])
