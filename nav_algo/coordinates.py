@@ -17,13 +17,10 @@ class CoordinateSystem:
         EARTH_RADIUS (float): The radius of the Earth (in meters).
 
     """
-    LAT_OFFSET = 0.0
-    LONG_OFFSET = 0.0
-    EARTH_RADIUS = 6371000.0
-
     def __init__(self, latititude: float, longitude: float):
         self.LAT_OFFSET = latititude
         self.LONG_OFFSET = longitude
+        self.EARTH_RADIUS = 6371000.0
 
 
 class Vector:
@@ -43,19 +40,13 @@ class Vector:
         y (float): (Optional) The y component of the vector.
 
     Attributes:
-        coordinate_system (CoordinateSystem): The coordinate system in which the vector lies.
         x (float): The x component of the vector.
         y (float): The y component of the vector.
+        coordinate_system (CoordinateSystem): (Optional) The coordinate system in which the vector lies.
         latitude (float): (Optional) The latitude of the position.
         longitude (float): (Optional) The longitude of the position.
 
     """
-    x = None
-    y = None
-    latitude = None
-    longitude = None
-    coordinate_system = None
-
     def __init__(self,
                  coord_sys=None,
                  latitude=None,

@@ -18,15 +18,7 @@ class TestCoordinatesMethods(unittest.TestCase):
     def test_vector_init(self):
         coord_sys = coord.CoordinateSystem(upson_hall[0], upson_hall[1])
 
-        # try an empty initialization
-        vec = coord.Vector()
-        self.assertIsNone(vec.coordinate_system)
-        self.assertIsNone(vec.x)
-        self.assertIsNone(vec.y)
-        self.assertIsNone(vec.latitude)
-        self.assertIsNone(vec.longitude)
-
-        # try a non-empty initialization
+        # try a lat/long initialization
         vec = coord.Vector(coord_sys, olin_hall[0], olin_hall[1])
         self.assertIsNotNone(vec.coordinate_system)
         self.assertAlmostEqual(vec.latitude, olin_hall[0])
