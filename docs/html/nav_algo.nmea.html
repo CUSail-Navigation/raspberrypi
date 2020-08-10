@@ -37,7 +37,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="nav_algo package" href="nav_algo.html" />
+    <link rel="next" title="nav_algo.radio module" href="nav_algo.radio.html" />
+    <link rel="prev" title="nav_algo.navigation module" href="nav_algo.navigation.html" />
 <script type="text/javascript">
   window.onload = function () {
     // document.body.innerHTML = document.body.innerHTML.replace(/ module/g, '');
@@ -93,7 +94,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">raspberrypi</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="nav_algo.html">nav_algo package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="nav_algo.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.boat.html">nav_algo.boat module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.coordinates.html">nav_algo.coordinates module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.main.html">nav_algo.main module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.navigation.html">nav_algo.navigation module</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">nav_algo.nmea module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.radio.html">nav_algo.radio module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.sensors.html">nav_algo.sensors module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.servo.html">nav_algo.servo module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="nav_algo.html#module-nav_algo">Module contents</a></li>
@@ -173,7 +181,7 @@
 <span id="nav-algo-nmea-module"></span><h1>nav_algo.nmea module<a class="headerlink" href="#module-nav_algo.nmea" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="nav_algo.nmea.NMEA">
-<em class="property">class </em><code class="sig-prename descclassname">nav_algo.nmea.</code><code class="sig-name descname">NMEA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.nmea.NMEA" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.nmea.</code><code class="sig-name descname">NMEA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.nmea.NMEA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A parser for National Marine Electronics Association (NMEA) sentences.</p>
 <p>The Parallax SIM33EAU GPS module transmits six different types of NMEA
@@ -234,7 +242,7 @@ sentence type.</p>
 
 <dl class="py class">
 <dt id="nav_algo.nmea.NMEA.UTC">
-<em class="property">class </em><code class="sig-name descname">UTC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.nmea.NMEA.UTC" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">UTC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.nmea.NMEA.UTC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A representation of Coordinated Universal Time (UTC).</p>
 <dl class="field-list simple">
@@ -348,8 +356,10 @@ set status to <cite>False</cite>.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="nav_algo.radio.html" class="btn btn-neutral float-right" title="nav_algo.radio module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="nav_algo.html" class="btn btn-neutral float-left" title="nav_algo package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="nav_algo.navigation.html" class="btn btn-neutral float-left" title="nav_algo.navigation module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

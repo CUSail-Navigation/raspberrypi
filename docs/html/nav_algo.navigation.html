@@ -8,14 +8,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>raspberrypi &mdash; CUSail 1.0 documentation</title>
+  <title>nav_algo.navigation module &mdash; CUSail 1.0 documentation</title>
   
 
   
   
   
   
-    <link rel="canonical" href="https://cusail-navigation.github.io/intrasite/modules.html"/>
+    <link rel="canonical" href="https://cusail-navigation.github.io/intrasite/nav_algo.navigation.html"/>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="nav_algo package" href="nav_algo.html" />
-    <link rel="prev" title="CUSail Documentation" href="index.html" />
+    <link rel="next" title="nav_algo.nmea module" href="nav_algo.nmea.html" />
+    <link rel="prev" title="nav_algo.main module" href="nav_algo.main.html" />
 <script type="text/javascript">
   window.onload = function () {
     // document.body.innerHTML = document.body.innerHTML.replace(/ module/g, '');
@@ -91,13 +91,13 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">raspberrypi</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="nav_algo.html">nav_algo package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="nav_algo.html#submodules">Submodules</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">raspberrypi</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="nav_algo.html">nav_algo package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nav_algo.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.boat.html">nav_algo.boat module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.coordinates.html">nav_algo.coordinates module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.main.html">nav_algo.main module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="nav_algo.navigation.html">nav_algo.navigation module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">nav_algo.navigation module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.nmea.html">nav_algo.nmea module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.radio.html">nav_algo.radio module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.sensors.html">nav_algo.sensors module</a></li>
@@ -154,13 +154,17 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>raspberrypi</li>
+          <li><a href="modules.html">raspberrypi</a> &raquo;</li>
+        
+          <li><a href="nav_algo.html">nav_algo package</a> &raquo;</li>
+        
+      <li>nav_algo.navigation module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/nav_algo.navigation.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -173,27 +177,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="raspberrypi">
-<h1>raspberrypi<a class="headerlink" href="#raspberrypi" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="nav_algo.html">nav_algo package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="nav_algo.html#submodules">Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="nav_algo.boat.html">nav_algo.boat module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="nav_algo.coordinates.html">nav_algo.coordinates module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="nav_algo.main.html">nav_algo.main module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="nav_algo.navigation.html">nav_algo.navigation module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="nav_algo.nmea.html">nav_algo.nmea module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="nav_algo.radio.html">nav_algo.radio module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="nav_algo.sensors.html">nav_algo.sensors module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="nav_algo.servo.html">nav_algo.servo module</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="nav_algo.html#module-nav_algo">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
+  <div class="section" id="module-nav_algo.navigation">
+<span id="nav-algo-navigation-module"></span><h1>nav_algo.navigation module<a class="headerlink" href="#module-nav_algo.navigation" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nav_algo.navigation.NavigationController">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.navigation.</code><code class="sig-name descname">NavigationController</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">waypoints</span></em>, <em class="sig-param"><span class="n">simulation</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation.NavigationController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="nav_algo.navigation.NavigationController.BEATING">
+<code class="sig-name descname">BEATING</code><em class="property"> = 30.0</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.BEATING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.navigation.NavigationController.DELTA_ALPHA">
+<code class="sig-name descname">DELTA_ALPHA</code><em class="property"> = 1.0</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.DELTA_ALPHA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.navigation.NavigationController.DETECTION_RADIUS">
+<code class="sig-name descname">DETECTION_RADIUS</code><em class="property"> = 5.0</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.DETECTION_RADIUS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.navigation.NavigationController.navigate">
+<code class="sig-name descname">navigate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation.NavigationController.navigate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.navigation.NavigationController.optAngle">
+<code class="sig-name descname">optAngle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">right</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation.NavigationController.optAngle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.navigation.NavigationController.polar">
+<code class="sig-name descname">polar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation.NavigationController.polar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -204,10 +225,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="nav_algo.html" class="btn btn-neutral float-right" title="nav_algo package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="nav_algo.nmea.html" class="btn btn-neutral float-right" title="nav_algo.nmea module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="CUSail Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="nav_algo.main.html" class="btn btn-neutral float-left" title="nav_algo.main module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

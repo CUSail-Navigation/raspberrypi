@@ -1,0 +1,551 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nav_algo.coordinates module &mdash; CUSail 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://cusail-navigation.github.io/intrasite/nav_algo.coordinates.html"/>
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="nav_algo.main module" href="nav_algo.main.html" />
+    <link rel="prev" title="nav_algo.boat module" href="nav_algo.boat.html" />
+<script type="text/javascript">
+  window.onload = function () {
+    // document.body.innerHTML = document.body.innerHTML.replace(/ module/g, '');
+    document.body.style.backgroundColor = "white";
+  }
+</script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #001436" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CUSail
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">raspberrypi</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="nav_algo.html">nav_algo package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nav_algo.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.boat.html">nav_algo.boat module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">nav_algo.coordinates module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.main.html">nav_algo.main module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.navigation.html">nav_algo.navigation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.nmea.html">nav_algo.nmea module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.radio.html">nav_algo.radio module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.sensors.html">nav_algo.sensors module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.servo.html">nav_algo.servo module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nav_algo.html#module-nav_algo">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CUSail</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">raspberrypi</a> &raquo;</li>
+        
+          <li><a href="nav_algo.html">nav_algo package</a> &raquo;</li>
+        
+      <li>nav_algo.coordinates module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/nav_algo.coordinates.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-nav_algo.coordinates">
+<span id="nav-algo-coordinates-module"></span><h1>nav_algo.coordinates module<a class="headerlink" href="#module-nav_algo.coordinates" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nav_algo.coordinates.CoordinateSystem">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.coordinates.</code><code class="sig-name descname">CoordinateSystem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">latititude</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">longitude</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.CoordinateSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A representation of a latitude/longitude coordinate system.</p>
+<p>An object of type CoordinateSystem can be used to initialize a vector inside
+of a coordinate system with origin at LAT_OFFSET and LONG_OFFSET.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>latitude</strong> (<em>float</em>) – The latitude of the origin of the system.</p></li>
+<li><p><strong>longitude</strong> (<em>float</em>) – The longitude of the origin of the system.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="nav_algo.coordinates.CoordinateSystem.LAT_OFFSET">
+<code class="sig-name descname">LAT_OFFSET</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.CoordinateSystem.LAT_OFFSET" title="Permalink to this definition">¶</a></dt>
+<dd><p>The latitude of the origin of the system.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.coordinates.CoordinateSystem.LONG_OFFSET">
+<code class="sig-name descname">LONG_OFFSET</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.CoordinateSystem.LONG_OFFSET" title="Permalink to this definition">¶</a></dt>
+<dd><p>The longitude of the origin of the system.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.coordinates.CoordinateSystem.EARTH_RADIUS">
+<code class="sig-name descname">EARTH_RADIUS</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.CoordinateSystem.EARTH_RADIUS" title="Permalink to this definition">¶</a></dt>
+<dd><p>The radius of the Earth (in meters).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id0">
+<code class="sig-name descname">EARTH_RADIUS</code><em class="property"> = 6371000.0</em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id1">
+<code class="sig-name descname">LAT_OFFSET</code><em class="property"> = 0.0</em><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id2">
+<code class="sig-name descname">LONG_OFFSET</code><em class="property"> = 0.0</em><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nav_algo.coordinates.Vector">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.coordinates.</code><code class="sig-name descname">Vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coord_sys</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">latitude</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">longitude</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">angle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.Vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A representation of 2D vectors with a coordinate system.</p>
+<p>To construct a position vector, pass in a CoordinateSystem and a latitude
+and longitude. To specify only the x and y components, pass in x and y.
+Alternatively, to construct a unit vector with a given angle,
+pass in an angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coord_sys</strong> (<a class="reference internal" href="#nav_algo.coordinates.CoordinateSystem" title="nav_algo.coordinates.CoordinateSystem"><em>CoordinateSystem</em></a>) – (Optional) The coordinate system in which the vector lies.</p></li>
+<li><p><strong>latitude</strong> (<em>float</em>) – (Optional) The latitude of the position.</p></li>
+<li><p><strong>longitude</strong> (<em>float</em>) – (Optional) The longitude of the position.</p></li>
+<li><p><strong>angle</strong> (<em>float</em>) – (Optional) The angle (in degrees) used to construct a unit vector.</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – (Optional) The x component of the vector.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – (Optional) The y component of the vector.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="nav_algo.coordinates.Vector.coordinate_system">
+<code class="sig-name descname">coordinate_system</code><em class="property">: CoordinateSystem</em><a class="headerlink" href="#nav_algo.coordinates.Vector.coordinate_system" title="Permalink to this definition">¶</a></dt>
+<dd><p>The coordinate system in which the vector lies.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.coordinates.Vector.x">
+<code class="sig-name descname">x</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.Vector.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>The x component of the vector.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.coordinates.Vector.y">
+<code class="sig-name descname">y</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.Vector.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>The y component of the vector.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.coordinates.Vector.latitude">
+<code class="sig-name descname">latitude</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.Vector.latitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>(Optional) The latitude of the position.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.coordinates.Vector.longitude">
+<code class="sig-name descname">longitude</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.Vector.longitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>(Optional) The longitude of the position.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.coordinates.Vector.angle">
+<code class="sig-name descname">angle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.Vector.angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the anglular distance between the vector and the x-axis.</p>
+<p>The returned angle is between 0 and 360 degrees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The angle between the vector and North.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id3">
+<code class="sig-name descname">coordinate_system</code><em class="property"> = None</em><a class="headerlink" href="#id3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.coordinates.Vector.dot">
+<code class="sig-name descname">dot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.Vector.dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the dot product of two vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#nav_algo.coordinates.Vector" title="nav_algo.coordinates.Vector"><em>Vector</em></a>) – The vector to dot with ‘self’.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The dot product of ‘self’ and ‘other’.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.coordinates.Vector.inverse">
+<code class="sig-name descname">inverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.Vector.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs the inverse of a vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The inverse of the original vector.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#nav_algo.coordinates.Vector" title="nav_algo.coordinates.Vector">Vector</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id4">
+<code class="sig-name descname">latitude</code><em class="property"> = None</em><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id5">
+<code class="sig-name descname">longitude</code><em class="property"> = None</em><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.coordinates.Vector.magnitude">
+<code class="sig-name descname">magnitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.Vector.magnitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the magnitude of a vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The magnitude of the vector.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.coordinates.Vector.midpoint">
+<code class="sig-name descname">midpoint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.Vector.midpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the midpoint between two positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#nav_algo.coordinates.Vector" title="nav_algo.coordinates.Vector"><em>Vector</em></a>) – The second position vector.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The position vector midpoint between ‘self’ and ‘other’.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#nav_algo.coordinates.Vector" title="nav_algo.coordinates.Vector">Vector</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.coordinates.Vector.toUnitVector">
+<code class="sig-name descname">toUnitVector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.Vector.toUnitVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a vector to a unit vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A unit vector representation of the input vector.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#nav_algo.coordinates.Vector" title="nav_algo.coordinates.Vector">Vector</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.coordinates.Vector.vectorSubtract">
+<code class="sig-name descname">vectorSubtract</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.Vector.vectorSubtract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the vector difference between two vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#nav_algo.coordinates.Vector" title="nav_algo.coordinates.Vector"><em>Vector</em></a>) – The vector to subtract from ‘self’.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The vector difference between ‘self’ and ‘other’.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#nav_algo.coordinates.Vector" title="nav_algo.coordinates.Vector">Vector</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id6">
+<code class="sig-name descname">x</code><em class="property"> = None</em><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.coordinates.Vector.xyDist">
+<code class="sig-name descname">xyDist</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.Vector.xyDist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the distance between two positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#nav_algo.coordinates.Vector" title="nav_algo.coordinates.Vector"><em>Vector</em></a>) – The second position in the distance calculation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The distance between ‘self’ and ‘other’.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id7">
+<code class="sig-name descname">y</code><em class="property"> = None</em><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.coordinates.Vector.zeroVector">
+<em class="property">static </em><code class="sig-name descname">zeroVector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.Vector.zeroVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a zero vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A vector with zero magnitude.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#nav_algo.coordinates.Vector" title="nav_algo.coordinates.Vector">Vector</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.coordinates.degToRad">
+<code class="sig-prename descclassname">nav_algo.coordinates.</code><code class="sig-name descname">degToRad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.degToRad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts from degrees to radians.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>angle</strong> (<em>float</em>) – An angle in degrees.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The angle in radians.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.coordinates.radToDeg">
+<code class="sig-prename descclassname">nav_algo.coordinates.</code><code class="sig-name descname">radToDeg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.radToDeg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts from radians to degrees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>angle</strong> (<em>float</em>) – An angle in radians.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The angle in degrees.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.coordinates.rangeAngle">
+<code class="sig-prename descclassname">nav_algo.coordinates.</code><code class="sig-name descname">rangeAngle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.coordinates.rangeAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Puts an angle with the range of 0 to 360.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>angle</strong> (<em>float</em>) – An angle in degrees.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An angle within the range of 0 to 360.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="nav_algo.main.html" class="btn btn-neutral float-right" title="nav_algo.main module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="nav_algo.boat.html" class="btn btn-neutral float-left" title="nav_algo.boat module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, CUSail Navigation Subteam
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

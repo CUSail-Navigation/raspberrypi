@@ -28,7 +28,7 @@ class NMEA:
         west (bool): Whether the longitude is W (true) or E (false).
 
     """
-    def __init__(self, sentence):
+    def __init__(self, sentence: str):
         """Initializes an NMEA obect using the string sentence, then parses it."""
         if not isinstance(sentence, str):
             raise TypeError('Input sentence must be a string.')
@@ -149,7 +149,7 @@ class NMEA:
             minute (int): The minute of the UTC time.
             second (int): The seconds of the UTC time.
         """
-        def __init__(self, time):
+        def __init__(self, time: str):
             """ Initializes a UTC object with the given time. """
             if not isinstance(time, str):
                 raise TypeError('Input time must be a string.')

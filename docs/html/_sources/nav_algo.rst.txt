@@ -7,7 +7,14 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   nav_algo.boat
+   nav_algo.coordinates
+   nav_algo.main
+   nav_algo.navigation
    nav_algo.nmea
+   nav_algo.radio
+   nav_algo.sensors
+   nav_algo.servo
 
 Module contents
 ---------------

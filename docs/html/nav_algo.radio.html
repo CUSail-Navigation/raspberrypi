@@ -8,14 +8,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; CUSail 1.0 documentation</title>
+  <title>nav_algo.radio module &mdash; CUSail 1.0 documentation</title>
   
 
   
   
   
   
-    <link rel="canonical" href="https://cusail-navigation.github.io/intrasite/search.html"/>
+    <link rel="canonical" href="https://cusail-navigation.github.io/intrasite/nav_algo.radio.html"/>
   
 
   
@@ -27,7 +27,6 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
-        <script src="_static/searchtools.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -37,7 +36,9 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="nav_algo.sensors module" href="nav_algo.sensors.html" />
+    <link rel="prev" title="nav_algo.nmea module" href="nav_algo.nmea.html" />
 <script type="text/javascript">
   window.onload = function () {
     // document.body.innerHTML = document.body.innerHTML.replace(/ module/g, '');
@@ -71,7 +72,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -89,16 +90,16 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">raspberrypi</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="nav_algo.html">nav_algo package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="nav_algo.html#submodules">Submodules</a><ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">raspberrypi</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="nav_algo.html">nav_algo package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nav_algo.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.boat.html">nav_algo.boat module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.coordinates.html">nav_algo.coordinates module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.main.html">nav_algo.main module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.navigation.html">nav_algo.navigation module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.nmea.html">nav_algo.nmea module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="nav_algo.radio.html">nav_algo.radio module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">nav_algo.radio module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.sensors.html">nav_algo.sensors module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.servo.html">nav_algo.servo module</a></li>
 </ul>
@@ -153,12 +154,18 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Search</li>
+          <li><a href="modules.html">raspberrypi</a> &raquo;</li>
+        
+          <li><a href="nav_algo.html">nav_algo package</a> &raquo;</li>
+        
+      <li>nav_algo.radio module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="_sources/nav_algo.radio.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -170,24 +177,45 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="module-nav_algo.radio">
+<span id="nav-algo-radio-module"></span><h1>nav_algo.radio module<a class="headerlink" href="#module-nav_algo.radio" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nav_algo.radio.Radio">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.radio.</code><code class="sig-name descname">Radio</code><a class="headerlink" href="#nav_algo.radio.Radio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="nav_algo.radio.Radio.printData">
+<code class="sig-name descname">printData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.radio.Radio.printData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-  
-  <div id="search-results">
-  
-  </div>
+<dl class="py method">
+<dt id="nav_algo.radio.Radio.printHitWaypoint">
+<code class="sig-name descname">printHitWaypoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.radio.Radio.printHitWaypoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.radio.Radio.transmitString">
+<code class="sig-name descname">transmitString</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.radio.Radio.transmitString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
 
            </div>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="nav_algo.sensors.html" class="btn btn-neutral float-right" title="nav_algo.sensors module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="nav_algo.nmea.html" class="btn btn-neutral float-left" title="nav_algo.nmea module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -220,14 +248,7 @@
   
   
     
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>
