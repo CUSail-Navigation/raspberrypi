@@ -8,4 +8,8 @@ Documentation:
 https://cusail-navigation.github.io/raspberrypi/
 
 How to run tests: from nav_algo, run something like:
+for only one suite:
 python3 -m tests.test_nmea
+
+for all tests:
+python3 -m unittest
