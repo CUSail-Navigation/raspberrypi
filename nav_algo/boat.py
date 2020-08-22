@@ -1,6 +1,6 @@
-import servo as servo
-import sensors as sens
-import coordinates as coord
+import nav_algo.servo as servo
+import nav_algo.sensors as sens
+import nav_algo.coordinates as coord
 
 
 class BoatController:
@@ -27,7 +27,7 @@ class BoatController:
             angle_of_attack = -15.0
 
         offset = self.sensors.yaw - intended_angle
-        tail = round(wind_angle + offset)
+        tail = round(self.sensors.wind_direction + offset)
         sail = round(tail + angle_of_attack)
 
         # put in range [0, 360)

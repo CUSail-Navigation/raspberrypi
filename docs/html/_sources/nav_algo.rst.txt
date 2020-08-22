@@ -9,7 +9,6 @@ Submodules
 
    nav_algo.boat
    nav_algo.coordinates
-   nav_algo.main
    nav_algo.navigation
    nav_algo.nmea
    nav_algo.radio

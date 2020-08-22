@@ -1,5 +1,5 @@
 import unittest
-import coordinates as coord
+import nav_algo.coordinates as coord
 
 upson_hall = (42.444241, 76.481933)
 olin_hall = (42.446016, 76.484713)

@@ -1,7 +1,7 @@
 import time
-import boat as boat
-import coordinates as coord
-import radio as radio
+import nav_algo.boat as boat
+import nav_algo.coordinates as coord
+import nav_algo.radio as radio
 
 
 class NavigationController:
@@ -24,11 +24,11 @@ class NavigationController:
         boat_to_target (Vector): The vector from the boat to the target position.
 
     """
-    DETECTION_RADIUS = 5.0  # how close we need to get to a waypoint (in m)
-    BEATING = 10.0  # the initial width of the route (in m) when beating
-    DELTA_ALPHA = 1.0  # the smallest change in angle that we can account for
-
     def __init__(self, waypoints, simulation=False):
+        self.DETECTION_RADIUS = 5.0
+        self.BEATING = 10.0
+        self.DELTA_ALPHA = 1.0
+
         self.coordinate_system = coord.CoordinateSystem(
             waypoints[0][0], waypoints[0][1])
         self.waypoints = [
