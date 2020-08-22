@@ -1,6 +1,6 @@
-import nav_algo.servo as servo
-import nav_algo.sensors as sens
-import nav_algo.coordinates as coord
+import servo as servo
+import sensors as sens
+import coordinates as coord
 
 
 class BoatController:
@@ -8,6 +8,7 @@ class BoatController:
         self.sensors = sens.sensorData()
 
         # servo angles
+        # TODO print these to the gui
         self.sail_angle = 0
         self.tail_angle = 0
 
@@ -19,7 +20,7 @@ class BoatController:
         pass
 
     def setServos(self, intended_angle: float):
-        # TODO check logic for all of this
+        # TODO check logic for all of this, I'm 99% sure it's wrong - CM
         # based on previous algorithm and Wikipedia, 15 degrees is critical angle of attack
         angle_of_attack = 15.0
         if self.sensors.wind_direction < 180.0:

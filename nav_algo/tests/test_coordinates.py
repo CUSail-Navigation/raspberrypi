@@ -5,7 +5,6 @@ upson_hall = (42.444241, 76.481933)
 olin_hall = (42.446016, 76.484713)
 
 
-# TODO finish these tests
 class TestCoordinatesMethods(unittest.TestCase):
     def test_coordinate_system_init(self):
         coord_sys = coord.CoordinateSystem(upson_hall[0], upson_hall[1])

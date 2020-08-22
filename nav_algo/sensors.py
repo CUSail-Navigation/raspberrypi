@@ -1,5 +1,5 @@
-import nav_algo.nmea as nmea
-import nav_algo.coordinates as coord
+import nmea as nmea
+import coordinates as coord
 
 
 class sensorData:
