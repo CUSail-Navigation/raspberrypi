@@ -7,9 +7,7 @@ Python 3.7.3.
 Documentation:
 https://cusail-navigation.github.io/raspberrypi/
 
-How to run tests: from nav_algo, run something like:
-for only one suite:
-python3 -m tests.test_nmea
+Run everything from the __raspberrypi__ directory.
 
-for all tests:
-python3 -m unittest
+To run the navigation algorithm: python3 -m nav_algo
+To run all test cases: python3 -m unittest
