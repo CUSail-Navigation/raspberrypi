@@ -222,21 +222,9 @@ sentence type.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="nav_algo.nmea.NMEA.north">
-<code class="sig-name descname">north</code><em class="property">: bool</em><a class="headerlink" href="#nav_algo.nmea.NMEA.north" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether the latitude is N (true) or S (false).</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt id="nav_algo.nmea.NMEA.longitude">
 <code class="sig-name descname">longitude</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.nmea.NMEA.longitude" title="Permalink to this definition">¶</a></dt>
 <dd><p>The numeric longitude measurement.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="nav_algo.nmea.NMEA.west">
-<code class="sig-name descname">west</code><em class="property">: bool</em><a class="headerlink" href="#nav_algo.nmea.NMEA.west" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether the longitude is W (true) or E (false).</p>
 </dd></dl>
 
 <dl class="py class">
@@ -270,6 +258,42 @@ sentence type.</p>
 <dd><p>The seconds of the UTC time.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.nmea.NMEA.latDecimalDegrees">
+<code class="sig-name descname">latDecimalDegrees</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nmea_format</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dir</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.nmea.NMEA.latDecimalDegrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts latitude from NMEA format to decimal degrees.</p>
+<p>NMEA format is DDMM.MMMM where DD is the degrees and MM.MMMM is the
+minutes. The decimal degreee value is DD + (MM.MMMM / 60). Values
+in the northern hemisphere are positive and values in the southern
+hemisphere are negative.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nmea_format</strong> (<em>str</em>) – The latitude in NMEA format.</p></li>
+<li><p><strong>dir</strong> (<em>str</em>) – N for north or S for south.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.nmea.NMEA.longDecimalDegrees">
+<code class="sig-name descname">longDecimalDegrees</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nmea_format</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dir</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.nmea.NMEA.longDecimalDegrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts longitude from NMEA format to decimal degrees.</p>
+<p>NMEA format is DDDMM.MMMM where DDD is the degrees and MM.MMMM is the
+minutes. The decimal degreee value is DDD + (MM.MMMM / 60). Values
+in the eastern hemisphere are positive and values in the western
+hemisphere are negative.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nmea_format</strong> (<em>str</em>) – The longitude in NMEA format.</p></li>
+<li><p><strong>dir</strong> (<em>str</em>) – E for east or W for west.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

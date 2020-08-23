@@ -23,9 +23,7 @@ class NMEA:
         utc (UTC): The UTC time at which the NMEA sentence was generated.
         status (bool): Whether the NMEA sentence contained valid data.
         latitude (float): The numeric latititude measurement.
-        north (bool): Whether the latitude is N (true) or S (false).
         longitude (float): The numeric longitude measurement.
-        west (bool): Whether the longitude is W (true) or E (false).
 
     """
     def __init__(self, sentence: str):
@@ -67,10 +65,8 @@ class NMEA:
         """
         self.utc = self.UTC(self.fields[1])
         self.status = 'A' in self.fields[2]
-        self.latitude = float(self.fields[3])
-        self.north = 'N' in self.fields[4]
-        self.longitude = float(self.fields[5])
-        self.west = 'W' in self.fields[6]
+        self.latDecimalDegrees(self.fields[3], self.fields[4])
+        self.longDecimalDegrees(self.fields[5], self.fields[6])
 
     def parseVTG(self):
         """Parses VTG sentences.
@@ -92,10 +88,8 @@ class NMEA:
         values are stored as attributes of the NMEA object.
         """
         self.utc = self.UTC(self.fields[1])
-        self.latitude = float(self.fields[2])
-        self.north = 'N' in self.fields[3]
-        self.longitude = float(self.fields[4])
-        self.west = 'W' in self.fields[5]
+        self.latDecimalDegrees(self.fields[2], self.fields[3])
+        self.longDecimalDegrees(self.fields[4], self.fields[5])
         self.status = not '0' in self.fields[6]
 
     def parseGSA(self):
@@ -128,12 +122,46 @@ class NMEA:
         we will ignore since we have no use for it. These values are stored
         as attributes of the NMEA object.
         """
-        self.latitude = float(self.fields[1])
-        self.north = 'N' in self.fields[2]
-        self.longitude = float(self.fields[3])
-        self.west = 'W' in self.fields[4]
+        self.latDecimalDegrees(self.fields[1], self.fields[2])
+        self.longDecimalDegrees(self.fields[3], self.fields[4])
         self.utc = self.UTC(self.fields[5])
         self.status = 'A' in self.fields[6]
+
+    def latDecimalDegrees(self, nmea_format: str, dir: str):
+        """Converts latitude from NMEA format to decimal degrees.
+
+        NMEA format is DDMM.MMMM where DD is the degrees and MM.MMMM is the
+        minutes. The decimal degreee value is DD + (MM.MMMM / 60). Values 
+        in the northern hemisphere are positive and values in the southern
+        hemisphere are negative.
+
+        Args:
+            nmea_format (str): The latitude in NMEA format.
+            dir (str): N for north or S for south.
+        """
+        degs = float(nmea_format[0:2])
+        mins = float(nmea_format[2:])
+        self.latitude = degs + (mins / 60.0)
+        if 'S' in dir:
+            self.latitude = self.latitude * -1.0
+
+    def longDecimalDegrees(self, nmea_format: str, dir: str):
+        """Converts longitude from NMEA format to decimal degrees.
+
+        NMEA format is DDDMM.MMMM where DDD is the degrees and MM.MMMM is the
+        minutes. The decimal degreee value is DDD + (MM.MMMM / 60). Values 
+        in the eastern hemisphere are positive and values in the western
+        hemisphere are negative.
+
+        Args:
+            nmea_format (str): The longitude in NMEA format.
+            dir (str): E for east or W for west.
+        """
+        degs = float(nmea_format[0:3])
+        mins = float(nmea_format[3:])
+        self.longitude = degs + (mins / 60.0)
+        if 'W' in dir:
+            self.longitude = self.longitude * -1.0
 
     class UTC():
         """A representation of Coordinated Universal Time (UTC).

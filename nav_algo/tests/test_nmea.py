@@ -25,10 +25,8 @@ class TestNmeaMethods(unittest.TestCase):
         self.assertEqual(n.utc.minute, 35)
         self.assertEqual(n.utc.second, 19)
         self.assertTrue(n.status)
-        self.assertAlmostEqual(n.latitude, 4807.038)
-        self.assertTrue(n.north)
-        self.assertAlmostEqual(n.longitude, 01131.000)
-        self.assertFalse(n.west)
+        self.assertAlmostEqual(n.latitude, 48.1173, 4)
+        self.assertAlmostEqual(n.longitude, 11.51667, 5)
 
         # make sure an invalid sentence has False status
         n = nmea.NMEA(
@@ -50,10 +48,8 @@ class TestNmeaMethods(unittest.TestCase):
         self.assertEqual(n.utc.minute, 35)
         self.assertEqual(n.utc.second, 19)
         self.assertTrue(n.status)
-        self.assertAlmostEqual(n.latitude, 4807.038)
-        self.assertFalse(n.north)
-        self.assertAlmostEqual(n.longitude, 01131.000)
-        self.assertTrue(n.west)
+        self.assertAlmostEqual(n.latitude, -48.1173, 4)
+        self.assertAlmostEqual(n.longitude, -11.51667, 5)
 
         # make sure an invalid sentence has False status
         n = nmea.NMEA(
@@ -80,10 +76,8 @@ class TestNmeaMethods(unittest.TestCase):
         self.assertEqual(n.utc.minute, 54)
         self.assertEqual(n.utc.second, 44)
         self.assertTrue(n.status)
-        self.assertAlmostEqual(n.latitude, 4916.45)
-        self.assertTrue(n.north)
-        self.assertAlmostEqual(n.longitude, 12311.12)
-        self.assertTrue(n.west)
+        self.assertAlmostEqual(n.latitude, 49.27417, 5)
+        self.assertAlmostEqual(n.longitude, -123.1853, 4)
 
         # make sure an invalid sentence has False status
         n = nmea.NMEA('$GPGLL,4916.45,N,12311.12,W,225444,V,*1D')
