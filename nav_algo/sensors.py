@@ -7,7 +7,7 @@ class sensorData:
         # IMU
         self.pitch = 0
         self.roll = 0
-        self.yaw = 0  # we read as wrt N, convert to wrt x-axis (E)
+        self.yaw = 0  # we read as wrt N, convert to wrt x-axis (E) (make sure 90 degrees is north)
 
         # anemometer
         self.wind_direction = 0  # wrt x-axis
