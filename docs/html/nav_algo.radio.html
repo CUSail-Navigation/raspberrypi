@@ -183,19 +183,59 @@
 <em class="property">class </em><code class="sig-prename descclassname">nav_algo.radio.</code><code class="sig-name descname">Radio</code><a class="headerlink" href="#nav_algo.radio.Radio" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
+<dt id="nav_algo.radio.Radio.printAllWaypoints">
+<code class="sig-name descname">printAllWaypoints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.radio.Radio.printAllWaypoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data should be of the form:.</p>
+<p>“———-WAYPOINTS———-” +
+“,X:” + current_waypoint.x + ” Y:” + current_waypoint.y +
+“,X:” + next_waypoint.x + ” Y:” + next_waypoint.y +
+…
+“,X:” + last_waypoint.x + ” Y:” + last_waypoint.y +
+“,———-END———-n” (should only be one slash in the real thing)</p>
+<p>Note that waypoints are comma delineated while x and y coordinates of
+the same point are space delineated. The waypoints should be printed in
+order from first to last (do not include waypoints that have already
+been hit).</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="nav_algo.radio.Radio.printData">
 <code class="sig-name descname">printData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.radio.Radio.printData" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Data should be of the form:.</p>
+<p>“———-NAVIGATION———-” +
+“,Origin Latitude: ” + origLat +
+“,Origin Longitude: ” + origLong +
+“,X position: ” + currentPosition.x +
+“,Y position: ” + currentPosition.y +
+“,Wind Direction: ” + windDir +
+“,Pitch: ” + pitch +
+“,Roll: ” + roll +
+“,Yaw: ” + yaw +
+“,Sail Angle: ” + sailAngle +
+“,Tail Angle: ” + tailAngle +
+“,Heading: ” + heading +
+“,———-END———-n” (should only be one slash in the real thing)</p>
+<p>Note that fields are comma delineated and there is only a new line
+character at the end of the string.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="nav_algo.radio.Radio.printHitWaypoint">
 <code class="sig-name descname">printHitWaypoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.radio.Radio.printHitWaypoint" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Data should be of the form:.</p>
+<p>“———-HIT———-” +
+“,X:” + waypoint.x + ” Y:” + waypoint.y +
+“,———-END———-n” (should only be one slash in the real thing)</p>
+<p>Note that fields are comma delineated while x and y coordinates of
+the same point are space delineated.</p>
+<p>Note ‘printAllWaypoints’ should be called immediately after this.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="nav_algo.radio.Radio.transmitString">
 <code class="sig-name descname">transmitString</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.radio.Radio.transmitString" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Prints the given messge to the basestation.</p>
+</dd></dl>
 
 </dd></dl>
 
