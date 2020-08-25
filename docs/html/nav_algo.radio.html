@@ -191,7 +191,7 @@
 “,X:” + next_waypoint.x + ” Y:” + next_waypoint.y +
 …
 “,X:” + last_waypoint.x + ” Y:” + last_waypoint.y +
-“,———-END———-n” (should only be one slash in the real thing)</p>
+“,———-END———-” + new line character</p>
 <p>Note that waypoints are comma delineated while x and y coordinates of
 the same point are space delineated. The waypoints should be printed in
 order from first to last (do not include waypoints that have already
@@ -214,7 +214,7 @@ been hit).</p>
 “,Sail Angle: ” + sailAngle +
 “,Tail Angle: ” + tailAngle +
 “,Heading: ” + heading +
-“,———-END———-n” (should only be one slash in the real thing)</p>
+“,———-END———-” + new line character</p>
 <p>Note that fields are comma delineated and there is only a new line
 character at the end of the string.</p>
 </dd></dl>
@@ -225,7 +225,7 @@ character at the end of the string.</p>
 <dd><p>Data should be of the form:.</p>
 <p>“———-HIT———-” +
 “,X:” + waypoint.x + ” Y:” + waypoint.y +
-“,———-END———-n” (should only be one slash in the real thing)</p>
+“,———-END———-” + new line character</p>
 <p>Note that fields are comma delineated while x and y coordinates of
 the same point are space delineated.</p>
 <p>Note ‘printAllWaypoints’ should be called immediately after this.</p>

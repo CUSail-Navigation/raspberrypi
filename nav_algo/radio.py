@@ -25,7 +25,7 @@ class Radio:
         ",Sail Angle: " + sailAngle +
         ",Tail Angle: " + tailAngle +
         ",Heading: " + heading +
-        ",----------END----------\\n" (should only be one slash in the real thing)
+        ",----------END----------" + new line character
 
         Note that fields are comma delineated and there is only a new line
         character at the end of the string.
@@ -42,7 +42,7 @@ class Radio:
         ",X:" + next_waypoint.x + " Y:" + next_waypoint.y +
         ...
         ",X:" + last_waypoint.x + " Y:" + last_waypoint.y +
-        ",----------END----------\\n" (should only be one slash in the real thing)
+        ",----------END----------" + new line character
 
         Note that waypoints are comma delineated while x and y coordinates of
         the same point are space delineated. The waypoints should be printed in
@@ -58,7 +58,7 @@ class Radio:
 
         "----------HIT----------" +
         ",X:" + waypoint.x + " Y:" + waypoint.y +
-        ",----------END----------\\n" (should only be one slash in the real thing)
+        ",----------END----------" + new line character
 
         Note that fields are comma delineated while x and y coordinates of
         the same point are space delineated.
