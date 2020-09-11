@@ -7,6 +7,9 @@ Python 3.7.3.
 Documentation:
 https://cusail-navigation.github.io/raspberrypi/
 
+Block Diagram:
+https://app.lucidchart.com/invitations/accept/2df174cb-57bc-4c03-9d60-9c9ae34d2332
+
 Run everything from the __raspberrypi__ directory.
 
 To run the navigation algorithm: python3 -m nav_algo
