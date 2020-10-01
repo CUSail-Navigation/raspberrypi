@@ -1,11 +1,15 @@
 import nav_algo.servo as servo
-import nav_algo.sensors as sens
+import nav_algo.sensor_array as sens_arr
+import nav_algo.sim_sensors as sim_sens
 import nav_algo.coordinates as coord
 
 
 class BoatController:
-    def __init__(self):
-        self.sensors = sens.sensorData()
+    def __init__(self, simulation=False):
+        if simulation:
+            self.sensors = sim_sens.sensorSim()
+        else:
+            self.sensors = sens_arr.sensorArray()
 
         # servo angles
         # TODO print these to the gui
@@ -16,8 +20,8 @@ class BoatController:
         return coord.Vector(coordinate_system, self.sensors.latitude,
                             self.sensors.longitude)
 
-    def updateSensors(self, simulation=False):
-        pass
+    def updateSensors(self):
+        self.sensors.readAll()
 
     def setServos(self, intended_angle: float):
         # TODO check logic for all of this, I'm 99% sure it's wrong - CM

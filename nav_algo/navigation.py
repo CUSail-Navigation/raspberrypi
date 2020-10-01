@@ -2,6 +2,7 @@ import time
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 import nav_algo.radio as radio
+import nav_algo.sim_gui as gui
 
 
 class NavigationController:
@@ -24,32 +25,34 @@ class NavigationController:
         boat_to_target (Vector): The vector from the boat to the target position.
 
     """
-    def __init__(self, waypoints, simulation=False):
+    def __init__(self, waypoints=[], simulation=False):
         self.DETECTION_RADIUS = 5.0
         self.BEATING = 10.0
         self.DELTA_ALPHA = 1.0
 
-        self.coordinate_system = coord.CoordinateSystem(
-            waypoints[0][0], waypoints[0][1])
-        self.waypoints = [
-            coord.Vector(self.coordinate_system, w[0], w[1]) for w in waypoints
-        ]
+        self.boat = boat.BoatController(simulation)
 
-        self.boat = boat.BoatController()
+        if simulation:
+            self.gui = gui.GUI(self.boat)
 
-        # may want to bypass this if testing
-        self.radio = radio.Radio()
-        self.radio.transmitString("Waiting for GPS fix...\n")
+        else:
+            self.coordinate_system = coord.CoordinateSystem(
+                waypoints[0][0], waypoints[0][1])
+            self.waypoints = [
+                coord.Vector(self.coordinate_system, w[0], w[1])
+                for w in waypoints
+            ]
 
-        if not simulation:
+            self.radio = radio.Radio()
+            self.radio.transmitString("Waiting for GPS fix...\n")
+
             # wait until we know where we are
             while not self.boat.sensors.fix:
                 self.boat.sensors.readGPS()  # ok if this is blocking
 
-        self.radio.transmitString(
-            "Established GPS fix. Beginning navigation...\n")
-
-        self.current_waypoint = self.waypoints.pop(0)
+            self.radio.transmitString(
+                "Established GPS fix. Beginning navigation...\n")
+            self.current_waypoint = self.waypoints.pop(0)
 
     def navigate(self):
         """ Execute the navigation algorithm.
