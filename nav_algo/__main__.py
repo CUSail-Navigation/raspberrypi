@@ -6,7 +6,6 @@ def main():
     waypoints = [(42.444241, 76.481933), (42.446016, 76.484713)]  # test values
 
     nav_controller = nav.NavigationController(simulation=True)
-    nav_controller.navigate()  # start navigation (blocking)
 
 
 if __name__ == "__main__":
