@@ -4,20 +4,23 @@ communication protocol. This class also implements functions to return raw data 
 turn on/off the sensors.
 """
 
-from smbus2 import SMBus, ic_msg
+from smbus2 import SMBus, i2c_msg
+from SailI2c import I2CDevice
 
 class SailIMU(I2CDevice):
     imuCommands = {
-    "readAccelerometerRaw": 66,
-    "readOrientationQuaternion": 1,
-    "readCompassRaw": 67
+    "readAccelerometerRaw": 0x42,
+    "readOrientationEuler": 0x01,
+    "readCompassRaw": 0x43
     }
 
-    def __init__(self,deviceAddress,i2cBusIndex,name):
-        super().__init__(deviceAddress,i2cBusIndex,name)
+    def __init__(self,deviceAddress,i2cBusIndex):
+        super().__init__(deviceAddress,i2cBusIndex)
         return
 
-    def i2c_read_lidar(self):
-        msg = [imuCommands["readAccelerometerRaw"],imuCommands["readOrientationQuaternion"],imuCommands["readCompassRaw"]]
-        data = self.i2cRdwr(msg)
+    def i2c_read_imu(self):
+        msg = [imuCommands["readAccelerometerRaw"],imuCommands["readOrientationEuler"]]
+        self.i2cRdwr(msg)
+        msg = [imuCommands["readCompassRaw"]]
+        data = self.i2cRdwr(msg,12)
         return data
