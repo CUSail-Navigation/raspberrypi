@@ -13,7 +13,6 @@ import numpy as np
 class GUI:
     def __init__(self, boatController: boat.BoatController):
         self.boatController = boatController
-        self.waypoint = coord.Vector(x=1, y=1)  # TODO make dynamic
 
         pg.setConfigOption('background', 'w')
         self.app = QtGui.QApplication(sys.argv)  # init Qt
@@ -26,9 +25,63 @@ class GUI:
 
         ## Display the widget as a new window
         self.w.setWindowTitle("CUSail Simulator")
-        self.w.show()
+        self.layout = QtGui.QGridLayout()
+        self.w.setLayout(self.layout)
 
-        self.run()  # testing only
+        # widgets
+        self.windDirLab = QtGui.QLabel('Wind Direction (wrt East):')
+        self.windDirIn = QtGui.QSpinBox(maximum=359, minimum=0)
+        self.layout.addWidget(self.windDirLab, 0, 0)
+        self.layout.addWidget(self.windDirIn, 0, 1)
+
+        self.windSpeedLab = QtGui.QLabel('Wind Speed (m/s):')
+        self.windSpeedIn = QtGui.QSpinBox(maximum=100, minimum=0)
+        self.layout.addWidget(self.windSpeedLab, 1, 0)
+        self.layout.addWidget(self.windSpeedIn, 1, 1)
+
+        self.rollLab = QtGui.QLabel('Roll:')
+        self.rollIn = QtGui.QSpinBox(maximum=359, minimum=0)
+        self.layout.addWidget(self.rollLab, 2, 0)
+        self.layout.addWidget(self.rollIn, 2, 1)
+
+        self.pitchLab = QtGui.QLabel('Pitch:')
+        self.pitchIn = QtGui.QSpinBox(maximum=359, minimum=0)
+        self.layout.addWidget(self.pitchLab, 3, 0)
+        self.layout.addWidget(self.pitchIn, 3, 1)
+
+        self.yawLab = QtGui.QLabel('Yaw (wrt East):')
+        self.yawIn = QtGui.QSpinBox(maximum=359, minimum=0)
+        self.layout.addWidget(self.yawLab, 4, 0)
+        self.layout.addWidget(self.yawIn, 4, 1)
+
+        self.targetLab = QtGui.QLabel('Target (x, y):')
+        self.targetXIn = QtGui.QSpinBox()
+        self.targetYIn = QtGui.QSpinBox()
+        self.layout.addWidget(self.targetLab, 5, 0)
+        self.layout.addWidget(self.targetXIn, 5, 1)
+        self.layout.addWidget(self.targetYIn, 5, 2)
+
+        self.posLab = QtGui.QLabel('Position (x, y):')
+        self.posXIn = QtGui.QSpinBox()
+        self.posYIn = QtGui.QSpinBox()
+        self.layout.addWidget(self.posLab, 6, 0)
+        self.layout.addWidget(self.posXIn, 6, 1)
+        self.layout.addWidget(self.posYIn, 6, 2)
+
+        self.calcButton = QtGui.QPushButton('Run Algorithm')
+        self.layout.addWidget(self.calcButton, 7, 0)
+        self.calcButton.clicked.connect(self.runNavAlgo)
+
+        self.intAngLab = QtGui.QLabel('Intended Angle: --')
+        self.layout.addWidget(self.intAngLab, 0, 4)
+
+        self.sailAngLab = QtGui.QLabel('Sail Angle: --')
+        self.layout.addWidget(self.sailAngLab, 1, 4)
+
+        self.tailAngLab = QtGui.QLabel('Tail Angle: --')
+        self.layout.addWidget(self.tailAngLab, 2, 4)
+
+        self.w.show()
 
         self.app.exec_()  # start GUI in a new thread
 
@@ -36,14 +89,27 @@ class GUI:
         # TODO link this to a button on the GUI and do other stuff
         self.w.timer = QTimer()
         self.w.timer.setInterval(100)  # 10 times a second for now?
-        self.w.timer.timeout.connect(self.run)
+        self.w.timer.timeout.connect(self.runNavAlgo)  #TODO this is wrong
         self.w.timer.start()
 
-    def run(self):
-        self.boatController.updateSensors()
+    def runNavAlgo(self):
+        # self.boatController.updateSensors()
+        self.boatController.sensors.position = coord.Vector(
+            x=self.posXIn.value(), y=self.posYIn.value())
+        self.waypoint = coord.Vector(x=self.targetXIn.value(),
+                                     y=self.targetYIn.value())
+
+        self.boatController.sensors.wind_direction = self.windDirIn.value()
+        self.boatController.sensors.wind_speed = self.windSpeedIn.value()
+
+        self.boatController.sensors.roll = self.rollIn.value()
+        self.boatController.sensors.pitch = self.pitchIn.value()
+        self.boatController.sensors.yaw = self.yawIn.value()
+
         intended_angle = newSailingAngle(self.boatController, self.waypoint)
         sail_angle, tail_angle = self.boatController.getServoAngles(
             intended_angle)
 
-        print("intended angle: {}, sail: {}, tail {}".format(
-            intended_angle, sail_angle, tail_angle))
+        self.intAngLab.setText('Intended Angle: ' + str(intended_angle))
+        self.sailAngLab.setText('Sail Angle: ' + str(sail_angle))
+        self.tailAngLab.setText('Tail Angle: ' + str(tail_angle))
