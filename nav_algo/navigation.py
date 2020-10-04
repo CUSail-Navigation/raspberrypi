@@ -3,6 +3,7 @@ import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 import nav_algo.radio as radio
 import nav_algo.sim_gui as gui
+from nav_algo.events import Events
 from nav_algo.navigation_helper import *
 
 
@@ -24,7 +25,7 @@ class NavigationController:
         boat_to_target (Vector): The vector from the boat to the target position.
 
     """
-    def __init__(self, waypoints=[], simulation=False):
+    def __init__(self, event=None, waypoints=[], simulation=False):
         self.DETECTION_RADIUS = 5.0
 
         if not simulation:
@@ -48,6 +49,18 @@ class NavigationController:
             self.radio.transmitString(
                 "Established GPS fix. Beginning navigation...\n")
             self.current_waypoint = self.waypoints.pop(0)
+
+            if event == Events.ENDURANCE:
+                self.endurance()
+            elif event == Events.STATION_KEEPING:
+                self.stationKeeping()
+            elif event == Events.PRECISION_NAVIGATION:
+                self.precisionNavigation()
+            elif event == Events.COLLISION_AVOIDANCE:
+                self.collisionAvoidance()
+            elif event == Events.SEARCH:
+                self.search()
+
             self.navigate()
 
         else:
@@ -78,3 +91,23 @@ class NavigationController:
             self.boat.setServos(sailing_angle)
 
         # TODO cleanup pins?
+
+    def endurance(self):
+        #TODO do setup and then call nav helper endurance function
+        pass
+
+    def stationKeeping(self):
+        #TODO do setup and then call nav helper station keeping function
+        pass
+
+    def precisionNavigation(self):
+        #TODO do setup and then call nav helper precision navigation function
+        pass
+
+    def collisionAvoidance(self):
+        #TODO do setup and then call nav helper collision avoidance function
+        pass
+
+    def search(self):
+        #TODO do setup and then call nav helper search function
+        pass

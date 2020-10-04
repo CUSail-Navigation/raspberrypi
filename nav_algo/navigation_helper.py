@@ -83,3 +83,23 @@ def polar(angle, boat):
         # put back into global coords
         return coord.Vector(angle=angle + boat.sensors.wind_direction)
     return coord.Vector.zeroVector()
+
+
+def endurance():
+    pass
+
+
+def stationKeeping():
+    pass
+
+
+def precisionNavigation():
+    pass
+
+
+def collisionAvoidance():
+    pass
+
+
+def search():
+    pass

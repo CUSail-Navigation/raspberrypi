@@ -81,16 +81,20 @@ class GUI:
         self.tailAngLab = QtGui.QLabel('Tail Angle: --')
         self.layout.addWidget(self.tailAngLab, 2, 4)
 
+        # TODO add a dropdown for event types
+        # TODO add something to take in the mock sensor file name
+        # TODO add a button to call startEventAlgo
+
         self.w.show()
 
         self.app.exec_()  # start GUI in a new thread
 
-    def startEventAlgo(self):
-        # TODO link this to a button on the GUI and do other stuff
-        self.w.timer = QTimer()
-        self.w.timer.setInterval(100)  # 10 times a second for now?
-        self.w.timer.timeout.connect(self.runNavAlgo)  #TODO this is wrong
-        self.w.timer.start()
+    def runEventAlgo(self):
+        # TODO mock the sensor readings
+        # TODO call the nav helper navigate function to move one step forward
+        # TODO pass boat config to physics engine, update gui
+        # TODO use physics engine output to update boat position.
+        pass
 
     def runNavAlgo(self):
         # self.boatController.updateSensors()
@@ -113,3 +117,10 @@ class GUI:
         self.intAngLab.setText('Intended Angle: ' + str(intended_angle))
         self.sailAngLab.setText('Sail Angle: ' + str(sail_angle))
         self.tailAngLab.setText('Tail Angle: ' + str(tail_angle))
+
+    def startEventAlgo(self):
+        # TODO get type of event from the dropdown menu
+        # TODO get name of mock sensor file (maybe from a text box on gui)
+        # TODO call the event function in nav helper
+        # TODO call runEventAlgo every 0.1s(?) - use a QTimer
+        pass

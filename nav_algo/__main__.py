@@ -1,4 +1,5 @@
 import nav_algo.navigation as nav
+import nav_algo.events as events
 
 
 def main():
