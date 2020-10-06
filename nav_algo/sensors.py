@@ -1,5 +1,6 @@
 import nav_algo.nmea as nmea
 import nav_algo.coordinates as coord
+import SailSensors
 
 
 class sensorData:
@@ -19,8 +20,21 @@ class sensorData:
         self.longitude = 0
         self.velocity = coord.Vector()
 
+        self.IMU = sailIMU(IMU_ADDRESS,1)
+
     def readIMU(self):
-        # TODO remember to convert yaw to wrt x-axis
+        rawData = testIMU.i2c_read_lidar()
+        eulerAngles = [0,0,0]
+        #iterates through the list of raw data and converts int into a list of three floats
+        for n in range(3):
+            for f in range(4):
+                byteFloatList = []
+                byteFloatList.append(rawData[n*4 + f])
+
+
+            eulerAngles[n] = struct.unpack(">f",''.join([chr(k) for k in byteFloatList]))
+
+
         pass
 
     def readWindDirection(self):
