@@ -33,7 +33,7 @@ class I2CDevice:
 
     """
     def readBlockData(self,offset,byteNumber):
-        return self.i2cBus.read_i2c_block_data(deviceAdddress,offset,byteNumber)
+        return self.i2cBus.read_i2c_block_data(self.deviceAddress,offset,byteNumber)
 
 
 
@@ -41,7 +41,7 @@ class I2CDevice:
     Sends a hexadecimal list to the desired component.
     list msg (needs to be a list of hexadecimal commands specific to the device)
     """
-    def i2cRdwr(self,msg):
+    def i2cWr(self,msg):
         send = i2c_msg.write(self.getDeviceAddress(),msg)
         self.geti2cBus().i2c_rdwr(send)
         return
@@ -57,4 +57,4 @@ class I2CDevice:
     def i2cRdwr(self,send,recieve):
         write = i2c_msg.write(self.getDeviceAddress(),send)
         recieve = i2c_msg.read(self.getDeviceAddress(),recieve)
-        returnself.geti2cBus().i2c_rdwr(write,recieve)
+        return self.geti2cBus().i2c_rdwr(write,recieve)

@@ -5,7 +5,7 @@ turn on/off the sensors.
 """
 
 from smbus2 import SMBus, i2c_msg
-from SailI2c import I2CDevice
+from SailI2C import I2CDevice
 
 class SailIMU(I2CDevice):
     imuCommands = {
@@ -19,8 +19,9 @@ class SailIMU(I2CDevice):
         return
 
     def i2c_read_imu(self):
-        msg = [imuCommands["readAccelerometerRaw"],imuCommands["readOrientationEuler"]]
-        self.i2cRdwr(msg)
-        msg = [imuCommands["readCompassRaw"]]
-        data = self.i2cRdwr(msg,12)
+        msg = [SailIMU.imuCommands["readAccelerometerRaw"],SailIMU.imuCommands["readOrientationEuler"]]
+        self.i2cWr(msg)
+        msg = [SailIMU.imuCommands["readCompassRaw"]]
+        self.i2cWr(msg)
+        data = self.readBlockData(0x0,12)
         return data
