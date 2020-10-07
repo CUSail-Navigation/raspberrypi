@@ -64,7 +64,10 @@ class GUI:
         self.file_input = QtGui.QLineEdit()
         self.event_layout.addWidget(self.file_input, 1, 1)
 
-        # TODO add a button to call startEventAlgo
+        # add a button to call startEventAlgo
+        self.event_button = QtGui.QPushButton('Start Event Algorithm')
+        self.event_button.clicked.connect(self.startEventAlgo)
+        self.event_layout.addWidget(self.event_button)
 
         self.event_w.show()
 
