@@ -1,5 +1,7 @@
 import nav_algo.boat as boat
+from nav_algo.events import Events
 from nav_algo.navigation_helper import *
+import nav_algo.events as events
 import sys
 from PyQt5 import QtGui
 from PyQt5.QtGui import *
@@ -47,8 +49,21 @@ class GUI:
         self.event_w.setLayout(self.event_layout)
         self.event_w.setWindowTitle("Event Algorithm Simulator")
 
-        # TODO add a dropdown for event types
-        # TODO add something to take in the mock sensor file name
+        # add a dropdown for event types
+        self.event_label = QtGui.QLabel('Event Type:')
+        self.event_layout.addWidget(self.event_label, 0, 0)
+        self.event_selector = QtGui.QComboBox()
+        self.events = Events.__iter__()
+        for event in Events.__iter__():
+            self.event_selector.addItem(str(event))
+        self.event_layout.addWidget(self.event_selector, 0, 1)
+
+        # add something to take in the mock sensor file name
+        self.file_label = QtGui.QLabel('Mock Sensor Data File:')
+        self.event_layout.addWidget(self.file_label, 1, 0)
+        self.file_input = QtGui.QLineEdit()
+        self.event_layout.addWidget(self.file_input, 1, 1)
+
         # TODO add a button to call startEventAlgo
 
         self.event_w.show()
