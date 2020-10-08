@@ -89,7 +89,46 @@ def endurance():
     pass
 
 
-def stationKeeping():
+#TODO: this is super skeleton rn, will discuss coords etc with Courtney
+def stationKeeping(boat, square, turning_radius, timer):
+    # enter the square
+    # coord.CoordinateSystem(waypoints[0][0], waypoints[0][1])
+    # self.waypoints = [
+    #     coord.Vector(self.coordinate_system, w[0], w[1])
+    #     for w in waypoints
+    # ]
+    square_entry = (square[0] + square[1]
+                    ) / 2  #assumes first two coords represent closest side
+    # center
+    boat_position = boat.getPosition()
+    midpoint = square[0].midpoint(square[2])
+    self.current_waypoint = midpoint
+    # calculate the waypoints in the circle
+
+    # start our timer
+    # loop over the circle coords
+    start_time = time.time()
+    circle_waypoints = []
+    i = 0  #iterator
+    current_waypoint = circle_waypoints[i]
+    while current_waypoint is not None:
+        time_elapsed = time.time() - start_time
+        if time_elapsed == timer:
+            break  # TODO how often should this run?
+        boat.updateSensors()
+        boat_position = boat.getPosition()
+        if boat_position.xyDist(current_waypoint) < DETECTION_RADIUS:
+            if len(self.waypoints) > 0:
+                self.current_waypoint = self.waypoints.pop(0)
+            else:
+                self.current_waypoint = None
+                break
+        i += 1
+        current_waypoint = circle_waypoints[i % 4]
+
+        sailing_angle = newSailingAngle(self.boat, self.current_waypoint)
+        self.boat.setServos(sailing_angle)
+    # calculate the point on the square such that abs(current dist-closest dist) = min
     pass
 
 
