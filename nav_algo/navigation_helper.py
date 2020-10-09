@@ -89,7 +89,12 @@ def endurance():
     pass
 
 
-#TODO: this is super skeleton rn, will discuss coords etc with Courtney
+# waypoints will be passed in, we can then call the navigation function whenever
+# required. So first, calculate he entry point, call nacigate,
+# then on empty, call station keeping back.
+# 4 stages, all we need to do is calculate the waypoints and call navigate
+# 0->trying to enter, 1->trying to go the center of the cicle
+# 2-> looping around the circle 3-> escape
 def stationKeeping(boat, square, turning_radius, timer):
     # enter the square
     # coord.CoordinateSystem(waypoints[0][0], waypoints[0][1])
