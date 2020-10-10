@@ -22,7 +22,7 @@ class sensorData:
         self.longitude = 0
         self.velocity = coord.Vector()
 
-        self.IMU = SailSensors.SailIMU(SailSensors.IMU_ADDRESS)
+        self.IMU = SailSensors.SailIMU()
 
     def readIMU(self):
         rawData = self.IMU.i2c_read_imu()

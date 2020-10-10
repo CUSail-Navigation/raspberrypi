@@ -1,8 +1,9 @@
 
 from smbus2 import SMBus, i2c_msg
-
+from Adafruit_ADS1x15 import ADS1x15 as ADS
 
 IMU_ADDRESS = 0x77
+ADC_ADDRESS = 0x48
 
 """
 This class is used to create a new instance of an I2C sensor module for communication.
@@ -70,6 +71,32 @@ class I2CDevice:
         return self.geti2cBus().i2c_rdwr(write,recieve)
     
 """
+This class contains the object of the ADC to be used by other
+classes for analog devices. 
+"""
+class ADCDevice:
+    
+    mainADC = ADS.ADS1015(ADC_ADDRESS)
+    
+    """
+    Init function for an arbitrary ADCDevice
+    Parameter:
+    -pinNumber: must be an int between 0 and 3, based which pin on the
+    ADC the sensor is connected to.
+    """
+    def __init__(self,pinNumber):
+        self.pinNumber = pinNumber
+        return
+        
+    
+    """This function reads the ADC present on the I2C bus
+        Parameters:
+        -gain: The gain of the sensor input in int form
+    """
+    def readADC(self,gain = 1):
+        return ADCDevice.mainADC.read_adc(self.pinNumber)
+        
+"""
 SailIMU implements a class used to connect the component to it's proper
 communication protocol. This class also implements functions to return raw data and
 turn on/off the sensors.
@@ -83,7 +110,7 @@ class SailIMU(I2CDevice):
     """
     Initializes the sensor object, default for i2cBusIndex is 1 because the raspberry pi only has 1 bus
     """
-    def __init__(self,deviceAddress,i2cBusIndex = 1):
+    def __init__(self,deviceAddress = IMU_ADDRESS,i2cBusIndex = 1):
         super().__init__(deviceAddress,i2cBusIndex)
         return
 
@@ -129,7 +156,21 @@ SailAnemometer implements a class used to connect the component to it's proper
 communication protocol. This class also implements functions to return raw data and
 turn on/off the sensors.
 """
-class SailAnemometer:
-
-    def __init__(self):
-        return
+class SailAnemometer(ADCDevice):
+    
+    """
+    Initializes the anemometer.
+    Parameter:
+    -pinNumber: pin the anemometer is plugged into in the form of an
+    int between 0 and 3
+    """
+    def __init__(self,pinNumber):
+        super().__init__(pinNumber)
+        
+    """
+    Returns the given voltage of the anemometer using the ADC.
+    Parameter:
+    -gain: the multiplication value of the voltage, must be an int
+    """
+    def readAnemometerVoltage(self,gain = 1):
+        return self.readADC(gain)
