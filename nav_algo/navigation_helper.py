@@ -96,12 +96,6 @@ def endurance():
 # 0->trying to enter, 1->trying to go the center of the cicle
 # 2-> looping around the circle 3-> escape
 def stationKeeping(boat, square, turning_radius, timer):
-    # enter the square
-    # coord.CoordinateSystem(waypoints[0][0], waypoints[0][1])
-    # self.waypoints = [
-    #     coord.Vector(self.coordinate_system, w[0], w[1])
-    #     for w in waypoints
-    # ]
     square_entry = (square[0] + square[1]
                     ) / 2  #assumes first two coords represent closest side
     # center
