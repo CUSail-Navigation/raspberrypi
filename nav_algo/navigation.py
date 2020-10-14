@@ -53,7 +53,17 @@ class NavigationController:
             if event == Events.ENDURANCE:
                 self.endurance()
             elif event == Events.STATION_KEEPING:
-                self.stationKeeping(waypoints, radius=10)
+                # to find an optimal radius, 10 for now
+                exit_before = 300
+                circle_radius = 10
+                self.stationKeeping(self.waypoints, circle_radius, "ENTRY")
+                self.navigate()
+                #Set timer
+                start_time = time.time()
+                while time.time() - start_time < exit_before:
+                    self.stationKeeping(self.waypoints, circle_radius, "KEEP")
+                    self.navigate()
+                self.stationKeeping(self.waypoints, circle_radius, "EXIT")
             elif event == Events.PRECISION_NAVIGATION:
                 self.precisionNavigation()
             elif event == Events.COLLISION_AVOIDANCE:
@@ -73,7 +83,6 @@ class NavigationController:
         This is a blocking call that runs until all waypoints have been hit.
 
         """
-        i = 0
         while self.current_waypoint is not None:
             time.sleep(2)  # TODO how often should this run?
 
@@ -97,10 +106,8 @@ class NavigationController:
         #TODO do setup and then call nav helper endurance function
         pass
 
-    def stationKeeping(self, waypoints):
-        #TODO do setup and then call nav helper station keeping function
-        #start_time = time.time()
-        stationKeeping(waypoints)
+    def stationKeeping(self, waypoints, circle_radius, state):
+        stationKeeping(waypoints, circle_radius, state)
 
     def precisionNavigation(self):
         #TODO do setup and then call nav helper precision navigation function
