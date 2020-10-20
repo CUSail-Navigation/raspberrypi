@@ -22,7 +22,14 @@ class sensorData:
         self.longitude = 0
         self.velocity = coord.Vector()
 
+        #Sensor objects
         self.IMU = SailSensors.SailIMU()
+        self.anemometer = SailSensors.SailAnemometer(0)
+
+        #sensorData
+        self.boat_direction = 0 # angle of the sail wrt north.
+        self.sailAngleBoat = 0 #angle of the sail wrt to the boat.
+
 
     def readIMU(self):
         rawData = self.IMU.i2c_read_imu()
@@ -32,21 +39,27 @@ class sensorData:
             byteFloatList = rawData[4*n:4+4*n]
             eulerAngles[n] = struct.unpack(">f",bytes(byteFloatList))[0]
             eulerAngles[n] *= (180/pi)
-            
+
         self.pitch = eulerAngles[0]
         self.roll = eulerAngles[2]
         self.yaw = eulerAngles[1]
         if self.yaw < 0:
             self.yaw +=360
-        
-        
+        self.boat_direction = self.yaw
 
         return
 
     def readWindDirection(self):
-        # TODO remember we read this as wrt yaw, to get wrt x-axis, add yaw
-        # and use coord.rangeAngle to get into the range [0, 360)
-        pass
+        rawData = anemometer.readAnemometerVoltage()
+
+        if rawData >= 1601:
+            rawAngle = 0
+        else:
+            rawAngle = rawData * 360 / 1600
+
+        windWrtN = (rawAngle + self.sailAngleBoat) % 360
+        windWrtN = (windWrtN + self.boat_direction) % 360
+        return
 
     def readGPS(self):
         # TODO update fix, lat, long, and velocity
