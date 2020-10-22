@@ -13,8 +13,9 @@ class sensorData:
         self.yaw = 0  # we read as wrt N, convert to wrt x-axis (E) (make sure 90 degrees is north)
 
         # anemometer
-        self.wind_direction = 0  # wrt x-axis
-        self.wind_speed = 0
+        self.wind_direction = 0  # wrt x-axis and noise removed
+        self.wind_speed = 0 #don't need this, might add as an extra if there is time left
+        self.anemomSMA = [] #helps remove noise from the anemometer reading
 
         # GPS
         self.fix = False
@@ -59,9 +60,22 @@ class sensorData:
 
         windWrtN = (rawAngle + self.sailAngleBoat) % 360
         windWrtN = (windWrtN + self.boat_direction) % 360
+        self.wind_direction = _addAverage(windWrtN)
         return
 
     def readGPS(self):
         # TODO update fix, lat, long, and velocity
         # use the NMEA parser
         pass
+
+    """Helper function that manages the SMA of the anemometer, this keeps the list at size =4 and returns the
+    average of the list of ints. This function assumes that anemometer readings are taken semi-frequently
+    parameter: newValue - int denoting number to be added to the """
+    def _addAverage(newValue):
+        self.anemomSMA.append(newValue)
+        if(len(self.anemomSMA) > 4):
+            self.anemomSMA.pop(0)
+
+        for n in self.anemomSMA:
+            sum = sum + n
+        return sum/len(self.anemomSMA)
