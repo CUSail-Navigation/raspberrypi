@@ -92,16 +92,24 @@ def endurance():
 
 def stationKeeping(waypoints, circle_radius, state):
     if state == "ENTRY":
-        stationKeepingWaypoints = []  #Necessary waypoints
+        stationKeepingWaypoints = []  # Necessary waypoints
         # entry point to the square
         square_entry = waypoints[0].midpoint(waypoints[1])
-        stationKeeping.append(square_entry)
+        stationKeepingWaypoints.append(square_entry)
         # center of the sqaure
         center = waypoints[0].midpoint(waypoints[2])
         stationKeepingWaypoints.append(center)
         waypoints = stationKeepingWaypoints
         return
+    elif state == "FIRST_KEEP":
+        # This calculates the first waypoint- it must be separate from KEEP because FIRST_KEEP must use yaw of boat at center to get 1st waypoints
+
+        pass
     elif state == "KEEP":
+        # TODO: use direction of boat on middle waypoint to calculate the orientation of the waypoints
+        # TODO: make sure we don't go straight into a point; first waypoint will be the one closest to a 90 degree angle from boat orientation
+        # TODO: talk to Will/Courtney on how to access yaw (self.yaw ?)
+
         # calculate the waypoints in the circle
         x_coord = boat.getPosition().x
         y_coord = boat.getPosition().y
@@ -110,7 +118,11 @@ def stationKeeping(waypoints, circle_radius, state):
         way135 = (-(pos) + x_coord, (pos) + y_coord)
         way225 = (-(pos) + x_coord, -(pos) + y_coord)
         way315 = ((pos) + x_coord, -(pos) + y_coord)
-        circle_waypoints = [way45, way135, way225, way315]
+        circle_waypoints_ccw = [way45, way135, way225, way315]
+        circle_waypoints_cw = [way45, way315, way225, way135]
+
+        # for each waypoint: angle from waypoint= angle - yaw.
+
         # x//45: check distance to 1 and 7 and take the smaller one for each angle
         circle_waypoints = sorted(
             circle_waypoints, lambda x: min(abs((x / 45) - 7), abs(
@@ -129,10 +141,10 @@ def stationKeeping(waypoints, circle_radius, state):
         # east exit
         east_exit = waypoints[1].midpoint(waypoints[2])
         east_exit.x += units_away
-        #south exit
+        # south exit
         south_exit = waypoints[2].midpoint(waypoints[3])
         south_exit.y -= units_away
-        #west exit
+        # west exit
         west_exit = waypoints[0].midpoint(waypoints[3])
         west_exit.x -= units_away
         # exit waypoint order in list: N, E, S, W
