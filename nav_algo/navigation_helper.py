@@ -101,16 +101,17 @@ def stationKeeping(waypoints, circle_radius, state):
         stationKeepingWaypoints.append(center)
         waypoints = stationKeepingWaypoints
         return
-    elif state == "FIRST_KEEP":
-        # This calculates the first waypoint- it must be separate from KEEP because FIRST_KEEP must use yaw of boat at center to get 1st waypoints
-
-        pass
     elif state == "KEEP":
-        # TODO: use direction of boat on middle waypoint to calculate the orientation of the waypoints
-        # TODO: make sure we don't go straight into a point; first waypoint will be the one closest to a 90 degree angle from boat orientation
-        # TODO: talk to Will/Courtney on how to access yaw (self.yaw ?)
+        # TODO: check with Will/Courtney on how to access yaw
+        # downwind=0=clockwise,
+        optimal_angle = 45  # TODO is this ok?
+        x_coord = boat.getPosition().x
+        y_coord = boat.getPosition().y
+        if boat.sensors.wind_direction >= 180:
+            # move ccw
+        else:
+            # move cw
 
-        # calculate the waypoints in the circle
         x_coord = boat.getPosition().x
         y_coord = boat.getPosition().y
         pos = circle_radius * math.sqrt(2) / 2
@@ -118,19 +119,81 @@ def stationKeeping(waypoints, circle_radius, state):
         way135 = (-(pos) + x_coord, (pos) + y_coord)
         way225 = (-(pos) + x_coord, -(pos) + y_coord)
         way315 = ((pos) + x_coord, -(pos) + y_coord)
-        circle_waypoints_ccw = [way45, way135, way225, way315]
-        circle_waypoints_cw = [way45, way315, way225, way135]
+        boat_direction = boat.sensors.yaw
+        wind_direction = boat.sensors.wind_direction
+        angles = [45, 135, 225, 315]
+        between_45_and_90 = []  # minimum of all 4 angles
+        diff_180 = []
+        curr_min = float("inf")
+        last_angle = 0
+        last_min = float("inf")
+        for angle in angles:
+            diff = abs(angle - boat_direction)
+            second = abs(180 - boat_direction)
+            if diff >= 45 and diff <= 90:
+                between_45_and_90.append(angle)
+            if second <= 45:
+                diff_180.append(angle)
+            if diff < last_min:
+                last_angle = angle
+                last_min = diff
+        first = 0
+        second = 0
+        third = 0
+        fourth = 0
+        circle_waypoints_ccw
+        if len(between_45_and_90) > 1:
+            angle1 = between_45_and_90[0]
+            angle2 = between_45_and_90[1]
+            if angle1 == 45 and angle2 == 315:
+                if boat.sensors.wind_direction > 180:
+                    first = 45
+                    second = 135
+                    third = 225
+                    fourth = 315
+                else:
+                    first = 315
+                    second = 225
+                    third = 135
+                    fourth = 45
+            elif angle1 == 45 and angle2 == 135:
+                if boat.sensors.wind_direction > 180:
+                    first = 135
+                    second = 225
+                    third = 315
+                    fourth = 45
+                else:
+                    first = 45
+                    second = 315
+                    third = 225
+                    fourth = 135
+            elif angle1 == 135 and angle2 == 225:
+                if boat.sensors.wind_direction > 180:
+                    first = 225
+                    second = 315
+                    third = 45
+                    fourth = 135
+                else:
+                    first = 135
+                    second = 45
+                    third = 315
+                    fourth = 225
+            elif angle1 == 225 and angle2 == 315:
+                if boat.sensors.wind_direction > 180:
+                    first = 315
+                    second = 45
+                    third = 235
+                    fourth = 225
+                else:
+                    first = 225
+                    second = 135
+                    third = 45
+                    fourth = 315
 
-        # for each waypoint: angle from waypoint= angle - yaw.
-
-        # x//45: check distance to 1 and 7 and take the smaller one for each angle
-        circle_waypoints = sorted(
-            circle_waypoints, lambda x: min(abs((x / 45) - 7), abs(
-                (x / 45) - 1)))
-        # x % 45: check value and take smaller value
-        circle_waypoints = sorted(circle_waypoints, lambda x: x % 45)
+        circle_waypoints = [first, second, third, fourth]
         waypoints = circle_waypoints
-        return
+        return circle_waypoints
+
     elif state == "EXIT":
         # corner waypoint order: NW, NE, SE, SW
         # TODO: ask Courtney about the units of x-y coord
