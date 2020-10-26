@@ -25,6 +25,7 @@ class NavigationController:
         boat_to_target (Vector): The vector from the boat to the target position.
 
     """
+
     def __init__(self, event=None, waypoints=[], simulation=False):
         self.DETECTION_RADIUS = 5.0
 
@@ -58,10 +59,13 @@ class NavigationController:
                 circle_radius = 10
                 self.stationKeeping(self.waypoints, circle_radius, "ENTRY")
                 self.navigate()
-                #Set timer
+                # Set timer
                 start_time = time.time()
+                loop_waypoints = self.stationKeeping(
+                    self.waypoints, circle_radius, "KEEP")
+                self.navigate()
                 while time.time() - start_time < exit_before:
-                    self.stationKeeping(self.waypoints, circle_radius, "KEEP")
+                    self.waypoints = loop_waypoints
                     self.navigate()
                 self.stationKeeping(self.waypoints, circle_radius, "EXIT")
             elif event == Events.PRECISION_NAVIGATION:
@@ -103,20 +107,20 @@ class NavigationController:
         # TODO cleanup pins?
 
     def endurance(self):
-        #TODO do setup and then call nav helper endurance function
+        # TODO do setup and then call nav helper endurance function
         pass
 
     def stationKeeping(self, waypoints, circle_radius, state):
         stationKeeping(waypoints, circle_radius, state)
 
     def precisionNavigation(self):
-        #TODO do setup and then call nav helper precision navigation function
+        # TODO do setup and then call nav helper precision navigation function
         pass
 
     def collisionAvoidance(self):
-        #TODO do setup and then call nav helper collision avoidance function
+        # TODO do setup and then call nav helper collision avoidance function
         pass
 
     def search(self):
-        #TODO do setup and then call nav helper search function
+        # TODO do setup and then call nav helper search function
         pass
