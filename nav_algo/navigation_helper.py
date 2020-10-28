@@ -130,6 +130,7 @@ def stationKeeping(waypoints, circle_radius, state):
 
 
     elif state == "OLD_KEEP":
+        #may be used later; will delete when we know we won't use it                     
         x_coord = boat.getPosition().x
         y_coord = boat.getPosition().y
         pos = circle_radius * math.sqrt(2) / 2
