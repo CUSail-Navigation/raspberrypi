@@ -105,13 +105,31 @@ def stationKeeping(waypoints, circle_radius, state):
         # TODO: check with Will/Courtney on how to access yaw
         # downwind=0=clockwise,
         optimal_angle = 45  # TODO is this ok?
+        radian_45=math.pi/4
         x_coord = boat.getPosition().x
         y_coord = boat.getPosition().y
+        boat_direction = boat.sensors.yaw
         if boat.sensors.wind_direction >= 180:
             # move ccw
+            loop_direction=1
         else:
-            # move cw
+            # move ccw
+            loop_direction=-1
+        #compute angle of first waypoint    
+        first_angle=boat_direction+optimal_angle*loop_direction
+        if (first_angle<0):
+            first_angle+=360   
+        #convert to radians for computation of other waypoints using trig    
+        radian_first_angle=first_angle*math.pi/180
 
+        for i in range(4):
+            #place 4 waypoints each 90 deg apart; when angle>2pi, trig functions know to shift input to be in range 
+            imput_angle=radian_first_angle+i*radian_45
+            waypoints.append((x_coord+circle_radius*math.cos(input_angle)),(y_coord+circle_radius*math.sin(input_angle))
+        return
+
+
+    elif state == "OLD_KEEP":
         x_coord = boat.getPosition().x
         y_coord = boat.getPosition().y
         pos = circle_radius * math.sqrt(2) / 2
