@@ -126,7 +126,7 @@ def stationKeeping(waypoints, circle_radius, state):
             #place 4 waypoints each 90 deg apart; when angle>2pi, trig functions know to shift input to be in range 
             input_angle=radian_first_angle+loop_direction*i*radian_45
             waypoints.append((x_coord+circle_radius*math.cos(input_angle)),(y_coord+circle_radius*math.sin(input_angle))
-        return
+        return waypoints
 
 
     elif state == "OLD_KEEP":
