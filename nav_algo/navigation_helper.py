@@ -113,7 +113,7 @@ def stationKeeping(waypoints, circle_radius, state):
             # move ccw
             loop_direction=1
         else:
-            # move ccw
+            # move cw
             loop_direction=-1
         #compute angle of first waypoint    
         first_angle=boat_direction+optimal_angle*loop_direction
