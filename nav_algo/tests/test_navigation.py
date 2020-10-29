@@ -2,6 +2,7 @@ import unittest
 import numpy as np
 import nav_algo.navigation as nav
 import nav_algo.coordinates as coord
+import nav_algo.navigation_helper as help
 
 
 class TestNavigationMethods(unittest.TestCase):
@@ -133,6 +134,35 @@ class TestNavigationMethods(unittest.TestCase):
         angle = self.nav_controller.newSailingAngle()
         self.assertAlmostEqual(angle, 76.0)
 
+    def test_station_keeping(self):
+        # entry- given 4 square waypoints, return: 1) entry point 2) center
+        # West entry
+        waypoints = [(5, 45), (45, 45), (5, 45), (5, 5)]
+        self.nav_controller.boat_position = coord.Vector(x=0, y=25)
+        new_waypoints = self.nav_controller.station_keeping(
+            waypoints, 10, "ENTRY")
+        expected_waypoints = [(5, 25), (25, 25)]
+        self.assertAlmostEqual(new_waypoints, expected_waypoints)
+        # North entry
+        self.nav_controller.boat_position = coord.Vector(x=25, y=55)
+        new_waypoints = self.nav_controller.station_keeping(
+            waypoints, 10, "ENTRY")
+        expected_waypoints = [(25, 45), (25, 25)]
+        self.assertAlmostEqual(new_waypoints, expected_waypoints)
+        # East entry
+        self.nav_controller.boat_position = coord.Vector(x=55, y=25)
+        new_waypoints = self.nav_controller.station_keeping(
+            waypoints, 10, "ENTRY")
+        expected_waypoints = [(45, 25), (25, 25)]
+        self.assertAlmostEqual(new_waypoints, expected_waypoints)
+        # South entry
+        self.nav_controller.boat_position = coord.Vector(x=25, y=0)
+        new_waypoints = self.nav_controller.station_keeping(
+            waypoints, 10, "ENTRY")
+        expected_waypoints = [(25, 5), (25, 25)]
+        self.assertAlmostEqual(new_waypoints, expected_waypoints)
 
+        # keep- given 4 square waypoints, return: 1) Four 90 degree waypoints to loop
+        # exit- given 4 square waypoints
 if __name__ == '__main__':
     unittest.main()
