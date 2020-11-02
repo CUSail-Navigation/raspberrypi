@@ -115,7 +115,6 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45):
         waypoints = stationKeepingWaypoints
         return
     elif state == "KEEP":
-        # TODO: check with Will/Courtney on how to access yaw
         # downwind=wind-yaw=0=clockwise,
         keep_waypoints = []
         # radian_angle = math.radians(opt_angle)
@@ -175,10 +174,37 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45):
         return
 
 
-def precisionNavigation():
-    pass
+def precisionNavigation(waypoints, offset=5.0, side_length=50.0):
+    #waypoints:[start_buoy1, start_buoy2, bottom_left, bottom_right]
+    precision_waypoints = []
+    x_coord = boat.getPosition().x
+    y_coord = boat.getPosition().y
+    boat_direction = boat.sensors.yaw
+    relative_wind=boat.sensors.wind_direction-boat_direction    
+    if relative_wind<0:
+        relative_wind+=360 
+    if relative_wind >= 180:
+        # move ccw
+        sail_direction = 1
+    else:
+        # move cw
+        sail_direction = -1        
+    start_point= waypoints[0].midpoint(waypoints[1])
+    first_slope=(start_point.y - waypoints[2].y)/(start_point.x - waypoints[2].x)
+    dist = (start_point.xyDist(waypoints[2]))/3
+    first_x = start_point.x + math.sqrt(dist/(1+first_slope**2))
+    first_y = start_point.y + first_slope * math.sqrt(dist/(1+first_slope**2))
+    perpendicular_1= -1/first_slope
+    offset_x = math.sqrt(offset/(1+perpendicular_1**2))
+    offset_y = perpendicular * math.sqrt(offset/(1 + perpendicular_1**2))
+    precision_waypoints.append(first_x + offset_x, first_y + offset_y)
+    
+    second_x=start_point.x + 2*math.sqrt(dist/(1+first_slope**2))
+    second_y = start_point.y + 2*first_slope * math.sqrt(dist/(1+first_slope**2))
+     precision_waypoints.append(second_x + offset_x, second_y + offset_y)   
+    
 
-
+    
 def collisionAvoidance():
     pass
 

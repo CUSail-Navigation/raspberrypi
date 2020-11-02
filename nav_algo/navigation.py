@@ -113,9 +113,9 @@ class NavigationController:
     def stationKeeping(self, waypoints, circle_radius, state):
         stationKeeping(waypoints, circle_radius, state)
 
-    def precisionNavigation(self):
+    def precisionNavigation(self,waypoints):
         # TODO do setup and then call nav helper precision navigation function
-        pass
+        precisionNavigation(waypoints)
 
     def collisionAvoidance(self):
         # TODO do setup and then call nav helper collision avoidance function
