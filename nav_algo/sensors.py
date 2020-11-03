@@ -30,6 +30,7 @@ class sensorData:
         #sensorData
         self.boat_direction = 0 # angle of the sail wrt north.
         self.sailAngleBoat = 0 #angle of the sail wrt to the boat.
+        self.rawWind = 0
 
 
     def readIMU(self):
@@ -43,24 +44,27 @@ class sensorData:
 
         self.pitch = eulerAngles[0]
         self.roll = eulerAngles[2]
-        self.yaw = eulerAngles[1]
+        self.yaw = 360+90 - eulerAngles[1]
         if self.yaw < 0:
             self.yaw +=360
+        elif self.yaw > 360:
+            self.yaw -=360
         self.boat_direction = self.yaw
 
         return
 
     def readWindDirection(self):
-        rawData = anemometer.readAnemometerVoltage()
-
+        rawData = self.anemometer.readAnemometerVoltage()
+        self.rawWind = rawData
         if rawData >= 1601:
             rawAngle = 0
         else:
             rawAngle = rawData * 360 / 1600
 
+
         windWrtN = (rawAngle + self.sailAngleBoat) % 360
         windWrtN = (windWrtN + self.boat_direction) % 360
-        self.wind_direction = _addAverage(windWrtN)
+        self.wind_direction = self._addAverage(windWrtN)
         return
 
     def readGPS(self):
@@ -68,14 +72,16 @@ class sensorData:
         # use the NMEA parser
         pass
 
-    """Helper function that manages the SMA of the anemometer, this keeps the list at size =4 and returns the
+    """Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the
     average of the list of ints. This function assumes that anemometer readings are taken semi-frequently
     parameter: newValue - int denoting number to be added to the """
-    def _addAverage(newValue):
-        self.anemomSMA.append(newValue)
-        if(len(self.anemomSMA) > 4):
+    def _addAverage(self,newValue):
+        self.anemomSMA.append(newValue)/2
+        if(len(self.anemomSMA > 1):
+           self.anemomSMA[-2] = self.anemomSMA[-2]/2
+        if(len(self.anemomSMA) > 10):
             self.anemomSMA.pop(0)
-
+        sum = 0
         for n in self.anemomSMA:
             sum = sum + n
-        return sum/len(self.anemomSMA)
+        return sum
