@@ -174,6 +174,10 @@ class SailAnemometer(ADCDevice):
     """
     def readAnemometerVoltage(self,gain = 1):
         return self.readADC(gain)
+    
+    """
+    Reads data sent to GPS and translates into coordinates.
+    """
 class readGPS (self):
     lat = [];
         longi = [];
