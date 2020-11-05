@@ -244,10 +244,10 @@ def precisionNavigation(waypoints, offset=5.0, side_length=50.0):
     end_point = start_point
     dist = (start_point.xyDist(end_point))/3
     point_line = find_inner_outer_points(start_point, end_point, dist, 0)
-    seventh_waypoint = find_inner_outer_points(point_line, end_point, dist, 1)    
+    seventh_waypoint = find_inner_outer_points(point_line, end_point, dist, -1)    
     dist_out = 2 * dist
     point_line_2 = find_inner_outer_points(start_point, end_point, dist_out, 0)
-    eighth_waypoint = find_inner_outer_points(point_line_2, end_point, dist_out,-1)    
+    eighth_waypoint = find_inner_outer_points(point_line_2, end_point, dist_out,1)    
     # final waypoint is start_point
     ninth_waypoint = start_pos
 
@@ -255,28 +255,6 @@ def precisionNavigation(waypoints, offset=5.0, side_length=50.0):
                 fourth_waypoint, fifth_waypoint, sixth_waypoint, 
                 seventh_waypoint, eighth_waypoint, ninth_waypoint]
     return
-    #start_point= topleft_buoy.midpoint(topright_buoy)
-    #first_slope=(start_point.y - botleft_buoy.y)/(start_point.x - botleft_buoy.x)
-    #dist = (start_point.xyDist(botleft_buoy))/3
-    #first_x = start_point.x + math.sqrt(dist/(1+first_slope**2))
-    #first_y = start_point.y + first_slope * math.sqrt(dist/(1+first_slope**2))
-    #perpendicular_1= -1/first_slope
-    #offset_x = math.sqrt(offset/(1+perpendicular_1**2))
-    #offset_y = perpendicular * math.sqrt(offset/(1 + perpendicular_1**2))
-    #precision_waypoints.append(first_x + offset_x, first_y + offset_y)
-    
-    #second_x = start_point.x + 2*math.sqrt(dist/(1+first_slope**2))
-    #second_y = start_point.y + 2*first_slope * math.sqrt(dist/(1+first_slope**2))
-    #precision_waypoints.append(second_x - offset_x, second_y - offset_y)
-    
-    #buoy_offset = dist/10
-    #buoy_offset_x = botleft_buoy.x + math.sqrt(buoy_offset/((1+first_slope)**2))
-    #buoy_offset_y = botleft_buoy.y + first_slope * math.sqrt(buoy_offset/((1+first_slope)**2))
-    #first_corner_waypoint= (buoy_offset_x,buoy_offset_y)
-    #precision_waypoints.append(first_corner_waypoint)
-
-    #second_slope= ((botleft_buoy.y-botright_buoy.y)/(botleft_buoy.y-botright_buoy.y))
-    
     
 def collisionAvoidance():
     pass
