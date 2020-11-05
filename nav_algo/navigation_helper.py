@@ -173,10 +173,31 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45):
         waypoints=[shortest_dist[1]]
         return
 
+def find_inner_outer_points(start_point, end_point, dist, flag):
+    #1 is in, -1 is out, 0 is on the line
+    slope = (start_point.y - end_point.y) / (start_point.x - end_point.x)
+    if flag != 0:
+        slope = -1/slope
+        x = flag * (start_point.x + math.sqrt(dist/(1+slope**2)))
+        y = flag * (start_point.y + slope * math.sqrt(dist/(1+slope**2)))
+    else:
+        x = start_point.x + math.sqrt(dist/(1+slope**2))
+        y = start_point.y + slope * math.sqrt(dist/(1+slope**2))
+        return (x, y)
 
+def buoy_offset(start_point, buoy, dist):
+    slope = (start_point.y - end_point.y) / (start_point.x - end_point.x)
+    x = buoy.x + math.sqrt(dist/(1+slope**2))
+    y = buoy.y + slope * math.sqrt(dist/(1+slope**2))
+    return (x, y)
+    
 def precisionNavigation(waypoints, offset=5.0, side_length=50.0):
-    #waypoints:[start_buoy1, start_buoy2, bottom_left, bottom_right]
-    precision_waypoints = []
+    #waypoints:[topleft_buoy, topright_buoy, botleft_buoy, botright_buoy]
+    topleft_buoy=waypoints[0]
+    topright_buoy=waypoints[1]
+    botleft_buoy=waypoints[2]
+    botright_buoy=waypoints[3]
+    
     x_coord = boat.getPosition().x
     y_coord = boat.getPosition().y
     boat_direction = boat.sensors.yaw
@@ -188,22 +209,74 @@ def precisionNavigation(waypoints, offset=5.0, side_length=50.0):
         sail_direction = 1
     else:
         # move cw
-        sail_direction = -1        
-    start_point= waypoints[0].midpoint(waypoints[1])
-    first_slope=(start_point.y - waypoints[2].y)/(start_point.x - waypoints[2].x)
-    dist = (start_point.xyDist(waypoints[2]))/3
-    first_x = start_point.x + math.sqrt(dist/(1+first_slope**2))
-    first_y = start_point.y + first_slope * math.sqrt(dist/(1+first_slope**2))
-    perpendicular_1= -1/first_slope
-    offset_x = math.sqrt(offset/(1+perpendicular_1**2))
-    offset_y = perpendicular * math.sqrt(offset/(1 + perpendicular_1**2))
-    precision_waypoints.append(first_x + offset_x, first_y + offset_y)
+        sail_direction = -1
+                
+    start_pos = topleft_buoy.midpoint(topright_buoy)
+    # find inner and outer waypoints on first side of triangle
+    start_point = start_pos
+    end_point = botleft_buoy
+    dist = (start_point.xyDist(end_point))/3
+    point_line = find_inner_outer_points(start_point, end_point, dist, 0)
+    first_waypoint = find_inner_outer_points(point_line, end_point, dist, 1)    
+    dist_out = 2 * dist
+    point_line_2 = find_inner_outer_points(start_point, end_point, dist_out, 0)
+    second_waypoint = find_inner_outer_points(point_line_2, end_point, dist_out,-1)
+    # first offset from buoy
+    dist_buoy = (start_point.xyDist(end_point))/10
+    third_waypoint = buoy_offset(start_point, end_point, dist_buoy)
     
-    second_x=start_point.x + 2*math.sqrt(dist/(1+first_slope**2))
-    second_y = start_point.y + 2*first_slope * math.sqrt(dist/(1+first_slope**2))
-     precision_waypoints.append(second_x + offset_x, second_y + offset_y)   
-    
+    # find inner and outer waypoints on second side of triangle
+    start_point = end_point
+    end_point = botright_buoy
 
+    dist = (start_point.xyDist(end_point))/3
+    point_line = find_inner_outer_points(start_point, end_point, dist, 0)
+    fourth_waypoint = find_inner_outer_points(point_line, end_point, dist, 1)    
+    dist_out = 2 * dist
+    point_line_2 = find_inner_outer_points(start_point, end_point, dist_out, 0)
+    fifth_waypoint = find_inner_outer_points(point_line_2, end_point, dist_out,-1)    
+    # second offset from buoy
+    dist_buoy = (start_point.xyDist(end_point))/10
+    sixth_waypoint = buoy_offset(start_point, end_point, dist_buoy)
+
+    # find inner and outer waypoints on third side of triangle
+    start_point = end_point
+    end_point = start_point
+    dist = (start_point.xyDist(end_point))/3
+    point_line = find_inner_outer_points(start_point, end_point, dist, 0)
+    seventh_waypoint = find_inner_outer_points(point_line, end_point, dist, 1)    
+    dist_out = 2 * dist
+    point_line_2 = find_inner_outer_points(start_point, end_point, dist_out, 0)
+    eighth_waypoint = find_inner_outer_points(point_line_2, end_point, dist_out,-1)    
+    # final waypoint is start_point
+    ninth_waypoint = start_pos
+
+    waypoints = [first_waypoint, second_waypoint, third_waypoint, 
+                fourth_waypoint, fifth_waypoint, sixth_waypoint, 
+                seventh_waypoint, eighth_waypoint, ninth_waypoint]
+    return
+    #start_point= topleft_buoy.midpoint(topright_buoy)
+    #first_slope=(start_point.y - botleft_buoy.y)/(start_point.x - botleft_buoy.x)
+    #dist = (start_point.xyDist(botleft_buoy))/3
+    #first_x = start_point.x + math.sqrt(dist/(1+first_slope**2))
+    #first_y = start_point.y + first_slope * math.sqrt(dist/(1+first_slope**2))
+    #perpendicular_1= -1/first_slope
+    #offset_x = math.sqrt(offset/(1+perpendicular_1**2))
+    #offset_y = perpendicular * math.sqrt(offset/(1 + perpendicular_1**2))
+    #precision_waypoints.append(first_x + offset_x, first_y + offset_y)
+    
+    #second_x = start_point.x + 2*math.sqrt(dist/(1+first_slope**2))
+    #second_y = start_point.y + 2*first_slope * math.sqrt(dist/(1+first_slope**2))
+    #precision_waypoints.append(second_x - offset_x, second_y - offset_y)
+    
+    #buoy_offset = dist/10
+    #buoy_offset_x = botleft_buoy.x + math.sqrt(buoy_offset/((1+first_slope)**2))
+    #buoy_offset_y = botleft_buoy.y + first_slope * math.sqrt(buoy_offset/((1+first_slope)**2))
+    #first_corner_waypoint= (buoy_offset_x,buoy_offset_y)
+    #precision_waypoints.append(first_corner_waypoint)
+
+    #second_slope= ((botleft_buoy.y-botright_buoy.y)/(botleft_buoy.y-botright_buoy.y))
+    
     
 def collisionAvoidance():
     pass
