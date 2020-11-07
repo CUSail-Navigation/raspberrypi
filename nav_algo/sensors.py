@@ -77,7 +77,7 @@ class sensorData:
     parameter: newValue - int denoting number to be added to the """
     def _addAverage(self,newValue):
         self.anemomSMA.append(newValue)/2
-        if(len(self.anemomSMA > 1):
+        if(len(self.anemomSMA) > 1):
            self.anemomSMA[-2] = self.anemomSMA[-2]/2
         if(len(self.anemomSMA) > 10):
             self.anemomSMA.pop(0)
