@@ -1,13 +1,17 @@
+from SailSensors import UARTDevice
+
 # TODO document this class
-class Radio:
-    def __init__(self):
-        # TODO setup UART
+class Radio(UARTDevice):
+    def __init__(self, baudrate,serialPort = '/dev/ttyAMA0',t = 1):
+        super().__init__(baudrate,serialPort,t)
         pass
 
+    """
+    Prints the given messge to the basestation.
+
+    """
     def transmitString(self, message: str):
-        """Prints the given messge to the basestation.
-        
-        """
+        self.sendUart(message)
         pass
 
     def printData(self):
@@ -29,7 +33,7 @@ class Radio:
 
         Note that fields are comma delineated and there is only a new line
         character at the end of the string.
-        
+
         """
         # TODO write a better docstring
         pass
@@ -48,7 +52,7 @@ class Radio:
         the same point are space delineated. The waypoints should be printed in
         order from first to last (do not include waypoints that have already
         been hit).
-        
+
         """
         # TODO write a better docstring
         pass
@@ -64,7 +68,7 @@ class Radio:
         the same point are space delineated.
 
         Note 'printAllWaypoints' should be called immediately after this.
-        
+
         """
         # TODO write a better docstring
         pass

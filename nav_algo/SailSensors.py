@@ -1,6 +1,7 @@
 
 from smbus2 import SMBus, i2c_msg
 from Adafruit_ADS1x15 import ADS1x15 as ADS
+import serial
 
 IMU_ADDRESS = 0x77
 ADC_ADDRESS = 0x48
@@ -79,6 +80,27 @@ class I2CDevice:
         write = i2c_msg.write(self.getDeviceAddress(),send)
         recieve = i2c_msg.read(self.getDeviceAddress(),recieve)
         return self.geti2cBus().i2c_rdwr(write,recieve)
+
+
+"""
+Superclass used to create a UARTDevice. Contians various functions for communication
+"""
+class UARTDevice:
+
+    def __init__(self,baudrate,serialPort = '/dev/ttyAMA0',t = 1):
+        self.serialStream = serial.Serial(port = serialPort, baudrate =  baudrate, timeout = t)
+        return
+
+    def sendUart(message):
+        self.serialStream.write(bytes([message])[0])
+        return
+
+    def recieveUartBytes(bytes = 1):
+        self.serialStream.read(bytes)
+        return
+
+    def
+
 
 """
 This class contains the object of the ADC to be used by other
