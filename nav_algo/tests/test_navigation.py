@@ -134,6 +134,22 @@ class TestNavigationMethods(unittest.TestCase):
         angle = self.nav_controller.newSailingAngle()
         self.assertAlmostEqual(angle, 76.0)
 
+    def test_endurance(self):
+        # waypoints need to be in a clockwise dir, starting top left
+        waypoints = [(0, 25), (45, 25) (45, 0), (0, 0)]
+        midpoints=[(27.5,25),(45,12.5),(27.5,0),(0,12.5)]
+        offset = 10
+        opt_dist = 2
+        self.nav_controller.boat_position = coord.Vector(x=-5, y=10)
+        new_waypoints = self.nav_controller.endurance(
+            waypoints, opt_dist, offset)
+        opt_side = 2/math.sqrt(2)
+        expected_waypoints = [(-opt_side, 25+opt_side),(midpoints[0].x,midpoints[0].y+offset),
+                            (45+opt_side, 25+opt_side),(midpoints[1].x+offset,midpoints[1].y),
+                            (45+opt_side, -opt_side), (midpoints[2].x,midpoints[2].y-offset),
+                            (-opt_side, -opt_side), (midpoints[3].x-offset,midpoints[3].y)]
+        self.assertAlmostEqual(new_waypoints, expected_waypoints)
+
     def test_station_keeping(self):
         # entry- given 4 square waypoints, return: 1) entry point 2) center
         # corner waypoint order: NW, NE, SE, SW        
@@ -173,7 +189,7 @@ class TestNavigationMethods(unittest.TestCase):
         self.nav_controller.boat.sensors.wind_direction = 45.0
         new_waypoints = self.nav_controller.station_keeping(
             [], 10, "KEEP")
-         expected_waypoints=[(5*math.sqrt(2),5*math.sqrt(2)),
+        expected_waypoints=[(5*math.sqrt(2),5*math.sqrt(2)),
             (-5*math.sqrt(2),5*math.sqrt(2)),
             (-5*math.sqrt(2),-5*math.sqrt(2)),
             (5*math.sqrt(2),-5*math.sqrt(2))]
@@ -184,7 +200,7 @@ class TestNavigationMethods(unittest.TestCase):
         new_waypoints = self.nav_controller.station_keeping(
             [], 10, "KEEP")        
         first_angle=math.radians(45)
-         expected_waypoints=[(5*math.sqrt(2),-5*math.sqrt(2)),
+        expected_waypoints=[(5*math.sqrt(2),-5*math.sqrt(2)),
             (-5*math.sqrt(2),-5*math.sqrt(2)),
             (-5*math.sqrt(2),5*math.sqrt(2)),
             (5*math.sqrt(2),5*math.sqrt(2))]
@@ -203,6 +219,7 @@ class TestNavigationMethods(unittest.TestCase):
             [], 10, "KEEP")
         first_angle=math.radians(60+45)
 
+        
         expected_waypoints=[(5+10*math.cos(first_angle),5+10*math.sin(first_angle)),
             (5+10*math.cos(first_angle+math.pi/2),5+10*math.sin(first_angle+math.pi/2)),
             (5+10*math.cos(first_angle+math.pi),5+10*math.sin(first_angle+math.pi)),
@@ -253,6 +270,22 @@ class TestNavigationMethods(unittest.TestCase):
             waypoints, 10, "EXIT")    
         self.assertAlmostEqual(exit_waypoint, expected_exit)
 
+    def test_precision_navigation(self):
+        #equilateral triangle of side length 50, one vertex in the origin
+        expected_waypoints=[]
+        buoy_waypoints=[
+            (-1.5,0),
+            (1.5,0),
+            (-25,-25*math.sqrt(3)), 
+            (25,-25*math.sqrt(3))]
+        slope=math.sqrt(3)
+        offset=5
+
+        
+
+        final_waypoint= (0,0)    
+
+        
 
 
             

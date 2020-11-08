@@ -52,22 +52,27 @@ class NavigationController:
             self.current_waypoint = self.waypoints.pop(0)
 
             if event == Events.ENDURANCE:
-                self.endurance()
+                #7 hrs = 25200 sec 
+                exit_before = 25200
+                start_time = time.time()
+                loop_waypoints = self.endurance(self.waypoints, opt_dist = 10, offset = 10)          
+                while(time.time() - start_time < exit_before):
+                    self.waypoints = loop_waypoints
+                    self.navigate
             elif event == Events.STATION_KEEPING:
                 # to find an optimal radius, 10 for now
                 exit_before = 300
                 circle_radius = 10
-                self.stationKeeping(self.waypoints, circle_radius, "ENTRY")
+                self.waypoints = self.stationKeeping(self.waypoints, circle_radius, "ENTRY")
                 self.navigate()
                 # Set timer
                 start_time = time.time()
                 loop_waypoints = self.stationKeeping(
                     self.waypoints, circle_radius, "KEEP")
-                self.navigate()
                 while time.time() - start_time < exit_before:
                     self.waypoints = loop_waypoints
                     self.navigate()
-                self.stationKeeping(self.waypoints, circle_radius, "EXIT")
+                self.waypoints = self.stationKeeping(self.waypoints, circle_radius, "EXIT")
             elif event == Events.PRECISION_NAVIGATION:
                 self.precisionNavigation()
             elif event == Events.COLLISION_AVOIDANCE:
@@ -106,9 +111,9 @@ class NavigationController:
 
         # TODO cleanup pins?
 
-    def endurance(self):
-        # TODO do setup and then call nav helper endurance function
-        pass
+    def endurance(self, waypoints, opt_dist, offset):
+        # To setup and then call nav helper endurance function
+        endurance(waypoints, opt_dist, offset)
 
     def stationKeeping(self, waypoints, circle_radius, state):
         stationKeeping(waypoints, circle_radius, state)

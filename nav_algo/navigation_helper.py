@@ -86,8 +86,24 @@ def polar(angle, boat):
     return coord.Vector.zeroVector()
 
 
-def endurance():
-    pass
+def endurance(waypoints, opt_dist, offset):
+    # waypoints in a clockwise order, starting with top left
+    factor= opt_dist / math.sqrt(2)
+    first = (waypoints[0].x - factor , waypoints[0].y + factor)  
+    second = (waypoints[1].x + factor, waypoints[1].y + factor)
+    third = (waypoints[2].x + factor, waypoints[2].y - factor)    
+    fourth = (waypoints[3].x -factor, waypoints[3].y - factor)
+    # waypoints placed between corners
+    midpoint1 = first.midpoint(second)
+    first_second = (midpoint1.x,midpoint1.y+offset)
+    midpoint2 = second.midpoint(third)
+    second_third = (midpoint2.x + offset, midpoint2.y)
+    midpoint3=third.midpoint(fourth)
+    third_fourth= (midpoint1.x,midpoint1.y-offset)
+    midpoint4 = fourth.midpoint(first)
+    fourth_first = (midpoint4.x - offset, midpoint4.y)
+    return [first, first_second, second, second_third,
+            third, third_fourth, fourth, fourth_first]
 
 
 def stationKeeping(waypoints, circle_radius, state, opt_angle=45):
@@ -112,8 +128,8 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45):
         # center of the sqaure
         center = waypoints[0].midpoint(waypoints[2])
         stationKeepingWaypoints.append(center)
-        waypoints = stationKeepingWaypoints
-        return
+        # waypoints = stationKeepingWaypoints
+        return stationKeepingWaypoints
     elif state == "KEEP":
         # downwind=wind-yaw=0=clockwise,
         keep_waypoints = []
@@ -142,9 +158,7 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45):
             # place 4 waypoints each 90 deg apart; when angle>2pi, trig functions know to shift input to be in range
             input_angle = first_angle_rad + \
                 loop_direction * i * math.radian(90)
-            keep_waypoints.append((x_coord+circle_radius*math.cos(input_angle)), (y_coord+circle_radius*math.sin(input_angle))
-
-        waypoints=keep_waypoints
+            keep_waypoints.append((x_coord+circle_radius*math.cos(input_angle)), (y_coord+circle_radius*math.sin(input_angle)))
         return keep_waypoints
 
     elif state == "EXIT":
@@ -170,8 +184,7 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45):
                             (curr_pos.xyDist(south_exit), south_exit),
                             (curr_pos.xyDist(west_exit), west_exit),
                             key=lambda x: x[0])
-        waypoints=[shortest_dist[1]]
-        return
+        return [shortest_dist[1]]
 
 def find_inner_outer_points(start_point, end_point, dist, flag):
     #1 is in, -1 is out, 0 is on the line
