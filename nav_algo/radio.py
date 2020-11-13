@@ -2,19 +2,20 @@ from SailSensors import UARTDevice
 
 # TODO document this class
 class Radio(UARTDevice):
-    def __init__(self, baudrate,serialPort = '/dev/ttyAMA0',t = 1):
+    def __init__(self, baudrate,serialPort = '/dev/ttyS0',t = 1):
         super().__init__(baudrate,serialPort,t)
         pass
 
     """
-    Prints the given messge to the basestation.
+    Prints the given messge to the basestation. string must be sent with a 'b' before the string
+    
 
     """
     def transmitString(self, message: str):
         self.sendUart(message)
         pass
 
-    def printData(self):
+    def printData(self,origLat,origLong,currentPositionX,currentPositionY,windDir,pitch,roll,yaw,sailAngle,tailAngle,heading):
         """Data should be of the form:.
 
         "----------NAVIGATION----------" +
@@ -35,8 +36,22 @@ class Radio(UARTDevice):
         character at the end of the string.
 
         """
-        # TODO write a better docstring
-        pass
+        msg = ("----------NAVIGATION----------" +
+        ",Origin Latitude: " + origLat +
+        ",Origin Longitude: " + origLong +
+        ",X position: " + currentPositionX +
+        ",Y position: " + currentPositionY +
+        ",Wind Direction: " + windDir +
+        ",Pitch: " + pitch +
+        ",Roll: " + roll +
+        ",Yaw: " + yaw +
+        ",Sail Angle: " + sailAngle +
+        ",Tail Angle: " + tailAngle +
+        ",Heading: " + heading +
+        ",----------END----------" + '\n')
+        msg = msg.encode()
+        self.sendUart()
+        return
 
     def printAllWaypoints(self):
         """Data should be of the form:.

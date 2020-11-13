@@ -87,19 +87,18 @@ Superclass used to create a UARTDevice. Contians various functions for communica
 """
 class UARTDevice:
 
-    def __init__(self,baudrate,serialPort = '/dev/ttyAMA0',t = 1):
+    def __init__(self,baudrate,serialPort = '/dev/ttyS0',t = 1):
         self.serialStream = serial.Serial(port = serialPort, baudrate =  baudrate, timeout = t)
         return
 
-    def sendUart(message):
-        self.serialStream.write(bytes([message])[0])
+    def sendUart(self,message):
+        self.serialStream.write(message)
         return
 
-    def recieveUartBytes(bytes = 1):
+    def recieveUartBytes(self,bytes = 1):
         self.serialStream.read(bytes)
         return
 
-    def
 
 
 """
