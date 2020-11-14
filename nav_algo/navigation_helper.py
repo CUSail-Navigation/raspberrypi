@@ -189,19 +189,19 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45):
 def find_inner_outer_points(start_point, end_point, dist, flag):
     #1 is in, -1 is out, 0 is on the line
     slope = (start_point.y - end_point.y) / (start_point.x - end_point.x)
+    theta_slope=math.atan(slope)
+    x = start_point.x + dist * math.cos(theta_slope)
+    y = start_point.y + dist * math.sin(theta_slope)        
     if flag != 0:
-        slope = -1/slope
-        x = flag * (start_point.x + math.sqrt(dist/(1+slope**2)))
-        y = flag * (start_point.y + slope * math.sqrt(dist/(1+slope**2)))
-    else:
-        x = start_point.x + math.sqrt(dist/(1+slope**2))
-        y = start_point.y + slope * math.sqrt(dist/(1+slope**2))
-        return (x, y)
+        x += -flag * 0.1 * dist * math.sin(theta_slope)
+        y += flag * 0.1 * dist * math.cos(theta_slope)
+    return (x, y)
 
 def buoy_offset(start_point, buoy, dist):
     slope = (start_point.y - end_point.y) / (start_point.x - end_point.x)
-    x = buoy.x + math.sqrt(dist/(1+slope**2))
-    y = buoy.y + slope * math.sqrt(dist/(1+slope**2))
+    theta_slope=math.atan(slope)
+    x = buoy.x + dist * math.cos(theta_slope)
+    y = buoy.y + dist * math.sin(theta_slope)
     return (x, y)
     
 def precisionNavigation(waypoints, offset=5.0, side_length=50.0):
