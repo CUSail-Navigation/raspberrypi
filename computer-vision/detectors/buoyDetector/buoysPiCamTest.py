@@ -28,7 +28,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     contours = bd.filter_contours_output
     found = contours != None
 
-    print(bd.find_distances(frame.shape[0], frame.shape[1]))
+    println(bd.get_buoy_coords(0, 0, 0))  # print sample buoy coordinates
 
     cv2.drawContours(frame, contours, -1, (0, 255, 0), 3)
 

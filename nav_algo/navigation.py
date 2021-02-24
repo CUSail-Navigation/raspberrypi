@@ -49,13 +49,16 @@ class NavigationController:
 
             self.radio.transmitString(
                 "Established GPS fix. Beginning navigation...\n")
-            self.current_waypoint = self.waypoints.pop(0)
+            #self.current_waypoint = self.waypoints.pop(0)
+            #self.current_waypoint = self.waypoints[desired_fst_waypoint]
+            #TODO: add modified ^ to event algos before each navigate call
 
             if event == Events.ENDURANCE:
                 #7 hrs = 25200 sec 
                 exit_before = 25200
                 start_time = time.time()
-                loop_waypoints = self.endurance(self.waypoints, opt_dist = 10, offset = 10)          
+                loop_waypoints = self.endurance(self.waypoints, opt_dist = 10, offset = 10)
+                self.current_waypoint = loop_waypoints[3]          
                 while(time.time() - start_time < exit_before):
                     self.waypoints = loop_waypoints
                     self.navigate
@@ -64,6 +67,7 @@ class NavigationController:
                 exit_before = 300
                 circle_radius = 10
                 self.waypoints = self.stationKeeping(self.waypoints, circle_radius, "ENTRY")
+                self.current_waypoint = self.waypoints.pop(0)
                 self.navigate()
                 # Set timer
                 start_time = time.time()
@@ -71,6 +75,7 @@ class NavigationController:
                     self.waypoints, circle_radius, "KEEP")
                 while time.time() - start_time < exit_before:
                     self.waypoints = loop_waypoints
+                    self.current_waypoint = self.waypoints.pop(0)
                     self.navigate()
                 self.waypoints = self.stationKeeping(self.waypoints, circle_radius, "EXIT")
             elif event == Events.PRECISION_NAVIGATION:
@@ -80,6 +85,7 @@ class NavigationController:
             elif event == Events.SEARCH:
                 self.search()
 
+            self.current_waypoint = self.waypoints.pop(0)
             self.navigate()
 
         else:
@@ -109,7 +115,25 @@ class NavigationController:
             sailing_angle = newSailingAngle(self.boat, self.current_waypoint)
             self.boat.setServos(sailing_angle)
 
-        # TODO cleanup pins?
+
+    def navigateCollision(self):
+        #TODO: modify to implement collision avoidance
+        while self.current_waypoint is not None:
+            time.sleep(2)  
+
+            self.boat.updateSensors()
+            self.boat_position = self.boat.getPosition()
+
+            if self.boat_position.xyDist(
+                    self.current_waypoint) < self.DETECTION_RADIUS:
+                if len(self.waypoints) > 0:
+                    self.current_waypoint = self.waypoints.pop(0)
+                else:
+                    self.current_waypoint = None
+                    break
+
+            sailing_angle = newSailingAngle(self.boat, self.current_waypoint)
+            self.boat.setServos(sailing_angle)   
 
     def endurance(self, waypoints, opt_dist, offset):
         # To setup and then call nav helper endurance function
@@ -120,7 +144,7 @@ class NavigationController:
 
     def precisionNavigation(self,waypoints):
         # TODO do setup and then call nav helper precision navigation function
-        precisionNavigation(waypoints)
+        precisionNavigation(waypoints)     
 
     def collisionAvoidance(self):
         # TODO do setup and then call nav helper collision avoidance function

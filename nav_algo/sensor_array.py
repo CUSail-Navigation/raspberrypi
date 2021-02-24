@@ -8,7 +8,8 @@ class sensorArray(sensorData):
         # IMU
         self.pitch = 0
         self.roll = 0
-        self.yaw = 0  # we read as wrt N, convert to wrt x-axis (E) (make sure 90 degrees is north)
+        # we read as wrt N, convert to wrt x-axis (E) (make sure 90 degrees is north)
+        self.yaw = 0
 
         # anemometer
         self.wind_direction = 0  # wrt x-axis
@@ -20,10 +21,16 @@ class sensorArray(sensorData):
         self.longitude = 0
         self.velocity = coord.Vector()
 
+        # camera
+        self.camera = Camera()
+        self.buoyCoords = []
+        self.boatCoords = (0, 0)
+
     def updateAll(self):
         self.readGPS()
         self.readIMU()
         self.readWindDirection()
+        self.readCamera()
 
     def readIMU(self):
         # TODO remember to convert yaw to wrt x-axis
@@ -37,4 +44,8 @@ class sensorArray(sensorData):
     def readGPS(self):
         # TODO update fix, lat, long, and velocity
         # use the NMEA parser
+        pass
+
+    def readCamera(self):
+        # TODO update buoy list based on which buoys not already in list of obstacles
         pass

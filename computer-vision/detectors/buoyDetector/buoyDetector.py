@@ -2,17 +2,19 @@ import cv2
 import numpy
 import math
 from enum import Enum
-from detectors.utils import find_distances
+from detectors.utils import find_distances, get_coords
 
 BUOY_HEIGHT = 1016  # buoy's height in mm
 
 
 class BuoyDetector:
 
-    def __init__(self):
+    def __init__(self, img_height=480, img_width=640):
         """
         Initializes all values to presets or None if need to be set
         """
+        self.img_height = img_height
+        self.img_width = img_width
 
         #self.__rgb_threshold_red = [0.0, 255.0]
         #self.__rgb_threshold_green = [31, 65]
@@ -232,14 +234,29 @@ class BuoyDetector:
         return output
 
     """Calculates distances from each contour and creates list of obstacle distances from camera.
-    Args:
-        img_height: height of image passed in, in pixels
     Return:
-        A list where each one represents an obstacle distance.
+        A list where each element represents an obstacle distance, and 
+        a list where each element represents an x-offset in the image.
     """
 
-    def find_distances(self, img_height, img_width):
-        return find_distances(self.filter_contours_output, img_height, img_width, BUOY_HEIGHT)
+    def find_distances(self):
+        return find_distances(self.filter_contours_output, self.img_height, self.img_width, BUOY_HEIGHT)
+
+    """Calculates all visible buoy coordinates.
+    Args:
+        direction: Boat's current direction (an angle)
+        curr_x: Boat's current x-coordinate
+        curr_y: Boat's current y-coordinate
+    Return:
+        A list of coordinate pairs (x, y) representing the center of each detected buoy
+    """
+
+    def get_buoy_coords(self, direction, curr_x, curr_y):
+        coord_list = []
+        dists, x_offsets = find_distances
+        for d, x in zip(dists, x_offsets):
+            coords_list.append(get_coords(d, x, direction, curr_x, curr_y))
+        return coord_list
 
 
 BlurType = Enum(
