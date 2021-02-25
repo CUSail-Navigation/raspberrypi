@@ -314,6 +314,7 @@ def check_overlap(box_coords, obst_coords, axis):
 
 def isCollision(boat_coords, obst_coords):
     """
+    Returns True if boat_coords and obst_coords overlap, else False
     """
     boat_vecs = []
     for boat_coord in boat_coords:
@@ -356,10 +357,71 @@ def getVelocity(point_before, point_after, t):
     theta = math.atan(y_dist/ x_dist)
     return [speed, theta]
 
+def collisionWaypoint(time):
+    """
+    Returns waypoint 2m away to avoid obstacle detected at time time
+    """
+    angle_deg = (boat.sensors.yaw + 90 - time)
+    while (angle_deg >= 360.0):
+        angle_deg -= 360.0
+    angle_rad = math.radians(angle_deg)
+    return (boat.getPosition().x + 2 * math.cos(angle_rad),
+            boat.getPosition().y + 2 * math.sin(angle_rad))
+
+def assessCollision(obst_point,obst_point_2, time)
+    """
+    Checks if collision occurs. Returns new waypoint if collision, else None
+
+    obst_point: position of obstacle at time 0
+    obst_point_2: position of obstacle at time time
+    time: time between detection of obst_point and obst_point_2
+    """
+    [obst_speed, obst_theta]=
+        getVelocity(obstacle_point, obstacle_point_2, time)
+    collision_time=0
+    while (collision_time<=15):
+        new_obstacle_point =
+            (obstacle_point.x + i * obst_speed * math.cos(obst_theta),
+            obstacle_point.y + i * obst_speed * math.sin(obst_theta))
+        new_obstacle_box =  getRectangleBox(new_obstacle_point, obst_theta)
+        new_boat_box =
+            (boat.getPosition().x + i * boat.sensors.velocity *
+                math.cos(math.radians(boat.sensors.yaw)),
+            boat.getPosition().y + i * boat.sensors.velocity *
+                math.sin(math.radians(boat.sensors.yaw)))
+        if isCollision (new_boat_box, new_obstacle_box):
+            return collisionWaypoint(collision_time)          
+        else:
+            collision_time += 1
+
+def unitVector(coords):
+    magnitude = math.sqrt(coords[0]**2 + coords[1]**2)
+    return (coords[0] / magnitude, coords[1] / magnitude)
+
+def collisionAvoidance(buoy_waypoint):
+    """
+    Returns waypoints list for ideal path (no obstacles)
+    """ 
+    orientation = (buoy_waypoints[0] - boat.getPosition().x,
+                   buoy_waypoints[1] - boat.getPosition().y)
+    first_direction = (orientation[1], -1 * orientation[0])
+    first_direction = unitVector(first_direction)
+    dist = 10
+    first_waypoint = (buoy_waypoints[0] + dist * first_direction[0], 
+                      buoy_waypoints[1] + dist * first_direction[1])
+    second_direction = unitVector(orientation)
+    second_waypoint = (buoy_waypoints[0] + dist * second_direction[0], 
+                      buoy_waypoints[1] + dist * second_direction[1])
+    third_direction = (-1 * orientation[1], orientation[0])
+    third_direction = unitVector(third_direction)
+    third_waypoint = (buoy_waypoints[0] + dist * third_direction[0], 
+                      buoy_waypoints[1] + dist * third_direction[1])
+    fourth_waypoint = (boat.getPosition().x + dist * second_direction[0], 
+                       boat.getPosition().y + dist * second_direction[1])
+    return [first_waypoint, second_waypoint, third_waypoint, fourth_waypoint,
+            boat.getPosition()]
 
 
-def collisionAvoidance(obstacle_point):
-    pass
 
 
 def search():

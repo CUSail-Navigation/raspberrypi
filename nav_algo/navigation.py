@@ -61,6 +61,7 @@ class NavigationController:
                 self.current_waypoint = loop_waypoints[3]          
                 while(time.time() - start_time < exit_before):
                     self.waypoints = loop_waypoints
+                    self.current_waypoint = self.waypoints.pop(0)
                     self.navigate
             elif event == Events.STATION_KEEPING:
                 # to find an optimal radius, 10 for now
@@ -118,22 +119,7 @@ class NavigationController:
 
     def navigateCollision(self):
         #TODO: modify to implement collision avoidance
-        while self.current_waypoint is not None:
-            time.sleep(2)  
-
-            self.boat.updateSensors()
-            self.boat_position = self.boat.getPosition()
-
-            if self.boat_position.xyDist(
-                    self.current_waypoint) < self.DETECTION_RADIUS:
-                if len(self.waypoints) > 0:
-                    self.current_waypoint = self.waypoints.pop(0)
-                else:
-                    self.current_waypoint = None
-                    break
-
-            sailing_angle = newSailingAngle(self.boat, self.current_waypoint)
-            self.boat.setServos(sailing_angle)   
+        pass
 
     def endurance(self, waypoints, opt_dist, offset):
         # To setup and then call nav helper endurance function
