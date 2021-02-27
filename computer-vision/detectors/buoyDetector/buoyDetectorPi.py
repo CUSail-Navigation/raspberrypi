@@ -14,12 +14,12 @@ class BuoyDetector:
         Initializes all values to presets or None if need to be set
         """
 
-        # self.__rgb_threshold_red = [0.0, 255.0]
-        # self.__rgb_threshold_green = [31, 65]
-        # self.__rgb_threshold_blue = [26, 75]
+        # self.__rgb_threshold_red = [100, 255.0]
+        # self.__rgb_threshold_green = [100, 200]
+        # self.__rgb_threshold_blue = [0, 100]
 
         self.__rgb_threshold_red = [100, 255.0]
-        self.__rgb_threshold_green = [100, 200]
+        self.__rgb_threshold_green = [0, 125]
         self.__rgb_threshold_blue = [0, 100]
 
         self.rgb_threshold_output = None
