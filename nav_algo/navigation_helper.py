@@ -371,7 +371,7 @@ def collisionWaypoint(time):
             boat.getPosition().y + 2 * math.sin(angle_rad))
 
 
-def assessCollision(obst_point, obst_point_2, time)
+def assessCollision(obst_point, obst_point_2, time):
   """
     Checks if collision occurs. Returns new waypoint if collision, else None
 
