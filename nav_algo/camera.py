@@ -29,14 +29,10 @@ class Camera:
             self.buoyDetector.process(frame)
             self.boatDetector.process(frame)
 
-            contours = bd.filter_contours_output
-            found = contours != None
-
-            if not found: 
-              break
-
-            buoyCoords = self.buoyDetector.get_buoy_coords(direction, curr_x, curr_y)
-            boatCoords = self.boatDetector.get_boat_coords(direction, curr_x, curr_y)
+            buoyCoords = self.buoyDetector.get_buoy_coords(
+                direction, curr_x, curr_y)
+            boatCoords = self.boatDetector.get_boat_coords(
+                direction, curr_x, curr_y)
 
             rawCapture.truncate(0)
 

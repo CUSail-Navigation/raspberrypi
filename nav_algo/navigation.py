@@ -5,6 +5,7 @@ import nav_algo.radio as radio
 import nav_algo.sim_gui as gui
 from nav_algo.events import Events
 from nav_algo.navigation_helper import *
+from camera import Camera
 
 
 class NavigationController:
@@ -49,16 +50,17 @@ class NavigationController:
 
             self.radio.transmitString(
                 "Established GPS fix. Beginning navigation...\n")
-            #self.current_waypoint = self.waypoints.pop(0)
-            #self.current_waypoint = self.waypoints[desired_fst_waypoint]
-            #TODO: add modified ^ to event algos before each navigate call
+            # self.current_waypoint = self.waypoints.pop(0)
+            # self.current_waypoint = self.waypoints[desired_fst_waypoint]
+            # TODO: add modified ^ to event algos before each navigate call
 
             if event == Events.ENDURANCE:
-                #7 hrs = 25200 sec 
+                # 7 hrs = 25200 sec
                 exit_before = 25200
                 start_time = time.time()
-                loop_waypoints = self.endurance(self.waypoints, opt_dist = 10, offset = 10)
-                self.current_waypoint = loop_waypoints[3]          
+                loop_waypoints = endurance(
+                    self.waypoints, opt_dist=10, offset=10)
+                self.current_waypoint = loop_waypoints[3]
                 while(time.time() - start_time < exit_before):
                     self.waypoints = loop_waypoints
                     self.current_waypoint = self.waypoints.pop(0)
@@ -67,26 +69,28 @@ class NavigationController:
                 # to find an optimal radius, 10 for now
                 exit_before = 300
                 circle_radius = 10
-                self.waypoints = self.stationKeeping(self.waypoints, circle_radius, "ENTRY")
+                self.waypoints = stationKeeping(
+                    self.waypoints, circle_radius, "ENTRY")
                 self.current_waypoint = self.waypoints.pop(0)
                 self.navigate()
                 # Set timer
                 start_time = time.time()
-                loop_waypoints = self.stationKeeping(
+                loop_waypoints = stationKeeping(
                     self.waypoints, circle_radius, "KEEP")
                 while time.time() - start_time < exit_before:
                     self.waypoints = loop_waypoints
                     self.current_waypoint = self.waypoints.pop(0)
                     self.navigate()
-                self.waypoints = self.stationKeeping(self.waypoints, circle_radius, "EXIT")
+                self.waypoints = stationKeeping(
+                    self.waypoints, circle_radius, "EXIT")
             elif event == Events.PRECISION_NAVIGATION:
-                self.precisionNavigation()
+                self.waypoints = precisionNavigation(self.waypoints)
             elif event == Events.COLLISION_AVOIDANCE:
-                self.waypoints= self.collisionAvoidance(self.waypoints)
+                self.waypoints = collisionAvoidance(self.waypoints)
                 self.current_waypoint = self.waypoints[0]
                 self.navigateDetection()
             elif event == Events.SEARCH:
-                self.search()
+                self.waypoints = search(self.waypoints)
                 self.current_waypoint = self.waypoints[0]
                 self.navigateDetection(event=Events.SEARCH)
 
@@ -120,35 +124,43 @@ class NavigationController:
             sailing_angle = newSailingAngle(self.boat, self.current_waypoint)
             self.boat.setServos(sailing_angle)
 
-
-    def navigateDetection(self, event = Events.COLLISION_AVOIDANCE):
-        #TODO: modify to implement collision avoidance
+    def navigateDetection(self, event=Events.COLLISION_AVOIDANCE):
+        # TODO: modify to implement collision avoidance
         while self.current_waypoint is not None:
-            time.sleep(2) 
+            time.sleep(2)
 
             self.boat.updateSensors()
             self.boat_position = self.boat.getPosition()
+            (buoy_coords, obst_coords) = Camera.read(
+                self.boat.sensors.yaw, self.boat_position.x, self.boat_position.y)
+            if (buoy_coords is not None & event == Events.SEARCH):
+                # TODO: get buoy pos (buoy_waypoint)
+                buoy_coords = coord.Vector(
+                    x=buoy_coords[0], y=buoy_coords[1])
+                self.current_waypoint = buoy_coords
+                self.waypoints = [buoy_coords]
 
-            #TODO: if BUOY is detected (use buoy detector function, ONLY SEARCH)
-            if (true & event== Events.SEARCH):
-                #TODO: get buoy pos (buoy_waypoint)
-                self.current_waypoint = buoy_waypoint
-                self.waypoints = [buoy_waypoint]
-                
-            #TODO: branch if OBSTACLE is detected (use obst detector function)
-            if (true):
-                #TODO: get obstacle_pos
-                avoidance_waypoint=assessCollision(obstacle_pos)
+            if (obst_coords is not None):
+                obstacle_pos1 = obst_coords
+                # TODO: get obstacle_pos at time t
+                time.sleep(2)
+                snd_read = Camera.read(
+                    self.boat.sensors.yaw, self.boat_position.x, self.boat_position.y)
+                obstacle_pos2 = snd_read[0]
+                avoidance_waypoint = assessCollision(
+                    obstacle_pos1, obstacle_pos2, 2)
                 if avoidance_waypoint is not None:
+                    avoidance_waypoint = coord.Vector(
+                        x=avoidance_waypoint[0], y=avoidance_waypoint[1])
                     self.current_waypoint = avoidance_waypoint
                     self.waypoints.insert(0, avoidance_waypoint)
-                    
+
             else:
                 if self.boat_position.xyDist(
                         self.current_waypoint) < self.DETECTION_RADIUS:
                     if len(self.waypoints) > 1:
                         self.current_waypoint = self.waypoints[1]
-                        del(self.waypoints[0])   
+                        del(self.waypoints[0])
                     else:
                         self.current_waypoint = None
                         del(self.waypoints[0])
@@ -156,22 +168,3 @@ class NavigationController:
 
             sailing_angle = newSailingAngle(self.boat, self.current_waypoint)
             self.boat.setServos(sailing_angle)
-
-    def endurance(self, waypoints, opt_dist, offset):
-        # To setup and then call nav helper endurance function
-        endurance(waypoints, opt_dist, offset)
-
-    def stationKeeping(self, waypoints, circle_radius, state):
-        stationKeeping(waypoints, circle_radius, state)
-
-    def precisionNavigation(self,waypoints):
-        # TODO do setup and then call nav helper precision navigation function
-        precisionNavigation(waypoints)     
-
-    def collisionAvoidance(self):
-        # TODO do setup and then call nav helper collision avoidance function
-        pass
-
-    def search(self):
-        # TODO do setup and then call nav helper search function
-        pass

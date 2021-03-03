@@ -1,6 +1,7 @@
 from nav_algo.sensors import sensorData
 import nav_algo.nmea as nmea
 import nav_algo.coordinates as coord
+from camera import Camera
 
 
 class sensorArray(sensorData):
@@ -22,7 +23,7 @@ class sensorArray(sensorData):
         self.velocity = coord.Vector()
 
         # camera
-        self.camera = Camera()
+        self.camera = Camera
         self.buoyCoords = []
         self.boatCoords = (0, 0)
 

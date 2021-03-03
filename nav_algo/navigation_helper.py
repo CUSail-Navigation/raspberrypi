@@ -90,24 +90,24 @@ def polar(angle, boat):
 def endurance(waypoints, opt_dist, offset):
     # waypoints in a clockwise order, starting with top left
     factor = opt_dist / math.sqrt(2)
-    first = (waypoints[0].x - factor, waypoints[0].y + factor)
-    second = (waypoints[1].x + factor, waypoints[1].y + factor)
-    third = (waypoints[2].x + factor, waypoints[2].y - factor)
-    fourth = (waypoints[3].x - factor, waypoints[3].y - factor)
+    first = coord.Vector(x=waypoints[0].x - factor, y=waypoints[0].y + factor)
+    second = coord.Vector(x=waypoints[1].x + factor, y=waypoints[1].y + factor)
+    third = coord.Vector(x=waypoints[2].x + factor, y=waypoints[2].y - factor)
+    fourth = coord.Vector(x=waypoints[3].x - factor, y=waypoints[3].y - factor)
     # waypoints placed between corners
     midpoint1 = first.midpoint(second)
     first_second = (midpoint1.x, midpoint1.y+offset)
     midpoint2 = second.midpoint(third)
     second_third = (midpoint2.x + offset, midpoint2.y)
     midpoint3 = third.midpoint(fourth)
-    third_fourth = (midpoint1.x, midpoint1.y-offset)
-    midpoint4 = fourth.midpoint(first)
+    third_fourth = (midpoint3.x, midpoint3.y-offset)
+    midpoint4 = first.midpoint(fourth)
     fourth_first = (midpoint4.x - offset, midpoint4.y)
     return [first, first_second, second, second_third,
             third, third_fourth, fourth, fourth_first]
 
 
-def stationKeeping(waypoints, circle_radius, state, opt_angle=45):
+def stationKeeping(waypoints, circle_radius, state, opt_angle=45, boat=boat):
     if state == "ENTRY":
         stationKeepingWaypoints = []  # Necessary waypoints
         # entry point to the square
@@ -126,11 +126,12 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45):
                             key=lambda x: x[0])
         stationKeepingWaypoints.append(shortest_dist[1])
 
-        # center of the sqaure
+        # center of the square
         center = waypoints[0].midpoint(waypoints[2])
         stationKeepingWaypoints.append(center)
         # waypoints = stationKeepingWaypoints
         return stationKeepingWaypoints
+
     elif state == "KEEP":
         # downwind=wind-yaw=0=clockwise,
         keep_waypoints = []
@@ -158,7 +159,7 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45):
         for i in range(4):
             # place 4 waypoints each 90 deg apart; when angle>2pi, trig functions know to shift input to be in range
             input_angle = first_angle_rad + \
-                loop_direction * i * math.radian(90)
+                loop_direction * i * math.radians(90)
             keep_waypoints.append((x_coord+circle_radius*math.cos(input_angle)),
                                   (y_coord+circle_radius*math.sin(input_angle)))
         return keep_waypoints
@@ -202,32 +203,19 @@ def find_inner_outer_points(start_point, end_point, dist, flag):
 
 
 def buoy_offset(start_point, buoy, dist):
-    slope = (start_point.y - end_point.y) / (start_point.x - end_point.x)
+    slope = (start_point.y - buoy.y) / (start_point.x - buoy.x)
     theta_slope = math.atan(slope)
     x = buoy.x + dist * math.cos(theta_slope)
     y = buoy.y + dist * math.sin(theta_slope)
     return (x, y)
 
 
-def precisionNavigation(waypoints, offset=5.0, side_length=50.0):
+def precisionNavigation(waypoints, offset=5.0, side_length=50.0, boat=boat):
     # waypoints:[topleft_buoy, topright_buoy, botleft_buoy, botright_buoy]
     topleft_buoy = waypoints[0]
     topright_buoy = waypoints[1]
     botleft_buoy = waypoints[2]
     botright_buoy = waypoints[3]
-
-    x_coord = boat.getPosition().x
-    y_coord = boat.getPosition().y
-    boat_direction = boat.sensors.yaw
-    relative_wind = boat.sensors.wind_direction-boat_direction
-    if relative_wind < 0:
-        relative_wind += 360
-    if relative_wind >= 180:
-        # move ccw
-        sail_direction = 1
-    else:
-        # move cw
-        sail_direction = -1
 
     start_pos = topleft_buoy.midpoint(topright_buoy)
     # find inner and outer waypoints on first side of triangle
@@ -272,10 +260,22 @@ def precisionNavigation(waypoints, offset=5.0, side_length=50.0):
     # final waypoint is start_point
     ninth_waypoint = start_pos
 
+    # Convert to coord vectors
+    first_waypoint = coord.Vector(x=first_waypoint[0], y=first_waypoint[1])
+    second_waypoint = coord.Vector(x=second_waypoint[0], y=second_waypoint[1])
+    third_waypoint = coord.Vector(x=third_waypoint[0], y=third_waypoint[1])
+    fourth_waypoint = coord.Vector(x=fourth_waypoint[0], y=fourth_waypoint[1])
+    fifth_waypoint = coord.Vector(x=fifth_waypoint[0], y=fifth_waypoint[1])
+    sixth_waypoint = coord.Vector(x=sixth_waypoint[0], y=sixth_waypoint[1])
+    seventh_waypoint = coord.Vector(
+        x=seventh_waypoint[0], y=seventh_waypoint[1])
+    eighth_waypoint = coord.Vector(x=eighth_waypoint[0], y=eighth_waypoint[1])
+    ninth_waypoint = coord.Vector(x=ninth_waypoint[0], y=ninth_waypoint[1])
+
     waypoints = [first_waypoint, second_waypoint, third_waypoint,
                  fourth_waypoint, fifth_waypoint, sixth_waypoint,
                  seventh_waypoint, eighth_waypoint, ninth_waypoint]
-    return
+    return waypoints
 
 
 def getRectangleBox(center, theta):
@@ -359,7 +359,7 @@ def getVelocity(point_before, point_after, t):
     return [speed, theta]
 
 
-def collisionWaypoint(time):
+def collisionWaypoint(time, boat=boat):
     """
     Returns waypoint 2m away to avoid obstacle detected at time time
     """
@@ -367,31 +367,31 @@ def collisionWaypoint(time):
     while (angle_deg >= 360.0):
         angle_deg -= 360.0
     angle_rad = math.radians(angle_deg)
-    return (boat.getPosition().x + 2 * math.cos(angle_rad),
-            boat.getPosition().y + 2 * math.sin(angle_rad))
+    return coord.Vector(boat.getPosition().x + 2 * math.cos(angle_rad),
+                        boat.getPosition().y + 2 * math.sin(angle_rad))
 
 
-def assessCollision(obst_point, obst_point_2, time):
-  """
-    Checks if collision occurs. Returns new waypoint if collision, else None
-
-    obst_point: position of obstacle at time 0
-    obst_point_2: position of obstacle at time time
-    time: time between detection of obst_point and obst_point_2
+def assessCollision(obst_point, obst_point_2, time, boat=boat):
     """
-   [obst_speed, obst_theta] =
-      getVelocity(obstacle_point, obstacle_point_2, time)
+      Checks if collision occurs. Returns new waypoint if collision, else None
+
+      obst_point: position of obstacle at time 0
+      obst_point_2: position of obstacle at time time
+      time: time between detection of obst_point and obst_point_2
+      """
+    if (obst_point is None or obst_point_2 is None):
+        return None
+    [obst_speed, obst_theta] = getVelocity(
+        obst_point, obst_point_2, time)
     collision_time = 0
     while (collision_time <= 15):
-        new_obstacle_point =
-          (obstacle_point.x + i * obst_speed * math.cos(obst_theta),
-            obstacle_point.y + i * obst_speed * math.sin(obst_theta))
+        new_obstacle_point = (obst_point.x + collision_time * obst_speed * math.cos(obst_theta),
+                              obst_point.y + collision_time * obst_speed * math.sin(obst_theta))
         new_obstacle_box = getRectangleBox(new_obstacle_point, obst_theta)
-        new_boat_box =
-          (boat.getPosition().x + i * boat.sensors.velocity *
-            math.cos(math.radians(boat.sensors.yaw)),
-            boat.getPosition().y + i * boat.sensors.velocity *
-            math.sin(math.radians(boat.sensors.yaw)))
+        new_boat_box = (boat.getPosition().x + collision_time * boat.sensors.velocity *
+                        math.cos(math.radians(boat.sensors.yaw)),
+                        boat.getPosition().y + collision_time * boat.sensors.velocity *
+                        math.sin(math.radians(boat.sensors.yaw)))
         if isCollision(new_boat_box, new_obstacle_box):
             return collisionWaypoint(collision_time)
         else:
@@ -403,7 +403,7 @@ def unitVector(coords):
     return (coords[0] / magnitude, coords[1] / magnitude)
 
 
-def collisionAvoidance(buoy_waypoints):
+def collisionAvoidance(buoy_waypoints, boat=boat):
     """
     Returns waypoints list for ideal path (no obstacles)
     """
@@ -412,31 +412,36 @@ def collisionAvoidance(buoy_waypoints):
     first_direction = (orientation[1], -1 * orientation[0])
     first_direction = unitVector(first_direction)
     dist = 10
-    first_waypoint = (buoy_waypoints[0] + dist * first_direction[0],
-                      buoy_waypoints[1] + dist * first_direction[1])
+    (x1, y1) = (buoy_waypoints[0] + dist * first_direction[0],
+                buoy_waypoints[1] + dist * first_direction[1])
+    first_waypoint = coord.Vector(x=x1, y=y1)
+
     second_direction = unitVector(orientation)
-    second_waypoint = (buoy_waypoints[0] + dist * second_direction[0],
-                       buoy_waypoints[1] + dist * second_direction[1])
+    (x2, y2) = (buoy_waypoints[0] + dist * second_direction[0],
+                buoy_waypoints[1] + dist * second_direction[1])
+    second_waypoint = coord.Vector(x=x2, y=y2)
     third_direction = (-1 * orientation[1], orientation[0])
     third_direction = unitVector(third_direction)
-    third_waypoint = (buoy_waypoints[0] + dist * third_direction[0],
-                      buoy_waypoints[1] + dist * third_direction[1])
-    fourth_waypoint = (boat.getPosition().x + dist * second_direction[0],
-                       boat.getPosition().y + dist * second_direction[1])
+    (x3, y3) = (buoy_waypoints[0] + dist * third_direction[0],
+                buoy_waypoints[1] + dist * third_direction[1])
+    third_waypoint = coord.Vector(x=x3, y=y3)
+    (x4, y4) = (boat.getPosition().x + dist * second_direction[0],
+                boat.getPosition().y + dist * second_direction[1])
+    fourth_waypoint = coord.Vector(x=x4, y=y4)
     return [first_waypoint, second_waypoint, third_waypoint, fourth_waypoint,
             boat.getPosition()]
 
 
-def search(center_point, state, scalar=3, constant=(100-30*math.pi)):
-    if state == "SEARCH":
-        i = 0
-        for theta in range (40,-1,-1):
-            t = (theta * math.pi / 4)
-            r = constant + scalar * t
-            x = center_point[0] + r * math.cos(t)
-            y = center_point[1] + r * math.sin(t)
-            waypoints[i] = (x, y)
-            i += 1
-        return waypoints
-    elif state == "FOUND":
-        pass
+def search(waypoints, scalar=3, constant=(100-30*math.pi), boat=boat):
+    i = 0
+    search_waypoints = []
+    center_point = boat.getPosition()
+    for theta in range(40, -1, -1):
+        t = (theta * math.pi / 4)
+        r = constant + scalar * t
+        x = center_point.x + r * math.cos(t)
+        y = center_point.y + r * math.sin(t)
+        new_waypoint = coord.Vector(x=x, y=y)
+        search_waypoints.insert(0, new_waypoint)
+        i += 1
+    return search_waypoints
