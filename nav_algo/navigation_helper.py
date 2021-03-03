@@ -403,7 +403,7 @@ def unitVector(coords):
     return (coords[0] / magnitude, coords[1] / magnitude)
 
 
-def collisionAvoidance(buoy_waypoint):
+def collisionAvoidance(buoy_waypoints):
     """
     Returns waypoints list for ideal path (no obstacles)
     """
