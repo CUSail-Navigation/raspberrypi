@@ -70,6 +70,10 @@ class sensorData:
     def readGPS(self):
         # TODO update fix, lat, long, and velocity
         # use the NMEA parser
+        if nx['class'] == 'TPV':
+        latitude = getattr(nx,'lat', "Unknown")
+        longitude = getattr(nx,'lon', "Unknown")
+        print "Your position: lon = " + str(longitude) + ", lat = " + str(latitude)
         pass
 
     """Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the
