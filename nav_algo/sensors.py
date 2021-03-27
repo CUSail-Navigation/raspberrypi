@@ -2,6 +2,7 @@ import nmea as nmea
 import coordinates as coord
 import SailSensors
 from math import pi
+import serial
 
 import struct
 
@@ -26,6 +27,7 @@ class sensorData:
         #Sensor objects
         self.IMU = SailSensors.SailIMU()
         self.anemometer = SailSensors.SailAnemometer(0)
+        gps_serial_port = serial.Serial(port='/dev/ttyAMA2', baudrate=9600, timeout=5)
 
         #sensorData
         self.boat_direction = 0 # angle of the sail wrt north.
@@ -70,11 +72,13 @@ class sensorData:
     def readGPS(self):
         # TODO update fix, lat, long, and velocity
         # use the NMEA parser
-        if nx['class'] == 'TPV':
-            latitude = getattr(nx,'lat', "Unknown")
-            longitude = getattr(nx,'lon', "Unknown")
-        print "Your position: lon = " + str(longitude) + ", lat = " + str(latitude)
-
+        lines = gps_serial_port.readlines().split('\n')
+        for line in lines:
+            nmea_data = nmea.NMEA(line)
+            if nmea_data.status:
+                self.latitude = nmea_data.latitude
+                self.longitude = nmea_data.longitude
+    
     """Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the
     average of the list of ints. This function assumes that anemometer readings are taken semi-frequently
     parameter: newValue - int denoting number to be added to the """
