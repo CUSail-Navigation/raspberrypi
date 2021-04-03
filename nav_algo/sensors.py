@@ -27,7 +27,7 @@ class sensorData:
         #Sensor objects
         self.IMU = SailSensors.SailIMU()
         self.anemometer = SailSensors.SailAnemometer(0)
-        gps_serial_port = serial.Serial(port='/dev/ttyAMA2', baudrate=9600, timeout=5)
+        self.gps_serial_port = serial.Serial(port='/dev/ttyAMA2', baudrate=9600, timeout=5)
 
         #sensorData
         self.boat_direction = 0 # angle of the sail wrt north.
@@ -72,10 +72,12 @@ class sensorData:
     def readGPS(self):
         # TODO update fix, lat, long, and velocity
         # use the NMEA parser
-        lines = gps_serial_port.readlines().split('\n')
-        for line in lines:
+        self.gps_serial_port.reset_input_buffer()
+        for _ in range(5):
+            line = self.gps_serial_port.readline().decode('utf-8')
             nmea_data = nmea.NMEA(line)
             if nmea_data.status:
+                self.fix = True
                 self.latitude = nmea_data.latitude
                 self.longitude = nmea_data.longitude
     

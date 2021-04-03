@@ -51,7 +51,7 @@ class NMEA:
         elif "GLL" in self.sentence:
             self.parseGLL()
         else:
-            raise ValueError('Input is not a valid NMEA sentence.')
+            self.status = False
 
     def parseRMC(self):
         """Parses RMC sentences.
@@ -63,10 +63,11 @@ class NMEA:
         we will ignore since we have no use for it. These values are stored
         as attributes of the NMEA object.
         """
-        self.utc = self.UTC(self.fields[1])
         self.status = 'A' in self.fields[2]
-        self.latDecimalDegrees(self.fields[3], self.fields[4])
-        self.longDecimalDegrees(self.fields[5], self.fields[6])
+        if self.status:
+            self.utc = self.UTC(self.fields[1])
+            self.latDecimalDegrees(self.fields[3], self.fields[4])
+            self.longDecimalDegrees(self.fields[5], self.fields[6])
 
     def parseVTG(self):
         """Parses VTG sentences.
@@ -87,10 +88,11 @@ class NMEA:
         satellite data, which we will ignore since we have no use for it. These 
         values are stored as attributes of the NMEA object.
         """
-        self.utc = self.UTC(self.fields[1])
-        self.latDecimalDegrees(self.fields[2], self.fields[3])
-        self.longDecimalDegrees(self.fields[4], self.fields[5])
         self.status = not '0' in self.fields[6]
+        if self.status:
+            self.utc = self.UTC(self.fields[1])
+            self.latDecimalDegrees(self.fields[2], self.fields[3])
+            self.longDecimalDegrees(self.fields[4], self.fields[5])
 
     def parseGSA(self):
         """Parses GSA sentences.
@@ -122,10 +124,11 @@ class NMEA:
         we will ignore since we have no use for it. These values are stored
         as attributes of the NMEA object.
         """
-        self.latDecimalDegrees(self.fields[1], self.fields[2])
-        self.longDecimalDegrees(self.fields[3], self.fields[4])
-        self.utc = self.UTC(self.fields[5])
         self.status = 'A' in self.fields[6]
+        if self.status:
+            self.latDecimalDegrees(self.fields[1], self.fields[2])
+            self.longDecimalDegrees(self.fields[3], self.fields[4])
+            self.utc = self.UTC(self.fields[5])
 
     def latDecimalDegrees(self, nmea_format: str, dir: str):
         """Converts latitude from NMEA format to decimal degrees.
