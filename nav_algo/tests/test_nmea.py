@@ -13,9 +13,6 @@ class TestNmeaMethods(unittest.TestCase):
         # make sure it won't try to parse something that isn't a string
         self.assertRaises(TypeError, lambda: nmea.NMEA(12))
 
-        # make sure it won't try to parse something that isn't an NMEA sentence
-        self.assertRaises(ValueError, lambda: nmea.NMEA("test"))
-
     def test_RMC(self):
         # make sure a valid sentence gets parsed correctly
         n = nmea.NMEA(

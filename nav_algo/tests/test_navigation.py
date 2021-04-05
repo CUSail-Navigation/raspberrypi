@@ -3,6 +3,7 @@ import numpy as np
 import nav_algo.navigation as nav
 import nav_algo.coordinates as coord
 import nav_algo.navigation_helper as help
+import math
 
 
 class TestNavigationMethods(unittest.TestCase):
@@ -136,23 +137,27 @@ class TestNavigationMethods(unittest.TestCase):
 
     def test_endurance(self):
         # waypoints need to be in a clockwise dir, starting top left
-        waypoints = [(0, 25), (45, 25) (45, 0), (0, 0)]
-        midpoints=[(27.5,25),(45,12.5),(27.5,0),(0,12.5)]
+        waypoints = [(0, 25), (45, 25)(45, 0), (0, 0)]
+        midpoints = [(27.5, 25), (45, 12.5), (27.5, 0), (0, 12.5)]
         offset = 10
         opt_dist = 2
         self.nav_controller.boat_position = coord.Vector(x=-5, y=10)
-        new_waypoints = self.nav_controller.endurance(
-            waypoints, opt_dist, offset)
-        opt_side = 2/math.sqrt(2)
-        expected_waypoints = [(-opt_side, 25+opt_side),(midpoints[0].x,midpoints[0].y+offset),
-                            (45+opt_side, 25+opt_side),(midpoints[1].x+offset,midpoints[1].y),
-                            (45+opt_side, -opt_side), (midpoints[2].x,midpoints[2].y-offset),
-                            (-opt_side, -opt_side), (midpoints[3].x-offset,midpoints[3].y)]
+        new_waypoints = self.nav_controller.endurance(waypoints, opt_dist,
+                                                      offset)
+        opt_side = 2 / math.sqrt(2)
+        expected_waypoints = [(-opt_side, 25 + opt_side),
+                              (midpoints[0].x, midpoints[0].y + offset),
+                              (45 + opt_side, 25 + opt_side),
+                              (midpoints[1].x + offset, midpoints[1].y),
+                              (45 + opt_side, -opt_side),
+                              (midpoints[2].x, midpoints[2].y - offset),
+                              (-opt_side, -opt_side),
+                              (midpoints[3].x - offset, midpoints[3].y)]
         self.assertAlmostEqual(new_waypoints, expected_waypoints)
 
     def test_station_keeping(self):
         # entry- given 4 square waypoints, return: 1) entry point 2) center
-        # corner waypoint order: NW, NE, SE, SW        
+        # corner waypoint order: NW, NE, SE, SW
         waypoints = [(5, 45), (45, 45), (5, 45), (5, 5)]
         # West entry
         self.nav_controller.boat_position = coord.Vector(x=0, y=25)
@@ -179,116 +184,107 @@ class TestNavigationMethods(unittest.TestCase):
         expected_waypoints = [(25, 5), (25, 25)]
         self.assertAlmostEqual(new_waypoints, expected_waypoints)
 
-
         #keep- given position, yaw, and wind, return: 1) Four 90 degree waypoints to loop
         #scenario 1- (facing east, optimal angle is 45)
         self.nav_controller.boat_position = coord.Vector(x=0.0, y=0.0)
         self.nav_controller.boat.sensors.yaw = 0.0
-        
+
         #ccw path
         self.nav_controller.boat.sensors.wind_direction = 45.0
-        new_waypoints = self.nav_controller.station_keeping(
-            [], 10, "KEEP")
-        expected_waypoints=[(5*math.sqrt(2),5*math.sqrt(2)),
-            (-5*math.sqrt(2),5*math.sqrt(2)),
-            (-5*math.sqrt(2),-5*math.sqrt(2)),
-            (5*math.sqrt(2),-5*math.sqrt(2))]
-        self.assertAlmostEqual(new_waypoints, expected_waypoints)   
+        new_waypoints = self.nav_controller.station_keeping([], 10, "KEEP")
+        expected_waypoints = [(5 * math.sqrt(2), 5 * math.sqrt(2)),
+                              (-5 * math.sqrt(2), 5 * math.sqrt(2)),
+                              (-5 * math.sqrt(2), -5 * math.sqrt(2)),
+                              (5 * math.sqrt(2), -5 * math.sqrt(2))]
+        self.assertAlmostEqual(new_waypoints, expected_waypoints)
 
         #cw path
         self.nav_controller.boat.sensors.wind_direction = 315
-        new_waypoints = self.nav_controller.station_keeping(
-            [], 10, "KEEP")        
-        first_angle=math.radians(45)
-        expected_waypoints=[(5*math.sqrt(2),-5*math.sqrt(2)),
-            (-5*math.sqrt(2),-5*math.sqrt(2)),
-            (-5*math.sqrt(2),5*math.sqrt(2)),
-            (5*math.sqrt(2),5*math.sqrt(2))]
-     
-        self.assertAlmostEqual(new_waypoints, expected_waypoints)
+        new_waypoints = self.nav_controller.station_keeping([], 10, "KEEP")
+        first_angle = math.radians(45)
+        expected_waypoints = [(5 * math.sqrt(2), -5 * math.sqrt(2)),
+                              (-5 * math.sqrt(2), -5 * math.sqrt(2)),
+                              (-5 * math.sqrt(2), 5 * math.sqrt(2)),
+                              (5 * math.sqrt(2), 5 * math.sqrt(2))]
 
+        self.assertAlmostEqual(new_waypoints, expected_waypoints)
 
         # scenario 2- not facing east(60), non-45 optimal angle (15)
         self.nav_controller.boat_position = coord.Vector(x=5.0, y=5.0)
         self.nav_controller.boat.sensors.yaw = 60.0
 
-        
         #ccw path
         self.nav_controller.boat.sensors.wind_direction = 45.0
-        new_waypoints = self.nav_controller.station_keeping(
-            [], 10, "KEEP")
-        first_angle=math.radians(60+45)
+        new_waypoints = self.nav_controller.station_keeping([], 10, "KEEP")
+        first_angle = math.radians(60 + 45)
 
-        
-        expected_waypoints=[(5+10*math.cos(first_angle),5+10*math.sin(first_angle)),
-            (5+10*math.cos(first_angle+math.pi/2),5+10*math.sin(first_angle+math.pi/2)),
-            (5+10*math.cos(first_angle+math.pi),5+10*math.sin(first_angle+math.pi)),
-            (5+10*math.cos(first_angle+3*math.pi/2),5+10*math.sin(first_angle+3*math.pi/2))]
+        expected_waypoints = [
+            (5 + 10 * math.cos(first_angle), 5 + 10 * math.sin(first_angle)),
+            (5 + 10 * math.cos(first_angle + math.pi / 2),
+             5 + 10 * math.sin(first_angle + math.pi / 2)),
+            (5 + 10 * math.cos(first_angle + math.pi),
+             5 + 10 * math.sin(first_angle + math.pi)),
+            (5 + 10 * math.cos(first_angle + 3 * math.pi / 2),
+             5 + 10 * math.sin(first_angle + 3 * math.pi / 2))
+        ]
 
         self.assertAlmostEqual(new_waypoints, expected_waypoints)
 
         #cw path
         self.nav_controller.boat.sensors.wind_direction = 90.0
-        new_waypoints = self.nav_controller.station_keeping(
-            [], 10, "KEEP")        
-        first_angle=math.radians(60-15)
+        new_waypoints = self.nav_controller.station_keeping([], 10, "KEEP")
+        first_angle = math.radians(60 - 15)
 
-        expected_waypoints=[(10*math.cos(first_angle),10*math.sin(first_angle)),
-            (10*math.cos(first_angle-math.pi/2),10*math.sin(first_angle-math.pi/2)),
-            (10*math.cos(first_angle-math.pi),10*math.sin(first_angle-math.pi)),
-            (10*math.cos(first_angle-3*math.pi/2),10*math.sin(first_angle-3*math.pi/2))]
+        expected_waypoints = [(10 * math.cos(first_angle),
+                               10 * math.sin(first_angle)),
+                              (10 * math.cos(first_angle - math.pi / 2),
+                               10 * math.sin(first_angle - math.pi / 2)),
+                              (10 * math.cos(first_angle - math.pi),
+                               10 * math.sin(first_angle - math.pi)),
+                              (10 * math.cos(first_angle - 3 * math.pi / 2),
+                               10 * math.sin(first_angle - 3 * math.pi / 2))]
         self.assertAlmostEqual(new_waypoints, expected_waypoints)
 
         #exit- 4 waypoints, get closest exit
-        waypoints = [(5, 45), (45, 45), (5, 45), (5, 5)]    #center=(25,25)
+        waypoints = [(5, 45), (45, 45), (5, 45), (5, 5)]  #center=(25,25)
         #West exit
-        expected_exit=(-5,25)
+        expected_exit = (-5, 25)
         self.nav_controller.boat_position = coord.Vector(x=15, y=25)
         exit_waypoint = self.nav_controller.station_keeping(
-            waypoints, 10, "EXIT")    
+            waypoints, 10, "EXIT")
         self.assertAlmostEqual(exit_waypoint, expected_exit)
 
         #North exit
-        expected_exit=(25,55)
+        expected_exit = (25, 55)
         self.nav_controller.boat_position = coord.Vector(x=25, y=35)
         exit_waypoint = self.nav_controller.station_keeping(
-            waypoints, 10, "EXIT")    
+            waypoints, 10, "EXIT")
         self.assertAlmostEqual(exit_waypoint, expected_exit)
 
         #East exit
-        expected_exit=(55,25)
+        expected_exit = (55, 25)
         self.nav_controller.boat_position = coord.Vector(x=35, y=25)
         exit_waypoint = self.nav_controller.station_keeping(
-            waypoints, 10, "EXIT")    
-        self.assertAlmostEqual(exit_waypoint, expected_exit)        
-
+            waypoints, 10, "EXIT")
+        self.assertAlmostEqual(exit_waypoint, expected_exit)
 
         #South exit
-        expected_exit=(25,-5)
+        expected_exit = (25, -5)
         self.nav_controller.boat_position = coord.Vector(x=25, y=15)
         exit_waypoint = self.nav_controller.station_keeping(
-            waypoints, 10, "EXIT")    
+            waypoints, 10, "EXIT")
         self.assertAlmostEqual(exit_waypoint, expected_exit)
 
     def test_precision_navigation(self):
         #equilateral triangle of side length 50, one vertex in the origin
-        expected_waypoints=[]
-        buoy_waypoints=[
-            (-1.5,0),
-            (1.5,0),
-            (-25,-25*math.sqrt(3)), 
-            (25,-25*math.sqrt(3))]
-        slope=math.sqrt(3)
-        offset=5
+        expected_waypoints = []
+        buoy_waypoints = [(-1.5, 0), (1.5, 0), (-25, -25 * math.sqrt(3)),
+                          (25, -25 * math.sqrt(3))]
+        slope = math.sqrt(3)
+        offset = 5
 
-        
-
-        final_waypoint= (0,0)    
-
-        
+        final_waypoint = (0, 0)
 
 
-            
-        
 if __name__ == '__main__':
     unittest.main()
