@@ -122,13 +122,15 @@ class BoatDetector:
     @staticmethod
     def __rgb_threshold(input, red, green, blue):
         """Segment an image based on color ranges.
+
         Args:
-            input: A BGR numpy.ndarray.
-            red: A list of two numbers the are the min and max red.
-            green: A list of two numbers the are the min and max green.
-            blue: A list of two numbers the are the min and max blue.
+            input (numpy.ndarray): A BGR numpy.ndarray.
+            red (list): A list of two numbers the are the min and max red.
+            green (list): A list of two numbers the are the min and max green.
+            blue (list): A list of two numbers the are the min and max blue.
+
         Returns:
-            A black and white numpy.ndarray.
+            numpy.ndarray: A black and white numpy.ndarray.
         """
         out = cv2.cvtColor(input, cv2.COLOR_BGR2RGB)
         return cv2.inRange(out, (red[0], green[0], blue[0]),
@@ -137,14 +139,16 @@ class BoatDetector:
     @staticmethod
     def __cv_erode(src, kernel, anchor, iterations, border_type, border_value):
         """Expands area of lower value in an image.
+
         Args:
-           src: A numpy.ndarray.
-           kernel: The kernel for erosion. A numpy.ndarray.
-           iterations: the number of times to erode.
-           border_type: Opencv enum that represents a border type.
-           border_value: value to be used for a constant border.
+           src (numpy.ndarray): A numpy.ndarray.
+           kernel (numpy.ndarray): The kernel for erosion. A numpy.ndarray.
+           iterations (int): the number of times to erode.
+           border_type (Enum): Opencv enum that represents a border type.
+           border_value (int): value to be used for a constant border.
+
         Returns:
-            A numpy.ndarray after erosion.
+            numpy.ndarray: A numpy.ndarray after erosion.
         """
         return cv2.erode(src,
                          kernel,
@@ -156,12 +160,14 @@ class BoatDetector:
     @staticmethod
     def __blur(src, type, radius):
         """Softens an image using one of several filters.
+
         Args:
-            src: The source mat (numpy.ndarray).
-            type: The blurType to perform represented as an int.
-            radius: The radius for the blur as a float.
+            src (numpy.ndarray): The source mat.
+            type (int): The blurType to perform represented as an int.
+            radius (float): The radius for the blur as a float.
+
         Returns:
-            A numpy.ndarray that has been blurred.
+            numpy.ndarray: A numpy.ndarray that has been blurred.
         """
         if (type is BoatDetector.BlurType.Box_Blur):
             ksize = int(2 * round(radius) + 1)
@@ -179,14 +185,16 @@ class BoatDetector:
     def __cv_dilate(src, kernel, anchor, iterations, border_type,
                     border_value):
         """Expands area of higher value in an image.
+
         Args:
-           src: A numpy.ndarray.
-           kernel: The kernel for dilation. A numpy.ndarray.
-           iterations: the number of times to dilate.
-           border_type: Opencv enum that represents a border type.
-           border_value: value to be used for a constant border.
+           src (numpy.ndarray): A numpy.ndarray.
+           kernel (numpy.ndarray): The kernel for dilation. A numpy.ndarray.
+           iterations (int): the number of times to dilate.
+           border_type (Enum): Opencv enum that represents a border type.
+           border_value (int): value to be used for a constant border.
+
         Returns:
-            A numpy.ndarray after dilation.
+            numpy.ndarray: A numpy.ndarray after dilation.
         """
         return cv2.dilate(src,
                           kernel,
@@ -198,11 +206,13 @@ class BoatDetector:
     @staticmethod
     def __find_contours(input, external_only):
         """Sets the values of pixels in a binary image to their distance to the nearest black pixel.
+
         Args:
-            input: A numpy.ndarray.
-            external_only: A boolean. If true only external contours are found.
-        Return:
-            A list of numpy.ndarray where each one represents a contour.
+            input (numpy.ndarray): A numpy.ndarray.
+            external_only (bool): A boolean. If true only external contours are found.
+
+        Returns:
+            list: A list of numpy.ndarray where each one represents a contour.
         """
         if (external_only):
             mode = cv2.RETR_EXTERNAL
@@ -218,21 +228,23 @@ class BoatDetector:
                           max_vertex_count, min_vertex_count, min_ratio,
                           max_ratio):
         """Filters out contours that do not meet certain criteria.
+
         Args:
-            input_contours: Contours as a list of numpy.ndarray.
-            min_area: The minimum area of a contour that will be kept.
-            min_perimeter: The minimum perimeter of a contour that will be kept.
-            min_width: Minimum width of a contour.
-            max_width: MaxWidth maximum width.
-            min_height: Minimum height.
-            max_height: Maximimum height.
-            solidity: The minimum and maximum solidity of a contour.
-            min_vertex_count: Minimum vertex Count of the contours.
-            max_vertex_count: Maximum vertex Count.
-            min_ratio: Minimum ratio of width to height.
-            max_ratio: Maximum ratio of width to height.
+            input_contours (list): Contours as a list of numpy.ndarray.
+            min_area (float): The minimum area of a contour that will be kept.
+            min_perimeter (float): The minimum perimeter of a contour that will be kept.
+            min_width (float): Minimum width of a contour.
+            max_width (float): MaxWidth maximum width.
+            min_height (float): Minimum height.
+            max_height (float): Maximimum height.
+            solidity (list): The minimum and maximum solidity of a contour.
+            min_vertex_count (int): Minimum vertex Count of the contours.
+            max_vertex_count (int): Maximum vertex Count.
+            min_ratio (float): Minimum ratio of width to height.
+            max_ratio (float): Maximum ratio of width to height.
+
         Returns:
-            Contours as a list of numpy.ndarray.
+            listContours as a list of numpy.ndarray.
         """
         output = []
         for contour in input_contours:
@@ -259,37 +271,36 @@ class BoatDetector:
             output.append(contour)
         return output
 
-    """Calculates distances from each contour and creates list of obstacle distances from camera.
-    Args:
-        img_height: height of image passed in, in pixels
-    Return:
-        A list where each element represents an obstacle distance, 
-        and a list where each element represents an x-offset in the image.
-    """
-
     def find_distances(self):
+        """Calculates distances from each contour and creates list of obstacle distances from camera.
+
+        Args:
+            img_height: height of image passed in, in pixels
+
+        Returns:
+            list: A list where each element represents an obstacle distance 
+            list: A list where each element represents an x-offset in the image.
+        """
         return find_distances(self.filter_contours_output, self.img_height,
                               self.img_width, BoatDetector.BOAT_SIZE)
 
-    """Calculates the distance of the largest contour.
-    Return:
-        A double representing obstacle distance,
-        and a double representing x-offset in the image
-    """
-
     def find_distance_largest_contour(self):
+        """Calculates the distance of the largest contour.
+
+        Returns:
+            float: the obstacle distance
+            float: the x-offset in the image
+        """
         return find_distance_largest_contour(self.filter_contours_output,
                                              self.img_height, self.img_width,
                                              BoatDetector.BOAT_SIZE)
 
-    '''
-    get_boat_coords(distance, x_displacement, direction, curr_x, curr_y) returns the
-    x and y coordinates of a boat detected by a boat detector.
-
-    Return:
-        x, y coordinates representing the center of the front projection of another boat.
-    '''
-
     def get_boat_coords(self, direction, curr_x, curr_y):
+        """get_boat_coords(distance, x_displacement, direction, curr_x, curr_y) returns the
+        x and y coordinates of a boat detected by a boat detector.
+
+        Return:
+            list: x, y coordinates representing the center of the front projection of another boat.
+        """
         dist, x_offset = find_distance_largest_contour(self)
         return get_coords([dist], [x_offset], direction, curr_x, curr_y)[0]

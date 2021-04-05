@@ -12,7 +12,6 @@ class HorizonDetector:
         """
         Initializes all values to presets or None if need to be set
         """
-
         self.__blur_type = HorizonDetector.BlurType.Box_Blur
         self.__blur_radius = 3.30188679245283
 
@@ -51,11 +50,11 @@ class HorizonDetector:
     def __blur(src, type, radius):
         """Softens an image using one of several filters.
         Args:
-            src: The source mat (numpy.ndarray).
-            type: The blurType to perform represented as an int.
-            radius: The radius for the blur as a float.
+            src (numpy.ndarray): The source mat.
+            type (int): The blurType to perform represented as an int.
+            radius (float): The radius for the blur as a float.
         Returns:
-            A numpy.ndarray that has been blurred.
+            numpy.ndarray: A matrix that has been blurred.
         """
         if (type is HorizonDetector.BlurType.Box_Blur):
             ksize = int(2 * round(radius) + 1)
@@ -88,9 +87,9 @@ class HorizonDetector:
     def __find_lines(input):
         """Finds all line segments in an image.
         Args:
-            input: A numpy.ndarray.
+            input (numpy.ndarray): A numpy.ndarray.
         Returns:
-            A filtered list of Lines.
+            list: A filtered list of Lines.
         """
         detector = cv2.createLineSegmentDetector()
         if (len(input.shape) == 2 or input.shape[2] == 1):
@@ -112,11 +111,11 @@ class HorizonDetector:
     def __filter_lines(inputs, min_length, angle):
         """Filters out lines that do not meet certain criteria.
         Args:
-            inputs: A list of Lines.
-            min_Lenght: The minimum lenght that will be kept.
-            angle: The minimum and maximum angles in degrees as a list of two numbers.
+            inputs (list): A list of Lines.
+            min_Lenght (float): The minimum lenght that will be kept.
+            angle (list): The minimum and maximum angles in degrees as a list of two numbers.
         Returns:
-            A filtered list of Lines.
+            list: A filtered list of Lines.
         """
         outputs = []
         for line in inputs:
