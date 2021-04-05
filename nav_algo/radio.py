@@ -1,16 +1,28 @@
+from SailSensors import UARTDevice
+
 # TODO document this class
-class Radio:
-    def __init__(self):
-        # TODO setup UART
+class Radio(UARTDevice):
+    """
+    Constructor for the radio.
+    -baudrate is an integer(should be 9600 for the xbee)
+    -serialport, the serial port the xbee is connected to(just leave default for the xbee)
+    -t is the uart timeout period(just leave at 1 for normal operation)
+    """
+    def __init__(self, baudrate,serialPort = '/dev/ttyS0',t = 1):
+        super().__init__(baudrate,serialPort,t)
         pass
 
+    """
+    Prints the given messge to the basestation. string must be sent with a 'b' before the string
+    """
     def transmitString(self, message: str):
-        """Prints the given messge to the basestation.
-        
-        """
+        self.sendUart(message)
         pass
 
-    def printData(self):
+    """
+    Sends all of the boat data to the basestation. All arguments are taken in as floats
+    """
+    def printData(self,origLat,origLong,currentPositionX,currentPositionY,windDir,pitch,roll,yaw,sailAngle,tailAngle,heading):
         """Data should be of the form:.
 
         "----------NAVIGATION----------" +
@@ -29,12 +41,30 @@ class Radio:
 
         Note that fields are comma delineated and there is only a new line
         character at the end of the string.
-        
-        """
-        # TODO write a better docstring
-        pass
 
-    def printAllWaypoints(self):
+        """
+        msg = ("----------NAVIGATION----------" +
+        ",Origin Latitude: " + str(origLat) +
+        ",Origin Longitude: " + str(origLong) +
+        ",X position: " + str(currentPositionX) +
+        ",Y position: " + str(currentPositionY) +
+        ",Wind Direction: " + str(windDir) +
+        ",Pitch: " + str(pitch) +
+        ",Roll: " + str(roll) +
+        ",Yaw: " + str(yaw) +
+        ",Sail Angle: " + str(sailAngle) +
+        ",Tail Angle: " + str(tailAngle) +
+        ",Heading: " + str(heading) +
+        ",----------END----------" + '\n')
+        msg = msg.encode()
+        self.sendUart(msg)
+        return
+
+        """
+        Takes a list of tuple waypoints and sends them to the basestation.
+        -currentWaypointsArray: must be an array of tuples in the format (waypoint x component float, waypoint y component float)
+        """
+    def printAllWaypoints(self,currentWaypointsArray):
         """Data should be of the form:.
 
         "----------WAYPOINTS----------" +
@@ -48,12 +78,21 @@ class Radio:
         the same point are space delineated. The waypoints should be printed in
         order from first to last (do not include waypoints that have already
         been hit).
-        
         """
-        # TODO write a better docstring
+        msg = "----------WAYPOINTS----------"
+        for j in currentWaypointsArray:
+            msg = msg + ",X:" + str(j[0]) + " Y:" + str(j[1])
         pass
+        msg = msg +",----------END----------" + '\n'
+        msg = msg.encode()
+        self.sendUart(msg)
+        return
 
-    def printHitWaypoint(self):
+    """
+    Sends a single waypoint(meant to be the waypoint the boat just hit) to the basestation.
+    -hitWaypoint: a tuple in the format (waypoint x component float, waypoint y component float)
+    """
+    def printHitWaypoint(self,hitWaypoint):
         """Data should be of the form:.
 
         "----------HIT----------" +
@@ -64,7 +103,11 @@ class Radio:
         the same point are space delineated.
 
         Note 'printAllWaypoints' should be called immediately after this.
-        
+
         """
-        # TODO write a better docstring
-        pass
+        msg = ("----------HIT----------" +
+                ",X:" + hitWaypoint[0] + " Y:" + hitWaypoint[1]
+                + ",----------END----------" + '\n')
+        msg = msg.encode()
+        self.sendUart(msg)
+        return
