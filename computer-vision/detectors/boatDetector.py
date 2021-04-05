@@ -2,7 +2,7 @@ import cv2
 import numpy
 import math
 from enum import Enum
-from detectors.utils import find_distances, get_coords
+from detectors.utils import find_distances, get_coords, find_distance_largest_contour
 
 # based on looking at a boat at a 45 degree angle, assuming lower bound
 BOAT_SIZE = 2500  # average motorboat size, in mm
@@ -10,10 +10,12 @@ BOAT_SIZE = 2500  # average motorboat size, in mm
 
 class BoatDetector:
 
-    def __init__(self):
+    def __init__(self, img_height=480, img_width=640):
         """
         Initializes all values to presets or None if need to be set
         """
+        self.img_height = img_height
+        self.img_width = img_width
 
         #self.__rgb_threshold_red = [0.0, 255.0]
         #self.__rgb_threshold_green = [31, 65]
@@ -237,27 +239,32 @@ class BoatDetector:
     Args:
         img_height: height of image passed in, in pixels
     Return:
-        A list where each one represents an obstacle distance.
+        A list where each element represents an obstacle distance, 
+        and a list where each element represents an x-offset in the image.
     """
 
-    def find_distances(self, img_height, img_width):
-        return find_distances(self.filter_contours_output, img_height, img_width, BOAT_SIZE)
+    def find_distances(self):
+        return find_distances(self.filter_contours_output, self.img_height, self.img_width, BOAT_SIZE)
+
+    """Calculates the distance of the largest contour.
+    Return:
+        A double representing obstacle distance,
+        and a double representing x-offset in the image
+    """
+
+    def find_distance_largest_contour(self):
+        return find_distance_largest_contour(self.filter_contours_output, self.img_height, self.img_width, BOAT_SIZE)
 
     '''
     get_boat_coords(distance, x_displacement, direction, curr_x, curr_y) returns the
-    x and y coordinates of a boat given a calculated distance [distance] in front
-    of the boat facing [direction] (an angle w.r.t. )
+    x and y coordinates of a boat detected by a boat detector.
 
     Return:
-        A list of coordinates x, y representing each corner of a boat.
+        x, y coordinates representing the center of the front projection of another boat.
     '''
-    def get_boat_coords(distance, x_displacement, direction, curr_x, curr_y):
-
-        center_coords = get_coords(
-            distance, x_displacement, direction, curr_x, curr_y)
-        list_coords = []
-        # TODO: Fill this function out
-        return list_coords
+    def get_boat_coords(self, direction, curr_x, curr_y):
+        dist, x_offset = find_distance_largest_contour(self)
+        return get_coords([dist], [x_offset], direction, curr_x, curr_y)[0]
 
 
 BlurType = Enum(
