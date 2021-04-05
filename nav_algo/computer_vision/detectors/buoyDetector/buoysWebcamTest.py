@@ -1,31 +1,37 @@
-from detectors.buoyDetector.buoyDetector import BuoyDetector
+from nav_algo.computer_vision.detectors.buoyDetector.buoyDetector import BuoyDetector
 import cv2
 import numpy as np
 import time
 
-vid = cv2.VideoCapture(0)
 
-print("Press q to quit.")
-while (True):
-    _, frame = vid.read()  # get a frame from the webcam
-    # scale image
-    max_dimension = max(frame.shape)
-    scale = 700 / max_dimension
-    frame = cv2.resize(frame, None, fx=scale, fy=scale)
-    bd = BuoyDetector()
-    bd.process(frame)
+def main():
+    vid = cv2.VideoCapture(0)
 
-    contours = bd.find_contours_output
-    found = bd.find_contours_output != None
-    contours = bd.filter_contours_output
-    found = contours != None
+    print("Press q to quit.")
+    while (True):
+        _, frame = vid.read()  # get a frame from the webcam
+        # scale image
+        max_dimension = max(frame.shape)
+        scale = 700 / max_dimension
+        frame = cv2.resize(frame, None, fx=scale, fy=scale)
+        bd = BuoyDetector()
+        bd.process(frame)
 
-    prinlnt(bd.get__buoy_coords(0, 0, 0))  # print sample coordinates
+        contours = bd.find_contours_output
+        found = bd.find_contours_output != None
+        contours = bd.filter_contours_output
+        found = contours != None
 
-    cv2.drawContours(frame, contours, -1, (0, 255, 0), 3)
+        print(bd.get__buoy_coords(0, 0, 0))  # print sample coordinates
 
-    cv2.imshow('buoy detection', frame)
+        cv2.drawContours(frame, contours, -1, (0, 255, 0), 3)
 
-    # press q to quit
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+        cv2.imshow('buoy detection', frame)
+
+        # press q to quit
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+
+if __name__ == '__main__':
+    main()
