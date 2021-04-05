@@ -5,16 +5,14 @@ import math
 SENSOR_HEIGHT = 2.74
 FOCAL_LENGTH = 3.60  # focal length of raspberry pi cam 1
 
-"""Calculates distances from each contour and creates list of obstacle distances from camera.
-Args:
-  img_height: height of image passed in, in pixels
-Return:
-  A list where each element represents an obstacle distance in meters.
-"""
-
 
 def find_distances(contours_output, img_height, img_width, obstacle_width):
-
+    """Calculates distances from each contour and creates list of obstacle distances from camera.
+    Args:
+      img_height: height of image passed in, in pixels
+    Return:
+      A list where each element represents an obstacle distance in meters.
+    """
     distances = []
     x_displacements = []
 
@@ -27,16 +25,15 @@ def find_distances(contours_output, img_height, img_width, obstacle_width):
 
     return distances, x_displacements
 
-"""Calculates distances from each contour and creates list of obstacle distances from camera.
-Args:
-  img_height: height of image passed in, in pixels
-Return:
-  A list where each element represents an obstacle distance in meters.
-"""
 
-
-def find_distance_largest_contour(contours_output, img_height, img_width, obstacle_width):
-
+def find_distance_largest_contour(contours_output, img_height, img_width,
+                                  obstacle_width):
+    """Calculates distances from each contour and creates list of obstacle distances from camera.
+    Args:
+      img_height: height of image passed in, in pixels
+    Return:
+      A list where each element represents an obstacle distance in meters.
+    """
     c = max(contours_output, key=cv2.contourArea)
     center, size, angle = cv2.minAreaRect(c)
     width, height = size
@@ -46,18 +43,16 @@ def find_distance_largest_contour(contours_output, img_height, img_width, obstac
 
     return distance, x_displacement
 
-'''
-get_coord(distance, x_displacement, direction, curr_x, curr_y) returns the
-x and y coordinates of the center of an obstacle given a calculated [distance] in front
-of the boat at coordinates [curr_x], [curr_y] facing [direction]
-
-Return:
-  A pair of coordinates x, y representing obstacle center.
-'''
-
 
 def get_coords(distance, x_displacement, direction, curr_x, curr_y):
+    """
+    get_coord(distance, x_displacement, direction, curr_x, curr_y) returns the
+    x and y coordinates of the center of an obstacle given a calculated [distance] in front
+    of the boat at coordinates [curr_x], [curr_y] facing [direction]
 
+    Return:
+      A pair of coordinates x, y representing obstacle center.
+    """
     # TODO: Convert based on x displacement
 
     buoy_x = curr_x + distance * math.cos(direction)
