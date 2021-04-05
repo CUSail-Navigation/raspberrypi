@@ -1,14 +1,13 @@
 import cv2
-import numpy
-import math
 from enum import Enum
-
 # from utils import find_distances
-
-BUOY_HEIGHT = 1016  # buoy's height in mm
 
 
 class BuoyDetector:
+    BUOY_HEIGHT = 1016  # buoy's height in mm
+    BlurType = Enum("BlurType",
+                    "Box_Blur Gaussian_Blur Median_Filter Bilateral_Filter")
+
     def __init__(self):
         """
         Initializes all values to presets or None if need to be set
@@ -34,7 +33,7 @@ class BuoyDetector:
         self.cv_erode_output = None
 
         self.__blur_input = self.cv_erode_output
-        self.__blur_type = BlurType.Box_Blur
+        self.__blur_type = BuoyDetector.BlurType.Box_Blur
         self.__blur_radius = 21
 
         self.blur_output = None
@@ -94,9 +93,8 @@ class BuoyDetector:
 
         # Step Blur0:
         self.__blur_input = self.cv_erode_output
-        (self.blur_output) = self.__blur(
-            self.__blur_input, self.__blur_type, self.__blur_radius
-        )
+        (self.blur_output) = self.__blur(self.__blur_input, self.__blur_type,
+                                         self.__blur_radius)
 
         # Step CV_dilate0:
         self.__cv_dilate_src = self.blur_output
@@ -112,8 +110,7 @@ class BuoyDetector:
         # Step Find_Contours0:
         self.__find_contours_input = self.cv_dilate_output
         (self.find_contours_output) = self.__find_contours(
-            self.__find_contours_input, self.__find_contours_external_only
-        )
+            self.__find_contours_input, self.__find_contours_external_only)
 
         # Step Filter_Contours0:
         self.__filter_contours_contours = self.find_contours_output
@@ -144,9 +141,8 @@ class BuoyDetector:
             A black and white numpy.ndarray.
         """
         out = cv2.cvtColor(input, cv2.COLOR_BGR2RGB)
-        return cv2.inRange(
-            out, (red[0], green[0], blue[0]), (red[1], green[1], blue[1])
-        )
+        return cv2.inRange(out, (red[0], green[0], blue[0]),
+                           (red[1], green[1], blue[1]))
 
     @staticmethod
     def __cv_erode(src, kernel, anchor, iterations, border_type, border_value):
@@ -179,20 +175,21 @@ class BuoyDetector:
         Returns:
             A numpy.ndarray that has been blurred.
         """
-        if type is BlurType.Box_Blur:
+        if type is BuoyDetector.BlurType.Box_Blur:
             ksize = int(2 * round(radius) + 1)
             return cv2.blur(src, (ksize, ksize))
-        elif type is BlurType.Gaussian_Blur:
+        elif type is BuoyDetector.BlurType.Gaussian_Blur:
             ksize = int(6 * round(radius) + 1)
             return cv2.GaussianBlur(src, (ksize, ksize), round(radius))
-        elif type is BlurType.Median_Filter:
+        elif type is BuoyDetector.BlurType.Median_Filter:
             ksize = int(2 * round(radius) + 1)
             return cv2.medianBlur(src, ksize)
         else:
             return cv2.bilateralFilter(src, -1, round(radius), round(radius))
 
     @staticmethod
-    def __cv_dilate(src, kernel, anchor, iterations, border_type, border_value):
+    def __cv_dilate(src, kernel, anchor, iterations, border_type,
+                    border_value):
         """Expands area of higher value in an image.
         Args:
            src: A numpy.ndarray.
@@ -226,7 +223,9 @@ class BuoyDetector:
         else:
             mode = cv2.RETR_LIST
         method = cv2.CHAIN_APPROX_SIMPLE
-        _, contours, hierarchy = cv2.findContours(input, mode=mode, method=method)
+        _, contours, hierarchy = cv2.findContours(input,
+                                                  mode=mode,
+                                                  method=method)
         return contours
 
     @staticmethod
@@ -277,7 +276,8 @@ class BuoyDetector:
             solid = 100 * area / cv2.contourArea(hull)
             if solid < solidity[0] or solid > solidity[1]:
                 continue
-            if len(contour) < min_vertex_count or len(contour) > max_vertex_count:
+            if len(contour) < min_vertex_count or len(
+                    contour) > max_vertex_count:
                 continue
             ratio = (float)(w) / h
             if ratio < min_ratio or ratio > max_ratio:
@@ -299,5 +299,3 @@ class BuoyDetector:
             self.filter_contours_output, img_height, img_width, BUOY_HEIGHT
         )
 """
-
-BlurType = Enum("BlurType", "Box_Blur Gaussian_Blur Median_Filter Bilateral_Filter")
