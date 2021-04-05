@@ -3,12 +3,14 @@ import nav_algo.coordinates as coord
 import nav_algo.SailSensors as SailSensors
 from math import pi
 import serial
-
 import struct
+import time
 
 
 class sensorData:
-    def __init__(self):
+    def __init__(self, coordinate_system=None):
+        self.coordinate_system = coordinate_system
+
         # IMU
         self.pitch = 0
         self.roll = 0
@@ -21,9 +23,11 @@ class sensorData:
 
         # GPS
         self.fix = False
-        self.latitude = 0
-        self.longitude = 0
-        self.velocity = coord.Vector()
+        self.latitude = 0.0
+        self.longitude = 0.0
+        self.velocity = None
+        self.position = None
+        self.prev_time = None
 
         #Sensor objects
         self.IMU = SailSensors.SailIMU()
@@ -81,6 +85,18 @@ class sensorData:
                 self.fix = True
                 self.latitude = nmea_data.latitude
                 self.longitude = nmea_data.longitude
+                new_position = coord.Vector(self.coordinate_system,
+                                            self.latitude, self.longitude)
+                cur_time = time.time()
+
+                if self.prev_time is None:
+                    self.position = new_position
+                    self.prev_time = cur_time
+                else:
+                    self.velocity = new_position.vectorSubtract(self.position)
+                    self.velocity.scale(1.0 / (cur_time - self.prev_time))
+                    self.position = new_position
+                    self.prev_time = cur_time
 
     """Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the
     average of the list of ints. This function assumes that anemometer readings are taken semi-frequently

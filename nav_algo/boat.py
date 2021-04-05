@@ -6,15 +6,14 @@ import nav_algo.coordinates as coord
 class BoatController:
     def __init__(self, coordinate_system=None):
         self.coordinate_system = coordinate_system
-        self.sensors = sens.sensorData()
+        self.sensors = sens.sensorData(coordinate_system)
 
         # servo angles
         self.sail_angle = 0
         self.tail_angle = 0
 
     def getPosition(self):
-        return coord.Vector(self.coordinate_system, self.sensors.latitude,
-                            self.sensors.longitude)
+        return self.sensors.position
 
     def updateSensors(self):
         self.sensors.readAll()

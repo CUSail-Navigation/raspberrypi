@@ -40,7 +40,7 @@ class NavigationController:
         self.radio.transmitString("Waiting for GPS fix...\n")
 
         # wait until we know where we are
-        while not self.boat.sensors.fix:
+        while self.boat.sensors.velocity is None:
             self.boat.sensors.readGPS()  # ok if this is blocking
 
         self.radio.transmitString(

@@ -96,34 +96,36 @@ def endurance(waypoints, opt_dist, offset):
     fourth = coord.Vector(x=waypoints[3].x - factor, y=waypoints[3].y - factor)
     # waypoints placed between corners
     midpoint1 = first.midpoint(second)
-    first_second = (midpoint1.x, midpoint1.y+offset)
+    first_second = (midpoint1.x, midpoint1.y + offset)
     midpoint2 = second.midpoint(third)
     second_third = (midpoint2.x + offset, midpoint2.y)
     midpoint3 = third.midpoint(fourth)
-    third_fourth = (midpoint3.x, midpoint3.y-offset)
+    third_fourth = (midpoint3.x, midpoint3.y - offset)
     midpoint4 = first.midpoint(fourth)
     fourth_first = (midpoint4.x - offset, midpoint4.y)
-    return [first, first_second, second, second_third,
-            third, third_fourth, fourth, fourth_first]
+    return [
+        first, first_second, second, second_third, third, third_fourth, fourth,
+        fourth_first
+    ]
 
 
 def stationKeeping(waypoints, circle_radius, state, opt_angle=45, boat=boat):
     if state == "ENTRY":
         stationKeepingWaypoints = []  # Necessary waypoints
         # entry point to the square
-        square_entries = [waypoints[0].midpoint(waypoints[1]),
-                          waypoints[1].midpoint(waypoints[2]),
-                          waypoints[2].midpoint(waypoints[3]),
-                          waypoints[3].midpoint(waypoints[0])]
+        square_entries = [
+            waypoints[0].midpoint(waypoints[1]),
+            waypoints[1].midpoint(waypoints[2]),
+            waypoints[2].midpoint(waypoints[3]),
+            waypoints[3].midpoint(waypoints[0])
+        ]
         curr_pos = boat.getPosition()
-        shortest_dist = min((curr_pos.xyDist(square_entries[0]), square_entries[0]),
-                            (curr_pos.xyDist(
-                                square_entries[1]), square_entries[1]),
-                            (curr_pos.xyDist(
-                                square_entries[2]), square_entries[2]),
-                            (curr_pos.xyDist(
-                                square_entries[3]), square_entries[3]),
-                            key=lambda x: x[0])
+        shortest_dist = min(
+            (curr_pos.xyDist(square_entries[0]), square_entries[0]),
+            (curr_pos.xyDist(square_entries[1]), square_entries[1]),
+            (curr_pos.xyDist(square_entries[2]), square_entries[2]),
+            (curr_pos.xyDist(square_entries[3]), square_entries[3]),
+            key=lambda x: x[0])
         stationKeepingWaypoints.append(shortest_dist[1])
 
         # center of the square
@@ -140,7 +142,7 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45, boat=boat):
         y_coord = boat.getPosition().y
         boat_direction = boat.sensors.yaw
         # get wind direction relative to boat
-        relative_wind = boat.sensors.wind_direction-boat_direction
+        relative_wind = boat.sensors.wind_direction - boat_direction
         if relative_wind < 0:
             relative_wind += 360
         if relative_wind >= 180:
@@ -160,8 +162,9 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45, boat=boat):
             # place 4 waypoints each 90 deg apart; when angle>2pi, trig functions know to shift input to be in range
             input_angle = first_angle_rad + \
                 loop_direction * i * math.radians(90)
-            keep_waypoints.append((x_coord+circle_radius*math.cos(input_angle)),
-                                  (y_coord+circle_radius*math.sin(input_angle)))
+            keep_waypoints.append(
+                (x_coord + circle_radius * math.cos(input_angle)),
+                (y_coord + circle_radius * math.sin(input_angle)))
         return keep_waypoints
 
     elif state == "EXIT":
@@ -221,42 +224,42 @@ def precisionNavigation(waypoints, offset=5.0, side_length=50.0, boat=boat):
     # find inner and outer waypoints on first side of triangle
     start_point = start_pos
     end_point = botleft_buoy
-    dist = (start_point.xyDist(end_point))/3
+    dist = (start_point.xyDist(end_point)) / 3
     point_line = find_inner_outer_points(start_point, end_point, dist, 0)
     first_waypoint = find_inner_outer_points(point_line, end_point, dist, 1)
     dist_out = 2 * dist
     point_line_2 = find_inner_outer_points(start_point, end_point, dist_out, 0)
-    second_waypoint = find_inner_outer_points(
-        point_line_2, end_point, dist_out, -1)
+    second_waypoint = find_inner_outer_points(point_line_2, end_point,
+                                              dist_out, -1)
     # first offset from buoy
-    dist_buoy = (start_point.xyDist(end_point))/10
+    dist_buoy = (start_point.xyDist(end_point)) / 10
     third_waypoint = buoy_offset(start_point, end_point, dist_buoy)
 
     # find inner and outer waypoints on second side of triangle
     start_point = end_point
     end_point = botright_buoy
 
-    dist = (start_point.xyDist(end_point))/3
+    dist = (start_point.xyDist(end_point)) / 3
     point_line = find_inner_outer_points(start_point, end_point, dist, 0)
     fourth_waypoint = find_inner_outer_points(point_line, end_point, dist, 1)
     dist_out = 2 * dist
     point_line_2 = find_inner_outer_points(start_point, end_point, dist_out, 0)
-    fifth_waypoint = find_inner_outer_points(
-        point_line_2, end_point, dist_out, -1)
+    fifth_waypoint = find_inner_outer_points(point_line_2, end_point, dist_out,
+                                             -1)
     # second offset from buoy
-    dist_buoy = (start_point.xyDist(end_point))/10
+    dist_buoy = (start_point.xyDist(end_point)) / 10
     sixth_waypoint = buoy_offset(start_point, end_point, dist_buoy)
 
     # find inner and outer waypoints on third side of triangle
     start_point = end_point
     end_point = start_point
-    dist = (start_point.xyDist(end_point))/3
+    dist = (start_point.xyDist(end_point)) / 3
     point_line = find_inner_outer_points(start_point, end_point, dist, 0)
     seventh_waypoint = find_inner_outer_points(point_line, end_point, dist, -1)
     dist_out = 2 * dist
     point_line_2 = find_inner_outer_points(start_point, end_point, dist_out, 0)
-    eighth_waypoint = find_inner_outer_points(
-        point_line_2, end_point, dist_out, 1)
+    eighth_waypoint = find_inner_outer_points(point_line_2, end_point,
+                                              dist_out, 1)
     # final waypoint is start_point
     ninth_waypoint = start_pos
 
@@ -267,14 +270,16 @@ def precisionNavigation(waypoints, offset=5.0, side_length=50.0, boat=boat):
     fourth_waypoint = coord.Vector(x=fourth_waypoint[0], y=fourth_waypoint[1])
     fifth_waypoint = coord.Vector(x=fifth_waypoint[0], y=fifth_waypoint[1])
     sixth_waypoint = coord.Vector(x=sixth_waypoint[0], y=sixth_waypoint[1])
-    seventh_waypoint = coord.Vector(
-        x=seventh_waypoint[0], y=seventh_waypoint[1])
+    seventh_waypoint = coord.Vector(x=seventh_waypoint[0],
+                                    y=seventh_waypoint[1])
     eighth_waypoint = coord.Vector(x=eighth_waypoint[0], y=eighth_waypoint[1])
     ninth_waypoint = coord.Vector(x=ninth_waypoint[0], y=ninth_waypoint[1])
 
-    waypoints = [first_waypoint, second_waypoint, third_waypoint,
-                 fourth_waypoint, fifth_waypoint, sixth_waypoint,
-                 seventh_waypoint, eighth_waypoint, ninth_waypoint]
+    waypoints = [
+        first_waypoint, second_waypoint, third_waypoint, fourth_waypoint,
+        fifth_waypoint, sixth_waypoint, seventh_waypoint, eighth_waypoint,
+        ninth_waypoint
+    ]
     return waypoints
 
 
@@ -290,8 +295,9 @@ def getRectangleBox(center, theta):
     corner_two = (center.x + r * (math.cos(theta + math.pi - math.atan(0.5))),
                   center.y + r * (math.sin(theta + math.pi - math.atan(0.5))))
 
-    corner_three = (center.x + r * (math.cos(theta - math.pi + math.atan(0.5))),
-                    center.y + r * (math.sin(theta - math.pi + math.atan(0.5))))
+    corner_three = (center.x + r *
+                    (math.cos(theta - math.pi + math.atan(0.5))), center.y +
+                    r * (math.sin(theta - math.pi + math.atan(0.5))))
 
     corner_four = (center.x + r * (math.cos(theta - math.atan(0.5))),
                    center.y + r * (math.sin(theta - math.atan(0.5))))
@@ -332,10 +338,10 @@ def isCollision(boat_coords, obst_coords):
     obst_front_norm = obst_vecs[0] - obst_vecs[1]
     obst_side_norm = obst_vecs[0] - obst_vecs[3]
 
-    if (check_overlap(boat_vecs, obst_vecs, boat_front_norm) and
-        check_overlap(boat_vecs, obst_vecs, boat_side_norm) and
-        check_overlap(boat_vecs, obst_vecs, obst_front_norm) and
-            check_overlap(boat_vecs, obst_vecs, obst_side_norm)):
+    if (check_overlap(boat_vecs, obst_vecs, boat_front_norm)
+            and check_overlap(boat_vecs, obst_vecs, boat_side_norm)
+            and check_overlap(boat_vecs, obst_vecs, obst_front_norm)
+            and check_overlap(boat_vecs, obst_vecs, obst_side_norm)):
         return True
     else:
         return False
@@ -351,9 +357,9 @@ def getVelocity(point_before, point_after, t):
     """
     if t <= 0:
         return [0, 0]
-    x_dist = point_after.x-point_before.x
-    y_dist = point_after.y-point_before.y
-    total_dist = (x_dist**2+y_dist**2)**0.5
+    x_dist = point_after.x - point_before.x
+    y_dist = point_after.y - point_before.y
+    total_dist = (x_dist**2 + y_dist**2)**0.5
     speed = total_dist / t
     theta = math.atan(y_dist / x_dist)
     return [speed, theta]
@@ -381,16 +387,18 @@ def assessCollision(obst_point, obst_point_2, time, boat=boat):
       """
     if (obst_point is None or obst_point_2 is None):
         return None
-    [obst_speed, obst_theta] = getVelocity(
-        obst_point, obst_point_2, time)
+    [obst_speed, obst_theta] = getVelocity(obst_point, obst_point_2, time)
     collision_time = 0
     while (collision_time <= 15):
-        new_obstacle_point = (obst_point.x + collision_time * obst_speed * math.cos(obst_theta),
-                              obst_point.y + collision_time * obst_speed * math.sin(obst_theta))
+        new_obstacle_point = (
+            obst_point.x + collision_time * obst_speed * math.cos(obst_theta),
+            obst_point.y + collision_time * obst_speed * math.sin(obst_theta))
         new_obstacle_box = getRectangleBox(new_obstacle_point, obst_theta)
-        new_boat_box = (boat.getPosition().x + collision_time * boat.sensors.velocity *
+        new_boat_box = (boat.getPosition().x +
+                        collision_time * boat.sensors.velocity.magnitude() *
                         math.cos(math.radians(boat.sensors.yaw)),
-                        boat.getPosition().y + collision_time * boat.sensors.velocity *
+                        boat.getPosition().y +
+                        collision_time * boat.sensors.velocity.magnitude() *
                         math.sin(math.radians(boat.sensors.yaw)))
         if isCollision(new_boat_box, new_obstacle_box):
             return collisionWaypoint(collision_time)
@@ -428,11 +436,13 @@ def collisionAvoidance(buoy_waypoints, boat=boat):
     (x4, y4) = (boat.getPosition().x + dist * second_direction[0],
                 boat.getPosition().y + dist * second_direction[1])
     fourth_waypoint = coord.Vector(x=x4, y=y4)
-    return [first_waypoint, second_waypoint, third_waypoint, fourth_waypoint,
-            boat.getPosition()]
+    return [
+        first_waypoint, second_waypoint, third_waypoint, fourth_waypoint,
+        boat.getPosition()
+    ]
 
 
-def search(waypoints, scalar=3, constant=(100-30*math.pi), boat=boat):
+def search(waypoints, scalar=3, constant=(100 - 30 * math.pi), boat=boat):
     i = 0
     search_waypoints = []
     center_point = boat.getPosition()
