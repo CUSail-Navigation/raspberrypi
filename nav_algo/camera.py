@@ -1,8 +1,6 @@
-from detectors.buoyDetector.buoyDetector import BuoyDetector
-from detectors import BoatDetector
+from nav_algo.computer_vision.detectors.buoyDetector.buoyDetector import BuoyDetector
+from nav_algo.computer_vision.detectors.boatDetector import BoatDetector
 import cv2
-import numpy as np
-import time
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 
@@ -16,10 +14,12 @@ class Camera:
         self.buoyDetector = BuoyDetector()
         self.boatDetector = BoatDetector()
 
-        rawCapture = PiRGBArray(camera, size=(640, 480))
+        self.rawCapture = PiRGBArray(self.camera, size=(640, 480))
 
-    def read(direction, curr_x, curr_y):
-        for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+    def read(self, direction, curr_x, curr_y):
+        for frame in self.camera.capture_continuous(self.rawCapture,
+                                                    format="bgr",
+                                                    use_video_port=True):
 
             frame = frame.array
             max_dimension = max(frame.shape)
@@ -34,6 +34,6 @@ class Camera:
             boatCoords = self.boatDetector.get_boat_coords(
                 direction, curr_x, curr_y)
 
-            rawCapture.truncate(0)
+            self.rawCapture.truncate(0)
 
             return buoyCoords, boatCoords

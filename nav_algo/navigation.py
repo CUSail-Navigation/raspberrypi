@@ -2,10 +2,9 @@ import time
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 import nav_algo.radio as radio
-import nav_algo.sim_gui as gui
 from nav_algo.events import Events
 from nav_algo.navigation_helper import *
-from camera import Camera
+from nav_algo.camera import Camera
 
 
 class NavigationController:
@@ -13,7 +12,6 @@ class NavigationController:
 
     Args:
         waypoints (list of (float, float)): A list of (latitude, longitude) tuples of waypoints.
-        simulation (bool): (Optional) A parameter used to bypass blocking calls.
 
     Attributes:
         DETECTION_RADIUS (float): How close we need to get to a waypoint.
@@ -26,80 +24,72 @@ class NavigationController:
         boat_to_target (Vector): The vector from the boat to the target position.
 
     """
-
-    def __init__(self, event=None, waypoints=[], simulation=False):
+    def __init__(self, event=None, waypoints=[]):
         self.DETECTION_RADIUS = 5.0
 
-        if not simulation:
-            self.coordinate_system = coord.CoordinateSystem(
-                waypoints[0][0], waypoints[0][1])
-            self.waypoints = [
-                coord.Vector(self.coordinate_system, w[0], w[1])
-                for w in waypoints
-            ]
+        self.coordinate_system = coord.CoordinateSystem(
+            waypoints[0][0], waypoints[0][1])
+        self.waypoints = [
+            coord.Vector(self.coordinate_system, w[0], w[1]) for w in waypoints
+        ]
 
-            self.boat = boat.BoatController(
-                coordinate_system=self.coordinate_system)
+        self.boat = boat.BoatController(
+            coordinate_system=self.coordinate_system)
 
-            self.radio = radio.Radio()
-            self.radio.transmitString("Waiting for GPS fix...\n")
+        self.radio = radio.Radio()
+        self.radio.transmitString("Waiting for GPS fix...\n")
 
-            # wait until we know where we are
-            while not self.boat.sensors.fix:
-                self.boat.sensors.readGPS()  # ok if this is blocking
+        # wait until we know where we are
+        while not self.boat.sensors.fix:
+            self.boat.sensors.readGPS()  # ok if this is blocking
 
-            self.radio.transmitString(
-                "Established GPS fix. Beginning navigation...\n")
-            # self.current_waypoint = self.waypoints.pop(0)
-            # self.current_waypoint = self.waypoints[desired_fst_waypoint]
-            # TODO: add modified ^ to event algos before each navigate call
+        self.radio.transmitString(
+            "Established GPS fix. Beginning navigation...\n")
+        # self.current_waypoint = self.waypoints.pop(0)
+        # self.current_waypoint = self.waypoints[desired_fst_waypoint]
+        # TODO: add modified ^ to event algos before each navigate call
 
-            if event == Events.ENDURANCE:
-                # 7 hrs = 25200 sec
-                exit_before = 25200
-                start_time = time.time()
-                loop_waypoints = endurance(
-                    self.waypoints, opt_dist=10, offset=10)
-                self.current_waypoint = loop_waypoints[3]
-                while(time.time() - start_time < exit_before):
-                    self.waypoints = loop_waypoints
-                    self.current_waypoint = self.waypoints.pop(0)
-                    self.navigate
-            elif event == Events.STATION_KEEPING:
-                # to find an optimal radius, 10 for now
-                exit_before = 300
-                circle_radius = 10
-                self.waypoints = stationKeeping(
-                    self.waypoints, circle_radius, "ENTRY")
+        if event == Events.ENDURANCE:
+            # 7 hrs = 25200 sec
+            exit_before = 25200
+            start_time = time.time()
+            loop_waypoints = endurance(self.waypoints, opt_dist=10, offset=10)
+            self.current_waypoint = loop_waypoints[3]
+            while (time.time() - start_time < exit_before):
+                self.waypoints = loop_waypoints
                 self.current_waypoint = self.waypoints.pop(0)
-                self.navigate()
-                # Set timer
-                start_time = time.time()
-                loop_waypoints = stationKeeping(
-                    self.waypoints, circle_radius, "KEEP")
-                while time.time() - start_time < exit_before:
-                    self.waypoints = loop_waypoints
-                    self.current_waypoint = self.waypoints.pop(0)
-                    self.navigate()
-                self.waypoints = stationKeeping(
-                    self.waypoints, circle_radius, "EXIT")
-            elif event == Events.PRECISION_NAVIGATION:
-                self.waypoints = precisionNavigation(self.waypoints)
-            elif event == Events.COLLISION_AVOIDANCE:
-                self.waypoints = collisionAvoidance(self.waypoints)
-                self.current_waypoint = self.waypoints[0]
-                self.navigateDetection()
-            elif event == Events.SEARCH:
-                self.waypoints = search(self.waypoints)
-                self.current_waypoint = self.waypoints[0]
-                self.navigateDetection(event=Events.SEARCH)
-
+                self.navigate
+        elif event == Events.STATION_KEEPING:
+            # to find an optimal radius, 10 for now
+            exit_before = 300
+            circle_radius = 10
+            self.waypoints = stationKeeping(self.waypoints, circle_radius,
+                                            "ENTRY")
             self.current_waypoint = self.waypoints.pop(0)
             self.navigate()
+            # Set timer
+            start_time = time.time()
+            loop_waypoints = stationKeeping(self.waypoints, circle_radius,
+                                            "KEEP")
+            while time.time() - start_time < exit_before:
+                self.waypoints = loop_waypoints
+                self.current_waypoint = self.waypoints.pop(0)
+                self.navigate()
+            self.waypoints = stationKeeping(self.waypoints, circle_radius,
+                                            "EXIT")
+        elif event == Events.PRECISION_NAVIGATION:
+            self.waypoints = precisionNavigation(self.waypoints)
+        elif event == Events.COLLISION_AVOIDANCE:
+            self.waypoints = collisionAvoidance(self.waypoints)
+            self.current_waypoint = self.waypoints[0]
+            self.navigateDetection()
+        elif event == Events.SEARCH:
+            self.waypoints = search(self.waypoints)
+            self.current_waypoint = self.waypoints[0]
+            self.navigateDetection(event=Events.SEARCH)
 
-        else:
-            self.boat = boat.BoatController(simulation=True)
-            self.gui = gui.GUI(self.boat)
+        self.current_waypoint = self.waypoints.pop(0)
+        self.navigate()
 
     def navigate(self):
         """ Execute the navigation algorithm.
@@ -131,12 +121,12 @@ class NavigationController:
 
             self.boat.updateSensors()
             self.boat_position = self.boat.getPosition()
-            (buoy_coords, obst_coords) = Camera.read(
-                self.boat.sensors.yaw, self.boat_position.x, self.boat_position.y)
+            (buoy_coords, obst_coords) = Camera.read(self.boat.sensors.yaw,
+                                                     self.boat_position.x,
+                                                     self.boat_position.y)
             if (buoy_coords is not None & event == Events.SEARCH):
                 # TODO: get buoy pos (buoy_waypoint)
-                buoy_coords = coord.Vector(
-                    x=buoy_coords[0], y=buoy_coords[1])
+                buoy_coords = coord.Vector(x=buoy_coords[0], y=buoy_coords[1])
                 self.current_waypoint = buoy_coords
                 self.waypoints = [buoy_coords]
 
@@ -144,14 +134,15 @@ class NavigationController:
                 obstacle_pos1 = obst_coords
                 # TODO: get obstacle_pos at time t
                 time.sleep(2)
-                snd_read = Camera.read(
-                    self.boat.sensors.yaw, self.boat_position.x, self.boat_position.y)
+                snd_read = Camera.read(self.boat.sensors.yaw,
+                                       self.boat_position.x,
+                                       self.boat_position.y)
                 obstacle_pos2 = snd_read[0]
-                avoidance_waypoint = assessCollision(
-                    obstacle_pos1, obstacle_pos2, 2)
+                avoidance_waypoint = assessCollision(obstacle_pos1,
+                                                     obstacle_pos2, 2)
                 if avoidance_waypoint is not None:
-                    avoidance_waypoint = coord.Vector(
-                        x=avoidance_waypoint[0], y=avoidance_waypoint[1])
+                    avoidance_waypoint = coord.Vector(x=avoidance_waypoint[0],
+                                                      y=avoidance_waypoint[1])
                     self.current_waypoint = avoidance_waypoint
                     self.waypoints.insert(0, avoidance_waypoint)
 
@@ -160,10 +151,10 @@ class NavigationController:
                         self.current_waypoint) < self.DETECTION_RADIUS:
                     if len(self.waypoints) > 1:
                         self.current_waypoint = self.waypoints[1]
-                        del(self.waypoints[0])
+                        del (self.waypoints[0])
                     else:
                         self.current_waypoint = None
-                        del(self.waypoints[0])
+                        del (self.waypoints[0])
                         break
 
             sailing_angle = newSailingAngle(self.boat, self.current_waypoint)

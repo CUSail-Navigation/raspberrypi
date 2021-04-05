@@ -1,7 +1,0 @@
-Event: StationKeeping
-BoatStartPosition: 0.0, 0.0
-WindSpeed: 5.0, WindDirection: 25.0
-35, 35
-55, 35
-55, 20
-25, 20
