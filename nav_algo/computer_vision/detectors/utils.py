@@ -9,9 +9,9 @@ FOCAL_LENGTH = 3.60  # focal length of raspberry pi cam 1
 def find_distances(contours_output, img_height, img_width, obstacle_width):
     """Calculates distances from each contour and creates list of obstacle distances from camera.
     Args:
-      img_height: height of image passed in, in pixels
-    Return:
-      A list where each element represents an obstacle distance in meters.
+      img_height (int): height of image passed in, in pixels
+    Returns:
+      list: A list where each element represents an obstacle distance in meters.
     """
     distances = []
     x_displacements = []
@@ -30,9 +30,9 @@ def find_distance_largest_contour(contours_output, img_height, img_width,
                                   obstacle_width):
     """Calculates distances from each contour and creates list of obstacle distances from camera.
     Args:
-      img_height: height of image passed in, in pixels
-    Return:
-      A list where each element represents an obstacle distance in meters.
+      img_height (int): height of image passed in, in pixels
+    Returns:
+      list: A list where each element represents an obstacle distance in meters.
     """
     c = max(contours_output, key=cv2.contourArea)
     center, size, angle = cv2.minAreaRect(c)
@@ -50,8 +50,9 @@ def get_coords(distance, x_displacement, direction, curr_x, curr_y):
     x and y coordinates of the center of an obstacle given a calculated [distance] in front
     of the boat at coordinates [curr_x], [curr_y] facing [direction]
 
-    Return:
-      A pair of coordinates x, y representing obstacle center.
+    Returns:
+      float: The x coordinate of the obstacle center.
+      float: The y coordinate of the obstacle center.
     """
     # TODO: Convert based on x displacement
 
