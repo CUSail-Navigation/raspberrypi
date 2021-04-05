@@ -14,7 +14,6 @@ class BoatDetector:
         """
         Initializes all values to presets or None if need to be set
         """
-
         self.img_height = img_height
         self.img_width = img_width
 

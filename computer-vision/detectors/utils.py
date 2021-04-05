@@ -27,7 +27,6 @@ def find_distances(contours_output, img_height, img_width, obstacle_width):
 
     return distances, x_displacements
 
-
 """Calculates distances from each contour and creates list of obstacle distances from camera.
 Args:
   img_height: height of image passed in, in pixels
@@ -46,7 +45,6 @@ def find_distance_largest_contour(contours_output, img_height, img_width, obstac
     x_displacement = center - img_width / 2
 
     return distance, x_displacement
-
 
 '''
 get_coord(distance, x_displacement, direction, curr_x, curr_y) returns the

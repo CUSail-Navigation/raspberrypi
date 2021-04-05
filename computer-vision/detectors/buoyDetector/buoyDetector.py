@@ -257,7 +257,7 @@ class BuoyDetector:
         for d, x in zip(dists, x_offsets):
             coords_list.append(get_coords(d, x, direction, curr_x, curr_y))
         return coord_list
-
+      
 
 BlurType = Enum(
     'BlurType', 'Box_Blur Gaussian_Blur Median_Filter Bilateral_Filter')
