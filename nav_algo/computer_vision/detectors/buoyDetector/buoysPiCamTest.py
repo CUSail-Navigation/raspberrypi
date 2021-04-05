@@ -1,5 +1,5 @@
 # from detectors.buoyDetector.buoyDetector import BuoyDetector
-from buoyDetectorPi import *
+from nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi import *
 import cv2
 import numpy as np
 import time
@@ -17,9 +17,11 @@ def start():
 
     print("Press q to quit.")
 
-    for frame in camera.capture_continuous(
-        rawCapture, format="bgr", use_video_port=True):
+    for frame in camera.capture_continuous(rawCapture,
+                                           format="bgr",
+                                           use_video_port=True):
         run()
+
 
 def run():
 
@@ -49,6 +51,8 @@ def run():
 
     # press q to quit
     if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
+        exit(0)
 
-start()
+
+if __name__ == '__main__':
+    start()
