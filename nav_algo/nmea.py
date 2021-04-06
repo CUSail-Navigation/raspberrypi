@@ -17,7 +17,6 @@ class NMEA:
     
     Raises:
         TypeError: If the input sentence is not a string.
-        ValueError: If the input is not a valid NMEA sentence.
 
     Attributes:
         utc (UTC): The UTC time at which the NMEA sentence was generated.
