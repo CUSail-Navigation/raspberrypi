@@ -98,13 +98,19 @@ class NavigationController:
 
         """
         while self.current_waypoint is not None:
-            time.sleep(2)  # TODO how often should this run?
+            all_waypts = [pt for pt in self.waypoints]
+            all_waypts.append(self.current_waypoint)
+            self.radio.printAllWaypoints(all_waypts)
+            time.sleep(4)  # TODO how often should this run?
 
             self.boat.updateSensors()
             self.boat_position = self.boat.getPosition()
 
             if self.boat_position.xyDist(
                     self.current_waypoint) < self.DETECTION_RADIUS:
+                # hit waypoint -- send data back to basestation
+                self.radio.printHitWaypoint(self.current_waypoint)
+
                 if len(self.waypoints) > 0:
                     self.current_waypoint = self.waypoints.pop(0)
                 else:
