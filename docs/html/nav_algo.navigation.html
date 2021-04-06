@@ -1,25 +1,33 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>nav_algo.navigation module &mdash; CUSail 1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
   
+  
+
   
   
     <link rel="canonical" href="https://cusail-navigation.github.io/intrasite/nav_algo.navigation.html"/>
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -31,14 +39,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="nav_algo.nmea module" href="nav_algo.nmea.html" />
-    <link rel="prev" title="nav_algo.coordinates module" href="nav_algo.coordinates.html" />
+    <link rel="next" title="nav_algo.navigation_helper module" href="nav_algo.navigation_helper.html" />
+    <link rel="prev" title="nav_algo.events module" href="nav_algo.events.html" />
 <script type="text/javascript">
   window.onload = function () {
     // document.body.innerHTML = document.body.innerHTML.replace(/ module/g, '');
@@ -82,6 +86,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -93,10 +98,18 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">raspberrypi</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="nav_algo.html">nav_algo package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="nav_algo.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.computer_vision.html">nav_algo.computer_vision package</a></li>
+</ul>
+</li>
 <li class="toctree-l3 current"><a class="reference internal" href="nav_algo.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.SailSensors.html">nav_algo.SailSensors module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.boat.html">nav_algo.boat module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.camera.html">nav_algo.camera module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.coordinates.html">nav_algo.coordinates module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.events.html">nav_algo.events module</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">nav_algo.navigation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.navigation_helper.html">nav_algo.navigation_helper module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.nmea.html">nav_algo.nmea module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.radio.html">nav_algo.radio module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.sensors.html">nav_algo.sensors module</a></li>
@@ -113,6 +126,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -147,11 +161,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="modules.html">raspberrypi</a> &raquo;</li>
         
@@ -162,7 +178,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/nav_algo.navigation.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -176,143 +192,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-nav_algo.navigation">
-<span id="nav-algo-navigation-module"></span><h1>nav_algo.navigation module<a class="headerlink" href="#module-nav_algo.navigation" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="nav_algo.navigation.NavigationController">
-<em class="property">class </em><code class="sig-prename descclassname">nav_algo.navigation.</code><code class="sig-name descname">NavigationController</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">waypoints</span></em>, <em class="sig-param"><span class="n">simulation</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation.NavigationController" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A controller class for the navigation algorithm.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>waypoints</strong> (<em>list of</em><em> (</em><em>float</em><em>, </em><em>float</em><em>)</em>) – A list of (latitude, longitude) tuples of waypoints.</p></li>
-<li><p><strong>simulation</strong> (<em>bool</em>) – (Optional) A parameter used to bypass blocking calls.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt id="nav_algo.navigation.NavigationController.DETECTION_RADIUS">
-<code class="sig-name descname">DETECTION_RADIUS</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.DETECTION_RADIUS" title="Permalink to this definition">¶</a></dt>
-<dd><p>How close we need to get to a waypoint.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="nav_algo.navigation.NavigationController.BEATING">
-<code class="sig-name descname">BEATING</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.BEATING" title="Permalink to this definition">¶</a></dt>
-<dd><p>The beating parameter (width of a beating path).</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="nav_algo.navigation.NavigationController.DELTA_ALPHA">
-<code class="sig-name descname">DELTA_ALPHA</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.DELTA_ALPHA" title="Permalink to this definition">¶</a></dt>
-<dd><p>The smallest heading angle change we can control.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="nav_algo.navigation.NavigationController.coordinate_system">
-<code class="sig-name descname">coordinate_system</code><em class="property">: CoordinateSystem</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.coordinate_system" title="Permalink to this definition">¶</a></dt>
-<dd><p>The global coordinate system.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="nav_algo.navigation.NavigationController.waypoints">
-<code class="sig-name descname">waypoints</code><em class="property">: list of Vector</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.waypoints" title="Permalink to this definition">¶</a></dt>
-<dd><p>Position vectors of waypoints.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="nav_algo.navigation.NavigationController.boat">
-<code class="sig-name descname">boat</code><em class="property">: BoatController</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.boat" title="Permalink to this definition">¶</a></dt>
-<dd><p>A representation of the boat.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="nav_algo.navigation.NavigationController.radio">
-<code class="sig-name descname">radio</code><em class="property">: Radio</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.radio" title="Permalink to this definition">¶</a></dt>
-<dd><p>Prints navigation data to the base station.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="nav_algo.navigation.NavigationController.current_waypoint">
-<code class="sig-name descname">current_waypoint</code><em class="property">: Vector</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.current_waypoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>The current target waypoint.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="nav_algo.navigation.NavigationController.boat_position">
-<code class="sig-name descname">boat_position</code><em class="property">: Vector</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.boat_position" title="Permalink to this definition">¶</a></dt>
-<dd><p>The current position of the boat.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="nav_algo.navigation.NavigationController.boat_to_target">
-<code class="sig-name descname">boat_to_target</code><em class="property">: Vector</em><a class="headerlink" href="#nav_algo.navigation.NavigationController.boat_to_target" title="Permalink to this definition">¶</a></dt>
-<dd><p>The vector from the boat to the target position.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="nav_algo.navigation.NavigationController.navigate">
-<code class="sig-name descname">navigate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation.NavigationController.navigate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute the navigation algorithm.</p>
-<p>This is a blocking call that runs until all waypoints have been hit.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="nav_algo.navigation.NavigationController.newSailingAngle">
-<code class="sig-name descname">newSailingAngle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation.NavigationController.newSailingAngle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determines the best angle to sail at.</p>
-<p>The sailboat follows a locally optimal path (maximize vmg while minimizing
-directional changes) until the global optimum is “better” (based on the
-hysterisis factor).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The best angle to sail (in the global coordinate system).</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="nav_algo.navigation.NavigationController.optAngle">
-<code class="sig-name descname">optAngle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">right</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation.NavigationController.optAngle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determines the best angle to sail on either side of the wind.</p>
-<p>The “best angle” maximizes the velocity made good toward the target.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>right</strong> (<em>bool</em>) – True if evaluating the right side of the wind, False for left.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The best angle to sail (in the global coordinate system).
-float: The velocity made good at the best angle.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="nav_algo.navigation.NavigationController.polar">
-<code class="sig-name descname">polar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation.NavigationController.polar" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the polar diagram for a given angle relative to the wind.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>angle</strong> (<em>float</em>) – A potential boat heading relative to the absolute wind direction.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A unit boat velocity vector in the global coordinate system.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="nav_algo.coordinates.html#nav_algo.coordinates.Vector" title="nav_algo.coordinates.Vector">Vector</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="nav-algo-navigation-module">
+<h1>nav_algo.navigation module<a class="headerlink" href="#nav-algo-navigation-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -320,29 +201,29 @@ float: The velocity made good at the best angle.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="nav_algo.nmea.html" class="btn btn-neutral float-right" title="nav_algo.nmea module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="nav_algo.coordinates.html" class="btn btn-neutral float-left" title="nav_algo.coordinates module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="nav_algo.navigation_helper.html" class="btn btn-neutral float-right" title="nav_algo.navigation_helper module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nav_algo.events.html" class="btn btn-neutral float-left" title="nav_algo.events module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, CUSail Navigation Subteam
+        &#169; Copyright 2020, CUSail Navigation Subteam.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -350,7 +231,6 @@ float: The velocity made good at the best angle.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

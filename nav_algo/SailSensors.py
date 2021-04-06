@@ -1,4 +1,3 @@
-
 from smbus2 import SMBus, i2c_msg
 from Adafruit_ADS1x15 import ADS1x15 as ADS
 import serial
@@ -6,12 +5,11 @@ import serial
 IMU_ADDRESS = 0x77
 ADC_ADDRESS = 0x48
 
-"""
-This class is used to create a new instance of an I2C sensor module for communication.
-It also contains functions to communicate with the module.
-"""
-class I2CDevice:
 
+class I2CDevice:
+    """This class is used to create a new instance of an I2C sensor module for communication.
+    It also contains functions to communicate with the module.
+    """
     def getDeviceAddress(self):
         return self.deviceAddress
 
@@ -24,132 +22,136 @@ class I2CDevice:
     def getName(self):
         return self.name
 
-    """
-    initializes the class
-    int deviceAddress (needs to be found using sudo i2cdetect -y 1)
-    int i2cBusIndex (Should be 0, b/c there is only one bus on the pi)
-    """
-    def __init__(self,deviceAddress,i2cBusIndex):
+    def __init__(self, deviceAddress, i2cBusIndex):
+        """initializes the class.
+
+        Args:
+            deviceAddress (int): needs to be found using sudo i2cdetect -y 1.
+            i2cBusIndex (int): Should be 0, b/c there is only one bus on the pi.
+        """
         self.deviceAddress = deviceAddress
         self.i2cBusIndex = i2cBusIndex
         self.i2cBus = SMBus(self.i2cBusIndex)
         return
 
-    """
-    Reads a block of data from the i2c device register.
-    Parameters:
-    -byte offset: integer value for if you want to offset your data collection from the register
-    by a ceratain amount of bytes(default 0)
-    -int bytenumber the number of bytes you would like to read from the device's register
-    """
-    def readBlockData(self,byteNumber,offset = 0x0):
-        return self.i2cBus.read_i2c_block_data(self.deviceAddress,offset,byteNumber)
+    def readBlockData(self, byteNumber, offset=0x0):
+        """Reads a block of data from the i2c device register.
 
-    """
-    Writes a block of data from the i2c device register.
-    Parameters:
-    -byte offset: integer value for if you want to offset your data collection from the register
-    by a ceratain amount of bytes(default 0)
-    -list of bytes msg
-    """
-    def writeBlockData(self, msg, offset = 0x0):
+        Args:
+            bytenumber (int): the number of bytes you would like to read from the device's register.
+            offset (int): integer value for the byte offset of data collection from the register.
+        """
+        return self.i2cBus.read_i2c_block_data(self.deviceAddress, offset,
+                                               byteNumber)
 
-        return self.i2cBus.write_i2c_block_data(self.deviceAddress,offset,msg)
+    def writeBlockData(self, msg, offset=0x0):
+        """Writes a block of data from the i2c device register.
 
+        Args:
+            msg (list): list of bytes to send.
+            offset (int): integer value for the byte offset of data collection from the register.
+        """
+        return self.i2cBus.write_i2c_block_data(self.deviceAddress, offset,
+                                                msg)
 
-    """
-    Sends a hexadecimal list to the desired component.
-    parameters:
-    -byte list msg (needs to be a list of hexadecimal commands specific to the device)
-    """
-    def i2cWr(self,msg):
-        send = i2c_msg.write(self.getDeviceAddress(),msg)
+    def i2cWr(self, msg):
+        """Sends a hexadecimal list to the desired component.
+
+        Args:
+            msg (list): list of bytes (needs to be a list of hexadecimal commands specific to the device).
+        """
+        send = i2c_msg.write(self.getDeviceAddress(), msg)
         self.geti2cBus().i2c_rdwr(send)
         return
 
-    """
-    Sends a hexadecimal-command list to the desired component. The function then
-    waits for and retrieves a response from the device with a length based on
-    parameters:
-    -int recieve. Returns a list of bytes with length of int recieve
-    -byte list send (sends this list of hexadecimal commands)
-    -int recieve(the amount of bytes in a list to retrieve from the device)
+    def i2cRdwr(self, send, recieve):
+        """Sends a hexadecimal-command list to the desired component.
+        The function then waits for and retrieves a response from the device 
+        with a length based on the parameters.
 
-    """
-    def i2cRdwr(self,send,recieve):
-        write = i2c_msg.write(self.getDeviceAddress(),send)
-        recieve = i2c_msg.read(self.getDeviceAddress(),recieve)
-        return self.geti2cBus().i2c_rdwr(write,recieve)
+        Args:
+            send (list): a list of bytes (sends this list of hexadecimal commands).
+            recieve (int): the amount of bytes in a list to retrieve from the device.
+        
+        Returns:
+            list: a list of bytes with length of int recieve.
+        """
+        write = i2c_msg.write(self.getDeviceAddress(), send)
+        recieve = i2c_msg.read(self.getDeviceAddress(), recieve)
+        return self.geti2cBus().i2c_rdwr(write, recieve)
 
 
-"""
-Superclass used to create a UARTDevice. Contians various functions for communication
-"""
 class UARTDevice:
-
-    def __init__(self,baudrate,serialPort = '/dev/ttyS0',t = 1):
-        self.serialStream = serial.Serial(port = serialPort, baudrate =  baudrate, timeout = t)
+    """
+    Superclass used to create a UARTDevice. Contians various functions for communication
+    """
+    def __init__(self, baudrate, serialPort='/dev/ttyS0', t=1):
+        self.serialStream = serial.Serial(port=serialPort,
+                                          baudrate=baudrate,
+                                          timeout=t)
         return
 
-    def sendUart(self,message):
+    def sendUart(self, message):
         self.serialStream.write(message)
         return
 
-    def recieveUartBytes(self,bytes = 1):
+    def recieveUartBytes(self, bytes=1):
         self.serialStream.read(bytes)
         return
 
 
-
-"""
-This class contains the object of the ADC to be used by other
-classes for analog devices.
-"""
 class ADCDevice:
-
+    """
+    This class contains the object of the ADC to be used by other
+    classes for analog devices.
+    """
     mainADC = ADS.ADS1015(ADC_ADDRESS)
 
-    """
-    Init function for an arbitrary ADCDevice
-    Parameter:
-    -pinNumber: must be an int between 0 and 3, based which pin on the
-    ADC the sensor is connected to.
-    """
-    def __init__(self,pinNumber):
+    def __init__(self, pinNumber):
+        """Init function for an arbitrary ADCDevice.
+        
+        Args:
+            pinNumber (int): between 0 and 3, which pin on the ADC the sensor is connected to.
+        """
         self.pinNumber = pinNumber
         return
 
+    def readADC(self, gain=1):
+        """This function reads the ADC present on the I2C bus.
 
-    """This function reads the ADC present on the I2C bus
-        Parameters:
-        -gain: The gain of the sensor input in int form
-    """
-    def readADC(self,gain = 1):
+        Args:
+            gain (int): The gain of the sensor input.
+        """
         return ADCDevice.mainADC.read_adc(self.pinNumber)
 
-"""
-SailIMU implements a class used to connect the component to it's proper
-communication protocol. This class also implements functions to return raw data and
-turn on/off the sensors.
-"""
+
 class SailIMU(I2CDevice):
+    """
+    SailIMU implements a class used to connect the component to it's proper
+    communication protocol. This class also implements functions to return raw data and
+    turn on/off the sensors.
+    """
     imuCommands = {
-    "readAccelerometerRaw": 0x42,
-    "readOrientationEuler": 0x01,
-    "readCompassRaw": 0x43
+        "readAccelerometerRaw": 0x42,
+        "readOrientationEuler": 0x01,
+        "readCompassRaw": 0x43
     }
-    """
-    Initializes the sensor object, default for i2cBusIndex is 1 because the raspberry pi only has 1 bus
-    """
-    def __init__(self,deviceAddress = IMU_ADDRESS,i2cBusIndex = 1):
-        super().__init__(deviceAddress,i2cBusIndex)
+
+    def __init__(self, deviceAddress=IMU_ADDRESS, i2cBusIndex=1):
+        """
+        Initializes the sensor object, default for i2cBusIndex is 1 because the raspberry pi only has 1 bus
+        """
+        super().__init__(deviceAddress, i2cBusIndex)
         return
 
-    """
-    Reads the IMU and returns a list of 12 bytes representing euler angles.
-    """
     def i2c_read_imu(self):
-        msg = [SailIMU.imuCommands["readAccelerometerRaw"],SailIMU.imuCommands["readOrientationEuler"]]
+        """
+        Reads the IMU and returns a list of 12 bytes representing euler angles.
+        """
+        msg = [
+            SailIMU.imuCommands["readAccelerometerRaw"],
+            SailIMU.imuCommands["readOrientationEuler"]
+        ]
         self.i2cWr(msg)
         msg = [SailIMU.imuCommands["readCompassRaw"]]
         self.i2cWr(msg)
@@ -157,56 +159,44 @@ class SailIMU(I2CDevice):
         return data
 
 
-
-"""
-SailEncoder implements a class used to connect the component to it's proper
-communication protocol. This class also implements functions to return raw data and
-turn on/off the sensors.
-"""
 class SailEncoder:
-
+    """
+    SailEncoder implements a class used to connect the component to it's proper
+    communication protocol. This class also implements functions to return raw data and
+    turn on/off the sensors.
+    """
     def __init__(self):
         return
 
-
-
-"""
-SailGPS implements a class used to connect the component to it's proper
-communication protocol. This class also implements functions to return raw data and
-turn on/off the sensors.
-"""
 
 class SailGPS:
-
+    """
+    SailGPS implements a class used to connect the component to it's proper
+    communication protocol. This class also implements functions to return raw data and
+    turn on/off the sensors.
+    """
     def __init__(self):
         return
 
 
-"""
-SailAnemometer implements a class used to connect the component to it's proper
-communication protocol. This class also implements functions to return raw data and
-turn on/off the sensors.
-"""
 class SailAnemometer(ADCDevice):
-
     """
-    Initializes the anemometer.
-    Parameter:
-    -pinNumber: pin the anemometer is plugged into in the form of an
-    int between 0 and 3
+    SailAnemometer implements a class used to connect the component to it's proper
+    communication protocol. This class also implements functions to return raw data and
+    turn on/off the sensors.
     """
-    def __init__(self,pinNumber):
+    def __init__(self, pinNumber):
+        """Initializes the anemometer.
+        
+        Args:
+            pinNumber (int): between 0 and 3, pin the anemometer is plugged into.
+        """
         super().__init__(pinNumber)
 
-    """
-    Returns the given voltage of the anemometer using the ADC.
-    Parameter:
-    -gain: the multiplication value of the voltage, must be an int
-    """
-    def readAnemometerVoltage(self,gain = 1):
+    def readAnemometerVoltage(self, gain=1):
+        """Returns the given voltage of the anemometer using the ADC.
+        
+        Args:
+            gain (int): the multiplication value of the voltage
+        """
         return self.readADC(gain)
-
-    """
-    Reads data sent to GPS and translates into coordinates.
-    """
-

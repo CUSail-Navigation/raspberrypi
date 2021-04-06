@@ -98,11 +98,10 @@ class sensorData:
                     self.position = new_position
                     self.prev_time = cur_time
 
-    """Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the
-    average of the list of ints. This function assumes that anemometer readings are taken semi-frequently
-    parameter: newValue - int denoting number to be added to the """
-
     def _addAverage(self, newValue):
+        """Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the
+        average of the list of ints. This function assumes that anemometer readings are taken semi-frequently
+        parameter: newValue - int denoting number to be added to the """
         self.anemomSMA.append(newValue) / 2
         if (len(self.anemomSMA) > 1):
             self.anemomSMA[-2] = self.anemomSMA[-2] / 2

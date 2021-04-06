@@ -1,25 +1,33 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>nav_algo.coordinates module &mdash; CUSail 1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
   
+  
+
   
   
     <link rel="canonical" href="https://cusail-navigation.github.io/intrasite/nav_algo.coordinates.html"/>
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -31,14 +39,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="nav_algo.navigation module" href="nav_algo.navigation.html" />
-    <link rel="prev" title="nav_algo.boat module" href="nav_algo.boat.html" />
+    <link rel="next" title="nav_algo.events module" href="nav_algo.events.html" />
+    <link rel="prev" title="nav_algo.camera module" href="nav_algo.camera.html" />
 <script type="text/javascript">
   window.onload = function () {
     // document.body.innerHTML = document.body.innerHTML.replace(/ module/g, '');
@@ -82,6 +86,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -93,10 +98,18 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">raspberrypi</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="nav_algo.html">nav_algo package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="nav_algo.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.computer_vision.html">nav_algo.computer_vision package</a></li>
+</ul>
+</li>
 <li class="toctree-l3 current"><a class="reference internal" href="nav_algo.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.SailSensors.html">nav_algo.SailSensors module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.boat.html">nav_algo.boat module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.camera.html">nav_algo.camera module</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">nav_algo.coordinates module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.events.html">nav_algo.events module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.navigation.html">nav_algo.navigation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.navigation_helper.html">nav_algo.navigation_helper module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.nmea.html">nav_algo.nmea module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.radio.html">nav_algo.radio module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.sensors.html">nav_algo.sensors module</a></li>
@@ -113,6 +126,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -147,11 +161,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="modules.html">raspberrypi</a> &raquo;</li>
         
@@ -162,7 +178,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/nav_algo.coordinates.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -195,20 +211,35 @@ of a coordinate system with origin at LAT_OFFSET and LONG_OFFSET.</p>
 </dl>
 <dl class="py attribute">
 <dt id="nav_algo.coordinates.CoordinateSystem.LAT_OFFSET">
-<code class="sig-name descname">LAT_OFFSET</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.CoordinateSystem.LAT_OFFSET" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">LAT_OFFSET</code><a class="headerlink" href="#nav_algo.coordinates.CoordinateSystem.LAT_OFFSET" title="Permalink to this definition">¶</a></dt>
 <dd><p>The latitude of the origin of the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="nav_algo.coordinates.CoordinateSystem.LONG_OFFSET">
-<code class="sig-name descname">LONG_OFFSET</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.CoordinateSystem.LONG_OFFSET" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">LONG_OFFSET</code><a class="headerlink" href="#nav_algo.coordinates.CoordinateSystem.LONG_OFFSET" title="Permalink to this definition">¶</a></dt>
 <dd><p>The longitude of the origin of the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="nav_algo.coordinates.CoordinateSystem.EARTH_RADIUS">
-<code class="sig-name descname">EARTH_RADIUS</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.CoordinateSystem.EARTH_RADIUS" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">EARTH_RADIUS</code><a class="headerlink" href="#nav_algo.coordinates.CoordinateSystem.EARTH_RADIUS" title="Permalink to this definition">¶</a></dt>
 <dd><p>The radius of the Earth (in meters).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -236,32 +267,57 @@ pass in an angle.</p>
 </dl>
 <dl class="py attribute">
 <dt id="nav_algo.coordinates.Vector.x">
-<code class="sig-name descname">x</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.Vector.x" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">x</code><a class="headerlink" href="#nav_algo.coordinates.Vector.x" title="Permalink to this definition">¶</a></dt>
 <dd><p>The x component of the vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="nav_algo.coordinates.Vector.y">
-<code class="sig-name descname">y</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.Vector.y" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">y</code><a class="headerlink" href="#nav_algo.coordinates.Vector.y" title="Permalink to this definition">¶</a></dt>
 <dd><p>The y component of the vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="nav_algo.coordinates.Vector.coordinate_system">
-<code class="sig-name descname">coordinate_system</code><em class="property">: CoordinateSystem</em><a class="headerlink" href="#nav_algo.coordinates.Vector.coordinate_system" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">coordinate_system</code><a class="headerlink" href="#nav_algo.coordinates.Vector.coordinate_system" title="Permalink to this definition">¶</a></dt>
 <dd><p>(Optional) The coordinate system in which the vector lies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#nav_algo.coordinates.CoordinateSystem" title="nav_algo.coordinates.CoordinateSystem">CoordinateSystem</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="nav_algo.coordinates.Vector.latitude">
-<code class="sig-name descname">latitude</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.Vector.latitude" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">latitude</code><a class="headerlink" href="#nav_algo.coordinates.Vector.latitude" title="Permalink to this definition">¶</a></dt>
 <dd><p>(Optional) The latitude of the position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="nav_algo.coordinates.Vector.longitude">
-<code class="sig-name descname">longitude</code><em class="property">: float</em><a class="headerlink" href="#nav_algo.coordinates.Vector.longitude" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">longitude</code><a class="headerlink" href="#nav_algo.coordinates.Vector.longitude" title="Permalink to this definition">¶</a></dt>
 <dd><p>(Optional) The longitude of the position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -463,29 +519,29 @@ pass in an angle.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="nav_algo.navigation.html" class="btn btn-neutral float-right" title="nav_algo.navigation module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="nav_algo.boat.html" class="btn btn-neutral float-left" title="nav_algo.boat module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="nav_algo.events.html" class="btn btn-neutral float-right" title="nav_algo.events module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nav_algo.camera.html" class="btn btn-neutral float-left" title="nav_algo.camera module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, CUSail Navigation Subteam
+        &#169; Copyright 2020, CUSail Navigation Subteam.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -493,7 +549,6 @@ pass in an angle.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

@@ -1,25 +1,33 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Index &mdash; CUSail 1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
   
+  
+
   
   
     <link rel="canonical" href="https://cusail-navigation.github.io/intrasite/genindex.html"/>
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -31,10 +39,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
 <script type="text/javascript">
@@ -80,6 +84,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -91,10 +96,18 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">raspberrypi</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="nav_algo.html">nav_algo package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="nav_algo.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.computer_vision.html">nav_algo.computer_vision package</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="nav_algo.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.SailSensors.html">nav_algo.SailSensors module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.boat.html">nav_algo.boat module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.camera.html">nav_algo.camera module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.coordinates.html">nav_algo.coordinates module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.events.html">nav_algo.events module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.navigation.html">nav_algo.navigation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nav_algo.navigation_helper.html">nav_algo.navigation_helper module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.nmea.html">nav_algo.nmea module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.radio.html">nav_algo.radio module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nav_algo.sensors.html">nav_algo.sensors module</a></li>
@@ -111,6 +124,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -145,18 +159,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Index</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -177,20 +193,19 @@
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
- | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
- | <a href="#W"><strong>W</strong></a>
  | <a href="#X"><strong>X</strong></a>
  | <a href="#Y"><strong>Y</strong></a>
  | <a href="#Z"><strong>Z</strong></a>
@@ -199,43 +214,77 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.Vector.angle">angle() (nav_algo.coordinates.Vector method)</a>
+      <li><a href="nav_algo.computer_vision.detectors.HorizonDetector.html#nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.Line.angle">angle() (nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.Line method)</a>
+
+      <ul>
+        <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.Vector.angle">(nav_algo.coordinates.Vector method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.BEATING">BEATING (nav_algo.navigation.NavigationController attribute)</a>
+      <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#nav_algo.computer_vision.detectors.boatDetector.BoatDetector.BlurType.Bilateral_Filter">Bilateral_Filter (nav_algo.computer_vision.detectors.boatDetector.BoatDetector.BlurType attribute)</a>
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.BlurType.Bilateral_Filter">(nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.BlurType attribute)</a>
 </li>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.boat">boat (nav_algo.navigation.NavigationController attribute)</a>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BlurType.Bilateral_Filter">(nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BlurType attribute)</a>
 </li>
+        <li><a href="nav_algo.computer_vision.detectors.HorizonDetector.html#nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.BlurType.Bilateral_Filter">(nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.BlurType attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#nav_algo.computer_vision.detectors.boatDetector.BoatDetector.BOAT_SIZE">BOAT_SIZE (nav_algo.computer_vision.detectors.boatDetector.BoatDetector attribute)</a>
+</li>
+      <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#nav_algo.computer_vision.detectors.boatDetector.BoatDetector">BoatDetector (class in nav_algo.computer_vision.detectors.boatDetector)</a>
+</li>
+      <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#nav_algo.computer_vision.detectors.boatDetector.BoatDetector.BlurType">BoatDetector.BlurType (class in nav_algo.computer_vision.detectors.boatDetector)</a>
+</li>
+      <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#nav_algo.computer_vision.detectors.boatDetector.BoatDetector.BlurType.Box_Blur">Box_Blur (nav_algo.computer_vision.detectors.boatDetector.BoatDetector.BlurType attribute)</a>
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.BlurType.Box_Blur">(nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.BlurType attribute)</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BlurType.Box_Blur">(nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BlurType attribute)</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.HorizonDetector.html#nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.BlurType.Box_Blur">(nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.BlurType attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.boat_position">boat_position (nav_algo.navigation.NavigationController attribute)</a>
+      <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.BUOY_HEIGHT">BUOY_HEIGHT (nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector attribute)</a>
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BUOY_HEIGHT">(nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector attribute)</a>
 </li>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.boat_to_target">boat_to_target (nav_algo.navigation.NavigationController attribute)</a>
+      </ul></li>
+      <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector">BuoyDetector (class in nav_algo.computer_vision.detectors.buoyDetector.buoyDetector)</a>
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector">(class in nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi)</a>
 </li>
-      <li><a href="nav_algo.boat.html#nav_algo.boat.BoatController">BoatController (class in nav_algo.boat)</a>
+      </ul></li>
+      <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.BlurType">BuoyDetector.BlurType (class in nav_algo.computer_vision.detectors.buoyDetector.buoyDetector)</a>
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BlurType">(class in nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.Vector.coordinate_system">coordinate_system (nav_algo.coordinates.Vector attribute)</a>
-
-      <ul>
-        <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.coordinate_system">(nav_algo.navigation.NavigationController attribute)</a>
+      <li><a href="nav_algo.events.html#nav_algo.events.Events.COLLISION_AVOIDANCE">COLLISION_AVOIDANCE (nav_algo.events.Events attribute)</a>
 </li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.CoordinateSystem">CoordinateSystem (class in nav_algo.coordinates)</a>
+      <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.Vector.coordinate_system">coordinate_system (nav_algo.coordinates.Vector attribute)</a>
 </li>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.current_waypoint">current_waypoint (nav_algo.navigation.NavigationController attribute)</a>
+      <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.CoordinateSystem">CoordinateSystem (class in nav_algo.coordinates)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -245,12 +294,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.degToRad">degToRad() (in module nav_algo.coordinates)</a>
 </li>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.DELTA_ALPHA">DELTA_ALPHA (nav_algo.navigation.NavigationController attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.DETECTION_RADIUS">DETECTION_RADIUS (nav_algo.navigation.NavigationController attribute)</a>
-</li>
       <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.Vector.dot">dot() (nav_algo.coordinates.Vector method)</a>
 </li>
   </ul></td>
@@ -262,12 +307,56 @@
       <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.CoordinateSystem.EARTH_RADIUS">EARTH_RADIUS (nav_algo.coordinates.CoordinateSystem attribute)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nav_algo.events.html#nav_algo.events.Events.ENDURANCE">ENDURANCE (nav_algo.events.Events attribute)</a>
+</li>
+      <li><a href="nav_algo.events.html#nav_algo.events.Events">Events (class in nav_algo.events)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nav_algo.computer_vision.detectors.utils.html#nav_algo.computer_vision.detectors.utils.find_distance_largest_contour">find_distance_largest_contour() (in module nav_algo.computer_vision.detectors.utils)</a>
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#nav_algo.computer_vision.detectors.boatDetector.BoatDetector.find_distance_largest_contour">(nav_algo.computer_vision.detectors.boatDetector.BoatDetector method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nav_algo.computer_vision.detectors.utils.html#nav_algo.computer_vision.detectors.utils.find_distances">find_distances() (in module nav_algo.computer_vision.detectors.utils)</a>
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#nav_algo.computer_vision.detectors.boatDetector.BoatDetector.find_distances">(nav_algo.computer_vision.detectors.boatDetector.BoatDetector method)</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.find_distances">(nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector method)</a>
+</li>
+      </ul></li>
+  </ul></td>
 </tr></table>
 
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.boat.html#nav_algo.boat.BoatController.getPosition">getPosition() (nav_algo.boat.BoatController method)</a>
+      <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#nav_algo.computer_vision.detectors.boatDetector.BoatDetector.BlurType.Gaussian_Blur">Gaussian_Blur (nav_algo.computer_vision.detectors.boatDetector.BoatDetector.BlurType attribute)</a>
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.BlurType.Gaussian_Blur">(nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.BlurType attribute)</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BlurType.Gaussian_Blur">(nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BlurType attribute)</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.HorizonDetector.html#nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.BlurType.Gaussian_Blur">(nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.BlurType attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#nav_algo.computer_vision.detectors.boatDetector.BoatDetector.get_boat_coords">get_boat_coords() (nav_algo.computer_vision.detectors.boatDetector.BoatDetector method)</a>
+</li>
+      <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.get_buoy_coords">get_buoy_coords() (nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector method)</a>
+</li>
+      <li><a href="nav_algo.computer_vision.detectors.utils.html#nav_algo.computer_vision.detectors.utils.get_coords">get_coords() (in module nav_algo.computer_vision.detectors.utils)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -275,6 +364,14 @@
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nav_algo.computer_vision.detectors.HorizonDetector.html#nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector">HorizonDetector (class in nav_algo.computer_vision.detectors.HorizonDetector)</a>
+</li>
+      <li><a href="nav_algo.computer_vision.detectors.HorizonDetector.html#nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.BlurType">HorizonDetector.BlurType (class in nav_algo.computer_vision.detectors.HorizonDetector)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nav_algo.computer_vision.detectors.HorizonDetector.html#nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.Line">HorizonDetector.Line (class in nav_algo.computer_vision.detectors.HorizonDetector)</a>
+</li>
       <li><a href="nav_algo.nmea.html#nav_algo.nmea.NMEA.UTC.hour">hour (nav_algo.nmea.NMEA.UTC attribute)</a>
 </li>
   </ul></td>
@@ -303,6 +400,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nav_algo.computer_vision.detectors.HorizonDetector.html#nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.Line.length">length() (nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.Line method)</a>
+</li>
       <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.CoordinateSystem.LONG_OFFSET">LONG_OFFSET (nav_algo.coordinates.CoordinateSystem attribute)</a>
 </li>
       <li><a href="nav_algo.nmea.html#nav_algo.nmea.NMEA.longDecimalDegrees">longDecimalDegrees() (nav_algo.nmea.NMEA method)</a>
@@ -321,6 +420,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.Vector.magnitude">magnitude() (nav_algo.coordinates.Vector method)</a>
 </li>
+      <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoysWebcamTest.html#nav_algo.computer_vision.detectors.buoyDetector.buoysWebcamTest.main">main() (in module nav_algo.computer_vision.detectors.buoyDetector.buoysWebcamTest)</a>
+</li>
+      <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#nav_algo.computer_vision.detectors.boatDetector.BoatDetector.BlurType.Median_Filter">Median_Filter (nav_algo.computer_vision.detectors.boatDetector.BoatDetector.BlurType attribute)</a>
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.BlurType.Median_Filter">(nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.BlurType attribute)</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BlurType.Median_Filter">(nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BlurType attribute)</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.HorizonDetector.html#nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.BlurType.Median_Filter">(nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.BlurType attribute)</a>
+</li>
+      </ul></li>
       <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.Vector.midpoint">midpoint() (nav_algo.coordinates.Vector method)</a>
 </li>
       <li><a href="nav_algo.nmea.html#nav_algo.nmea.NMEA.UTC.minute">minute (nav_algo.nmea.NMEA.UTC attribute)</a>
@@ -331,19 +442,29 @@
       <ul>
         <li><a href="nav_algo.html#module-nav_algo">nav_algo</a>
 </li>
-        <li><a href="nav_algo.boat.html#module-nav_algo.boat">nav_algo.boat</a>
+        <li><a href="nav_algo.computer_vision.html#module-nav_algo.computer_vision">nav_algo.computer_vision</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.html#module-nav_algo.computer_vision.detectors">nav_algo.computer_vision.detectors</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#module-nav_algo.computer_vision.detectors.boatDetector">nav_algo.computer_vision.detectors.boatDetector</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.html#module-nav_algo.computer_vision.detectors.buoyDetector">nav_algo.computer_vision.detectors.buoyDetector</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.html#module-nav_algo.computer_vision.detectors.buoyDetector.buoyDetector">nav_algo.computer_vision.detectors.buoyDetector.buoyDetector</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.html#module-nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi">nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoysWebcamTest.html#module-nav_algo.computer_vision.detectors.buoyDetector.buoysWebcamTest">nav_algo.computer_vision.detectors.buoyDetector.buoysWebcamTest</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.HorizonDetector.html#module-nav_algo.computer_vision.detectors.HorizonDetector">nav_algo.computer_vision.detectors.HorizonDetector</a>
+</li>
+        <li><a href="nav_algo.computer_vision.detectors.utils.html#module-nav_algo.computer_vision.detectors.utils">nav_algo.computer_vision.detectors.utils</a>
 </li>
         <li><a href="nav_algo.coordinates.html#module-nav_algo.coordinates">nav_algo.coordinates</a>
 </li>
-        <li><a href="nav_algo.navigation.html#module-nav_algo.navigation">nav_algo.navigation</a>
+        <li><a href="nav_algo.events.html#module-nav_algo.events">nav_algo.events</a>
 </li>
         <li><a href="nav_algo.nmea.html#module-nav_algo.nmea">nav_algo.nmea</a>
-</li>
-        <li><a href="nav_algo.radio.html#module-nav_algo.radio">nav_algo.radio</a>
-</li>
-        <li><a href="nav_algo.sensors.html#module-nav_algo.sensors">nav_algo.sensors</a>
-</li>
-        <li><a href="nav_algo.servo.html#module-nav_algo.servo">nav_algo.servo</a>
 </li>
       </ul></li>
   </ul></td>
@@ -360,10 +481,68 @@
 </li>
       </ul></li>
       <li>
-    nav_algo.boat
+    nav_algo.computer_vision
 
       <ul>
-        <li><a href="nav_algo.boat.html#module-nav_algo.boat">module</a>
+        <li><a href="nav_algo.computer_vision.html#module-nav_algo.computer_vision">module</a>
+</li>
+      </ul></li>
+      <li>
+    nav_algo.computer_vision.detectors
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.html#module-nav_algo.computer_vision.detectors">module</a>
+</li>
+      </ul></li>
+      <li>
+    nav_algo.computer_vision.detectors.boatDetector
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#module-nav_algo.computer_vision.detectors.boatDetector">module</a>
+</li>
+      </ul></li>
+      <li>
+    nav_algo.computer_vision.detectors.buoyDetector
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.html#module-nav_algo.computer_vision.detectors.buoyDetector">module</a>
+</li>
+      </ul></li>
+      <li>
+    nav_algo.computer_vision.detectors.buoyDetector.buoyDetector
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.html#module-nav_algo.computer_vision.detectors.buoyDetector.buoyDetector">module</a>
+</li>
+      </ul></li>
+      <li>
+    nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.html#module-nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    nav_algo.computer_vision.detectors.buoyDetector.buoysWebcamTest
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoysWebcamTest.html#module-nav_algo.computer_vision.detectors.buoyDetector.buoysWebcamTest">module</a>
+</li>
+      </ul></li>
+      <li>
+    nav_algo.computer_vision.detectors.HorizonDetector
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.HorizonDetector.html#module-nav_algo.computer_vision.detectors.HorizonDetector">module</a>
+</li>
+      </ul></li>
+      <li>
+    nav_algo.computer_vision.detectors.utils
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.utils.html#module-nav_algo.computer_vision.detectors.utils">module</a>
 </li>
       </ul></li>
       <li>
@@ -374,10 +553,10 @@
 </li>
       </ul></li>
       <li>
-    nav_algo.navigation
+    nav_algo.events
 
       <ul>
-        <li><a href="nav_algo.navigation.html#module-nav_algo.navigation">module</a>
+        <li><a href="nav_algo.events.html#module-nav_algo.events">module</a>
 </li>
       </ul></li>
       <li>
@@ -387,46 +566,9 @@
         <li><a href="nav_algo.nmea.html#module-nav_algo.nmea">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    nav_algo.radio
-
-      <ul>
-        <li><a href="nav_algo.radio.html#module-nav_algo.radio">module</a>
-</li>
-      </ul></li>
-      <li>
-    nav_algo.sensors
-
-      <ul>
-        <li><a href="nav_algo.sensors.html#module-nav_algo.sensors">module</a>
-</li>
-      </ul></li>
-      <li>
-    nav_algo.servo
-
-      <ul>
-        <li><a href="nav_algo.servo.html#module-nav_algo.servo">module</a>
-</li>
-      </ul></li>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.navigate">navigate() (nav_algo.navigation.NavigationController method)</a>
-</li>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController">NavigationController (class in nav_algo.navigation)</a>
-</li>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.newSailingAngle">newSailingAngle() (nav_algo.navigation.NavigationController method)</a>
-</li>
       <li><a href="nav_algo.nmea.html#nav_algo.nmea.NMEA">NMEA (class in nav_algo.nmea)</a>
 </li>
       <li><a href="nav_algo.nmea.html#nav_algo.nmea.NMEA.UTC">NMEA.UTC (class in nav_algo.nmea)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="O">O</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.optAngle">optAngle() (nav_algo.navigation.NavigationController method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -444,43 +586,35 @@
 </li>
       <li><a href="nav_algo.nmea.html#nav_algo.nmea.NMEA.parseGSV">parseGSV() (nav_algo.nmea.NMEA method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nav_algo.nmea.html#nav_algo.nmea.NMEA.parseRMC">parseRMC() (nav_algo.nmea.NMEA method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nav_algo.nmea.html#nav_algo.nmea.NMEA.parseVTG">parseVTG() (nav_algo.nmea.NMEA method)</a>
 </li>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.polar">polar() (nav_algo.navigation.NavigationController method)</a>
+      <li><a href="nav_algo.events.html#nav_algo.events.Events.PRECISION_NAVIGATION">PRECISION_NAVIGATION (nav_algo.events.Events attribute)</a>
 </li>
-      <li><a href="nav_algo.radio.html#nav_algo.radio.Radio.printAllWaypoints">printAllWaypoints() (nav_algo.radio.Radio method)</a>
+      <li><a href="nav_algo.computer_vision.detectors.boatDetector.html#nav_algo.computer_vision.detectors.boatDetector.BoatDetector.process">process() (nav_algo.computer_vision.detectors.boatDetector.BoatDetector method)</a>
+
+      <ul>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.process">(nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector method)</a>
 </li>
-      <li><a href="nav_algo.radio.html#nav_algo.radio.Radio.printData">printData() (nav_algo.radio.Radio method)</a>
+        <li><a href="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.html#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.process">(nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector method)</a>
 </li>
-      <li><a href="nav_algo.radio.html#nav_algo.radio.Radio.printHitWaypoint">printHitWaypoint() (nav_algo.radio.Radio method)</a>
+        <li><a href="nav_algo.computer_vision.detectors.HorizonDetector.html#nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector.process">(nav_algo.computer_vision.detectors.HorizonDetector.HorizonDetector method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.radio.html#nav_algo.radio.Radio">Radio (class in nav_algo.radio)</a>
-</li>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.radio">radio (nav_algo.navigation.NavigationController attribute)</a>
-</li>
       <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.radToDeg">radToDeg() (in module nav_algo.coordinates)</a>
-</li>
-      <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.rangeAngle">rangeAngle() (in module nav_algo.coordinates)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.servo.html#nav_algo.servo.servo.readEncoder">readEncoder() (nav_algo.servo.servo method)</a>
-</li>
-      <li><a href="nav_algo.sensors.html#nav_algo.sensors.sensorData.readGPS">readGPS() (nav_algo.sensors.sensorData method)</a>
-</li>
-      <li><a href="nav_algo.sensors.html#nav_algo.sensors.sensorData.readIMU">readIMU() (nav_algo.sensors.sensorData method)</a>
-</li>
-      <li><a href="nav_algo.sensors.html#nav_algo.sensors.sensorData.readWindDirection">readWindDirection() (nav_algo.sensors.sensorData method)</a>
+      <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.rangeAngle">rangeAngle() (in module nav_algo.coordinates)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -488,19 +622,13 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nav_algo.events.html#nav_algo.events.Events.SEARCH">SEARCH (nav_algo.events.Events attribute)</a>
+</li>
       <li><a href="nav_algo.nmea.html#nav_algo.nmea.NMEA.UTC.second">second (nav_algo.nmea.NMEA.UTC attribute)</a>
-</li>
-      <li><a href="nav_algo.sensors.html#nav_algo.sensors.sensorData">sensorData (class in nav_algo.sensors)</a>
-</li>
-      <li><a href="nav_algo.servo.html#nav_algo.servo.servo">servo (class in nav_algo.servo)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.servo.html#nav_algo.servo.servo.setSail">setSail() (nav_algo.servo.servo method)</a>
-</li>
-      <li><a href="nav_algo.boat.html#nav_algo.boat.BoatController.setServos">setServos() (nav_algo.boat.BoatController method)</a>
-</li>
-      <li><a href="nav_algo.servo.html#nav_algo.servo.servo.setTail">setTail() (nav_algo.servo.servo method)</a>
+      <li><a href="nav_algo.events.html#nav_algo.events.Events.STATION_KEEPING">STATION_KEEPING (nav_algo.events.Events attribute)</a>
 </li>
       <li><a href="nav_algo.nmea.html#nav_algo.nmea.NMEA.status">status (nav_algo.nmea.NMEA attribute)</a>
 </li>
@@ -513,18 +641,10 @@
       <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.Vector.toUnitVector">toUnitVector() (nav_algo.coordinates.Vector method)</a>
 </li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.radio.html#nav_algo.radio.Radio.transmitString">transmitString() (nav_algo.radio.Radio method)</a>
-</li>
-  </ul></td>
 </tr></table>
 
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.boat.html#nav_algo.boat.BoatController.updateSensors">updateSensors() (nav_algo.boat.BoatController method)</a>
-</li>
-  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nav_algo.nmea.html#nav_algo.nmea.NMEA.utc">utc (nav_algo.nmea.NMEA attribute)</a>
 </li>
@@ -539,14 +659,6 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nav_algo.coordinates.html#nav_algo.coordinates.Vector.vectorSubtract">vectorSubtract() (nav_algo.coordinates.Vector method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="W">W</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nav_algo.navigation.html#nav_algo.navigation.NavigationController.waypoints">waypoints (nav_algo.navigation.NavigationController attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -585,20 +697,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, CUSail Navigation Subteam
+        &#169; Copyright 2020, CUSail Navigation Subteam.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -606,7 +723,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
