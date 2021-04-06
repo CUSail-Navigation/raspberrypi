@@ -192,8 +192,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="nav-algo-sensors-module">
-<h1>nav_algo.sensors module<a class="headerlink" href="#nav-algo-sensors-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-nav_algo.sensors">
+<span id="nav-algo-sensors-module"></span><h1>nav_algo.sensors module<a class="headerlink" href="#module-nav_algo.sensors" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nav_algo.sensors.sensorData">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.sensors.</code><code class="sig-name descname">sensorData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coordinate_system</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.sensors.sensorData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="nav_algo.sensors.sensorData._addAverage">
+<code class="sig-name descname">_addAverage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">newValue</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.sensors.sensorData._addAverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the
+average of the list of ints. This function assumes that anemometer readings are taken semi-frequently
+parameter: newValue - int denoting number to be added to the</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.sensors.sensorData.readAll">
+<code class="sig-name descname">readAll</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.sensors.sensorData.readAll" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.sensors.sensorData.readGPS">
+<code class="sig-name descname">readGPS</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.sensors.sensorData.readGPS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.sensors.sensorData.readIMU">
+<code class="sig-name descname">readIMU</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.sensors.sensorData.readIMU" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.sensors.sensorData.readWindDirection">
+<code class="sig-name descname">readWindDirection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.sensors.sensorData.readWindDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -210,7 +244,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2020, CUSail Navigation Subteam.
+        &#169; Copyright 2021, CUSail Navigation Subteam.
 
     </p>
   </div>

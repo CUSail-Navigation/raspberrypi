@@ -192,8 +192,147 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="nav-algo-navigation-helper-module">
-<h1>nav_algo.navigation_helper module<a class="headerlink" href="#nav-algo-navigation-helper-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-nav_algo.navigation_helper">
+<span id="nav-algo-navigation-helper-module"></span><h1>nav_algo.navigation_helper module<a class="headerlink" href="#module-nav_algo.navigation_helper" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.assessCollision">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">assessCollision</code><span class="sig-paren">(</span><em class="sig-param">obst_point</em>, <em class="sig-param">obst_point_2</em>, <em class="sig-param">time</em>, <em class="sig-param">boat=&lt;module 'nav_algo.boat' from '/Users/courtneymcbeth/Desktop/CUSail/raspberrypi/nav_algo/boat.py'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.assessCollision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if collision occurs. Returns new waypoint if collision, else None</p>
+<p>obst_point: position of obstacle at time 0
+obst_point_2: position of obstacle at time time
+time: time between detection of obst_point and obst_point_2</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.buoy_offset">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">buoy_offset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start_point</span></em>, <em class="sig-param"><span class="n">buoy</span></em>, <em class="sig-param"><span class="n">dist</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.buoy_offset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.check_overlap">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">check_overlap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">box_coords</span></em>, <em class="sig-param"><span class="n">obst_coords</span></em>, <em class="sig-param"><span class="n">axis</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.check_overlap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.collisionAvoidance">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">collisionAvoidance</code><span class="sig-paren">(</span><em class="sig-param">buoy_waypoints</em>, <em class="sig-param">boat=&lt;module 'nav_algo.boat' from '/Users/courtneymcbeth/Desktop/CUSail/raspberrypi/nav_algo/boat.py'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.collisionAvoidance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns waypoints list for ideal path (no obstacles)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.collisionWaypoint">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">collisionWaypoint</code><span class="sig-paren">(</span><em class="sig-param">time</em>, <em class="sig-param">boat=&lt;module 'nav_algo.boat' from '/Users/courtneymcbeth/Desktop/CUSail/raspberrypi/nav_algo/boat.py'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.collisionWaypoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns waypoint 2m away to avoid obstacle detected at time time</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.endurance">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">endurance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">waypoints</span></em>, <em class="sig-param"><span class="n">opt_dist</span></em>, <em class="sig-param"><span class="n">offset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.endurance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.find_inner_outer_points">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">find_inner_outer_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start_point</span></em>, <em class="sig-param"><span class="n">end_point</span></em>, <em class="sig-param"><span class="n">dist</span></em>, <em class="sig-param"><span class="n">flag</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.find_inner_outer_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.getRectangleBox">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">getRectangleBox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">center</span></em>, <em class="sig-param"><span class="n">theta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.getRectangleBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns rectangular box given center point and direction
+Corners ordered ccw starting from front left</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.getVelocity">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">getVelocity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">point_before</span></em>, <em class="sig-param"><span class="n">point_after</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.getVelocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns velocity of object during time interval t as [speed, theta]</p>
+<p>point_before: center of object at time 0
+point_after: center of object at time t
+t: time interval</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.isCollision">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">isCollision</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">boat_coords</span></em>, <em class="sig-param"><span class="n">obst_coords</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.isCollision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if boat_coords and obst_coords overlap, else False</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.newSailingAngle">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">newSailingAngle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">boat</span></em>, <em class="sig-param"><span class="n">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.newSailingAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO Determines the best angle to sail at.</p>
+<p>The sailboat follows a locally optimal path (maximize vmg while minimizing
+directional changes) until the global optimum is “better” (based on the
+hysterisis factor).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The best angle to sail (in the global coordinate system).</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.optAngle">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">optAngle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">boat_to_target</span></em>, <em class="sig-param"><span class="n">boat</span></em>, <em class="sig-param"><span class="n">right</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.optAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO Determines the best angle to sail on either side of the wind.</p>
+<p>The “best angle” maximizes the velocity made good toward the target.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>right</strong> (<em>bool</em>) – True if evaluating the right side of the wind, False for left.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The best angle to sail (in the global coordinate system).
+float: The velocity made good at the best angle.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.polar">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">polar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angle</span></em>, <em class="sig-param"><span class="n">boat</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.polar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the polar diagram for a given angle relative to the wind.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angle</strong> (<em>float</em>) – A potential boat heading relative to the absolute wind direction.</p></li>
+<li><p><strong>boat</strong> (<a class="reference internal" href="nav_algo.boat.html#nav_algo.boat.BoatController" title="nav_algo.boat.BoatController"><em>BoatController</em></a>) – The BoatController (either sim or real)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A unit boat velocity vector in the global coordinate system.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="nav_algo.coordinates.html#nav_algo.coordinates.Vector" title="nav_algo.coordinates.Vector">Vector</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.precisionNavigation">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">precisionNavigation</code><span class="sig-paren">(</span><em class="sig-param">waypoints</em>, <em class="sig-param">offset=5.0</em>, <em class="sig-param">side_length=50.0</em>, <em class="sig-param">boat=&lt;module 'nav_algo.boat' from '/Users/courtneymcbeth/Desktop/CUSail/raspberrypi/nav_algo/boat.py'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.precisionNavigation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.search">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">search</code><span class="sig-paren">(</span><em class="sig-param">waypoints</em>, <em class="sig-param">scalar=3</em>, <em class="sig-param">constant=5.752220392306214</em>, <em class="sig-param">boat=&lt;module 'nav_algo.boat' from '/Users/courtneymcbeth/Desktop/CUSail/raspberrypi/nav_algo/boat.py'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.stationKeeping">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">stationKeeping</code><span class="sig-paren">(</span><em class="sig-param">waypoints</em>, <em class="sig-param">circle_radius</em>, <em class="sig-param">state</em>, <em class="sig-param">opt_angle=45</em>, <em class="sig-param">boat=&lt;module 'nav_algo.boat' from '/Users/courtneymcbeth/Desktop/CUSail/raspberrypi/nav_algo/boat.py'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.stationKeeping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nav_algo.navigation_helper.unitVector">
+<code class="sig-prename descclassname">nav_algo.navigation_helper.</code><code class="sig-name descname">unitVector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coords</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.navigation_helper.unitVector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 
 
@@ -210,7 +349,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2020, CUSail Navigation Subteam.
+        &#169; Copyright 2021, CUSail Navigation Subteam.
 
     </p>
   </div>

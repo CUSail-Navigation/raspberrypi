@@ -192,8 +192,191 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="nav-algo-sailsensors-module">
-<h1>nav_algo.SailSensors module<a class="headerlink" href="#nav-algo-sailsensors-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-nav_algo.SailSensors">
+<span id="nav-algo-sailsensors-module"></span><h1>nav_algo.SailSensors module<a class="headerlink" href="#module-nav_algo.SailSensors" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nav_algo.SailSensors.ADCDevice">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.SailSensors.</code><code class="sig-name descname">ADCDevice</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pinNumber</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.ADCDevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class contains the object of the ADC to be used by other
+classes for analog devices.</p>
+<dl class="py method">
+<dt id="nav_algo.SailSensors.ADCDevice.readADC">
+<code class="sig-name descname">readADC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gain</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.ADCDevice.readADC" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads the ADC present on the I2C bus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>gain</strong> (<em>int</em>) – The gain of the sensor input.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nav_algo.SailSensors.I2CDevice">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.SailSensors.</code><code class="sig-name descname">I2CDevice</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deviceAddress</span></em>, <em class="sig-param"><span class="n">i2cBusIndex</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.I2CDevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is used to create a new instance of an I2C sensor module for communication.
+It also contains functions to communicate with the module.</p>
+<dl class="py method">
+<dt id="nav_algo.SailSensors.I2CDevice.getDeviceAddress">
+<code class="sig-name descname">getDeviceAddress</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.I2CDevice.getDeviceAddress" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.SailSensors.I2CDevice.getName">
+<code class="sig-name descname">getName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.I2CDevice.getName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.SailSensors.I2CDevice.geti2cBus">
+<code class="sig-name descname">geti2cBus</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.I2CDevice.geti2cBus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.SailSensors.I2CDevice.geti2cBusIndex">
+<code class="sig-name descname">geti2cBusIndex</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.I2CDevice.geti2cBusIndex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.SailSensors.I2CDevice.i2cRdwr">
+<code class="sig-name descname">i2cRdwr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">send</span></em>, <em class="sig-param"><span class="n">recieve</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.I2CDevice.i2cRdwr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a hexadecimal-command list to the desired component.
+The function then waits for and retrieves a response from the device
+with a length based on the parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>send</strong> (<em>list</em>) – a list of bytes (sends this list of hexadecimal commands).</p></li>
+<li><p><strong>recieve</strong> (<em>int</em>) – the amount of bytes in a list to retrieve from the device.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of bytes with length of int recieve.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.SailSensors.I2CDevice.i2cWr">
+<code class="sig-name descname">i2cWr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">msg</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.I2CDevice.i2cWr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a hexadecimal list to the desired component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>msg</strong> (<em>list</em>) – list of bytes (needs to be a list of hexadecimal commands specific to the device).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.SailSensors.I2CDevice.readBlockData">
+<code class="sig-name descname">readBlockData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">byteNumber</span></em>, <em class="sig-param"><span class="n">offset</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.I2CDevice.readBlockData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a block of data from the i2c device register.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bytenumber</strong> (<em>int</em>) – the number of bytes you would like to read from the device’s register.</p></li>
+<li><p><strong>offset</strong> (<em>int</em>) – integer value for the byte offset of data collection from the register.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.SailSensors.I2CDevice.writeBlockData">
+<code class="sig-name descname">writeBlockData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">msg</span></em>, <em class="sig-param"><span class="n">offset</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.I2CDevice.writeBlockData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a block of data from the i2c device register.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>list</em>) – list of bytes to send.</p></li>
+<li><p><strong>offset</strong> (<em>int</em>) – integer value for the byte offset of data collection from the register.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nav_algo.SailSensors.SailAnemometer">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.SailSensors.</code><code class="sig-name descname">SailAnemometer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pinNumber</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.SailAnemometer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nav_algo.SailSensors.ADCDevice" title="nav_algo.SailSensors.ADCDevice"><code class="xref py py-class docutils literal notranslate"><span class="pre">nav_algo.SailSensors.ADCDevice</span></code></a></p>
+<p>SailAnemometer implements a class used to connect the component to it’s proper
+communication protocol. This class also implements functions to return raw data and
+turn on/off the sensors.</p>
+<dl class="py method">
+<dt id="nav_algo.SailSensors.SailAnemometer.readAnemometerVoltage">
+<code class="sig-name descname">readAnemometerVoltage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gain</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.SailAnemometer.readAnemometerVoltage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the given voltage of the anemometer using the ADC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>gain</strong> (<em>int</em>) – the multiplication value of the voltage</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nav_algo.SailSensors.SailEncoder">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.SailSensors.</code><code class="sig-name descname">SailEncoder</code><a class="headerlink" href="#nav_algo.SailSensors.SailEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>SailEncoder implements a class used to connect the component to it’s proper
+communication protocol. This class also implements functions to return raw data and
+turn on/off the sensors.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="nav_algo.SailSensors.SailGPS">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.SailSensors.</code><code class="sig-name descname">SailGPS</code><a class="headerlink" href="#nav_algo.SailSensors.SailGPS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>SailGPS implements a class used to connect the component to it’s proper
+communication protocol. This class also implements functions to return raw data and
+turn on/off the sensors.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="nav_algo.SailSensors.SailIMU">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.SailSensors.</code><code class="sig-name descname">SailIMU</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deviceAddress</span><span class="o">=</span><span class="default_value">119</span></em>, <em class="sig-param"><span class="n">i2cBusIndex</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.SailIMU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nav_algo.SailSensors.I2CDevice" title="nav_algo.SailSensors.I2CDevice"><code class="xref py py-class docutils literal notranslate"><span class="pre">nav_algo.SailSensors.I2CDevice</span></code></a></p>
+<p>SailIMU implements a class used to connect the component to it’s proper
+communication protocol. This class also implements functions to return raw data and
+turn on/off the sensors.</p>
+<dl class="py method">
+<dt id="nav_algo.SailSensors.SailIMU.i2c_read_imu">
+<code class="sig-name descname">i2c_read_imu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.SailIMU.i2c_read_imu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the IMU and returns a list of 12 bytes representing euler angles.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.SailSensors.SailIMU.imuCommands">
+<code class="sig-name descname">imuCommands</code><em class="property"> = {'readAccelerometerRaw': 66, 'readCompassRaw': 67, 'readOrientationEuler': 1}</em><a class="headerlink" href="#nav_algo.SailSensors.SailIMU.imuCommands" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nav_algo.SailSensors.UARTDevice">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.SailSensors.</code><code class="sig-name descname">UARTDevice</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">baudrate</span></em>, <em class="sig-param"><span class="n">serialPort</span><span class="o">=</span><span class="default_value">'/dev/ttyS0'</span></em>, <em class="sig-param"><span class="n">t</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.UARTDevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Superclass used to create a UARTDevice. Contians various functions for communication</p>
+<dl class="py method">
+<dt id="nav_algo.SailSensors.UARTDevice.recieveUartBytes">
+<code class="sig-name descname">recieveUartBytes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bytes</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.UARTDevice.recieveUartBytes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.SailSensors.UARTDevice.sendUart">
+<code class="sig-name descname">sendUart</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.SailSensors.UARTDevice.sendUart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -210,7 +393,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2020, CUSail Navigation Subteam.
+        &#169; Copyright 2021, CUSail Navigation Subteam.
 
     </p>
   </div>

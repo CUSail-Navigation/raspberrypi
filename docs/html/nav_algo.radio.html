@@ -192,8 +192,72 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="nav-algo-radio-module">
-<h1>nav_algo.radio module<a class="headerlink" href="#nav-algo-radio-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-nav_algo.radio">
+<span id="nav-algo-radio-module"></span><h1>nav_algo.radio module<a class="headerlink" href="#module-nav_algo.radio" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nav_algo.radio.Radio">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.radio.</code><code class="sig-name descname">Radio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">baudrate</span></em>, <em class="sig-param"><span class="n">serialPort</span><span class="o">=</span><span class="default_value">'/dev/ttyS0'</span></em>, <em class="sig-param"><span class="n">t</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.radio.Radio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="nav_algo.SailSensors.html#nav_algo.SailSensors.UARTDevice" title="nav_algo.SailSensors.UARTDevice"><code class="xref py py-class docutils literal notranslate"><span class="pre">nav_algo.SailSensors.UARTDevice</span></code></a></p>
+<p>Constructor for the radio.
+-baudrate is an integer(should be 9600 for the xbee)
+-serialport, the serial port the xbee is connected to(just leave default for the xbee)
+-t is the uart timeout period(just leave at 1 for normal operation)</p>
+<dl class="py method">
+<dt id="nav_algo.radio.Radio.printAllWaypoints">
+<code class="sig-name descname">printAllWaypoints</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">currentWaypointsArray</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.radio.Radio.printAllWaypoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data should be of the form:.</p>
+<p>“———-WAYPOINTS———-” +
+“,X:” + current_waypoint.x + ” Y:” + current_waypoint.y +
+“,X:” + next_waypoint.x + ” Y:” + next_waypoint.y +
+…
+“,X:” + last_waypoint.x + ” Y:” + last_waypoint.y +
+“,———-END———-” + new line character</p>
+<p>Note that waypoints are comma delineated while x and y coordinates of
+the same point are space delineated. The waypoints should be printed in
+order from first to last (do not include waypoints that have already
+been hit).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.radio.Radio.printData">
+<code class="sig-name descname">printData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">origLat</span></em>, <em class="sig-param"><span class="n">origLong</span></em>, <em class="sig-param"><span class="n">currentPositionX</span></em>, <em class="sig-param"><span class="n">currentPositionY</span></em>, <em class="sig-param"><span class="n">windDir</span></em>, <em class="sig-param"><span class="n">pitch</span></em>, <em class="sig-param"><span class="n">roll</span></em>, <em class="sig-param"><span class="n">yaw</span></em>, <em class="sig-param"><span class="n">sailAngle</span></em>, <em class="sig-param"><span class="n">tailAngle</span></em>, <em class="sig-param"><span class="n">heading</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.radio.Radio.printData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data should be of the form:.</p>
+<p>“———-NAVIGATION———-” +
+“,Origin Latitude: ” + origLat +
+“,Origin Longitude: ” + origLong +
+“,X position: ” + currentPosition.x +
+“,Y position: ” + currentPosition.y +
+“,Wind Direction: ” + windDir +
+“,Pitch: ” + pitch +
+“,Roll: ” + roll +
+“,Yaw: ” + yaw +
+“,Sail Angle: ” + sailAngle +
+“,Tail Angle: ” + tailAngle +
+“,Heading: ” + heading +
+“,———-END———-” + new line character</p>
+<p>Note that fields are comma delineated and there is only a new line
+character at the end of the string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.radio.Radio.printHitWaypoint">
+<code class="sig-name descname">printHitWaypoint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hitWaypoint</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.radio.Radio.printHitWaypoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data should be of the form:.</p>
+<p>“———-HIT———-” +
+“,X:” + waypoint.x + ” Y:” + waypoint.y +
+“,———-END———-” + new line character</p>
+<p>Note that fields are comma delineated while x and y coordinates of
+the same point are space delineated.</p>
+<p>Note ‘printAllWaypoints’ should be called immediately after this.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.radio.Radio.transmitString">
+<code class="sig-name descname">transmitString</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.radio.Radio.transmitString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -210,7 +274,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2020, CUSail Navigation Subteam.
+        &#169; Copyright 2021, CUSail Navigation Subteam.
 
     </p>
   </div>

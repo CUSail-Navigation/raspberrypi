@@ -191,8 +191,90 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="nav-algo-servo-module">
-<h1>nav_algo.servo module<a class="headerlink" href="#nav-algo-servo-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-nav_algo.servo">
+<span id="nav-algo-servo-module"></span><h1>nav_algo.servo module<a class="headerlink" href="#module-nav_algo.servo" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nav_algo.servo.servo">
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.servo.</code><code class="sig-name descname">servo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tailPin</span></em>, <em class="sig-param"><span class="n">sailPin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.servo.servo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="nav_algo.servo.servo.SAIL_MAX">
+<code class="sig-name descname">SAIL_MAX</code><em class="property"> = 180</em><a class="headerlink" href="#nav_algo.servo.servo.SAIL_MAX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.servo.servo.SAIL_MAX_ANGLE">
+<code class="sig-name descname">SAIL_MAX_ANGLE</code><em class="property"> = 148</em><a class="headerlink" href="#nav_algo.servo.servo.SAIL_MAX_ANGLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.servo.servo.SAIL_MIN">
+<code class="sig-name descname">SAIL_MIN</code><em class="property"> = 0</em><a class="headerlink" href="#nav_algo.servo.servo.SAIL_MIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.servo.servo.SAIL_MIN_ANGLE">
+<code class="sig-name descname">SAIL_MIN_ANGLE</code><em class="property"> = 0</em><a class="headerlink" href="#nav_algo.servo.servo.SAIL_MIN_ANGLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.servo.servo.TAIL_MAX">
+<code class="sig-name descname">TAIL_MAX</code><em class="property"> = 180</em><a class="headerlink" href="#nav_algo.servo.servo.TAIL_MAX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.servo.servo.TAIL_MAX_ANGLE">
+<code class="sig-name descname">TAIL_MAX_ANGLE</code><em class="property"> = 60</em><a class="headerlink" href="#nav_algo.servo.servo.TAIL_MAX_ANGLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.servo.servo.TAIL_MIN">
+<code class="sig-name descname">TAIL_MIN</code><em class="property"> = 0</em><a class="headerlink" href="#nav_algo.servo.servo.TAIL_MIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nav_algo.servo.servo.TAIL_MIN_ANGLE">
+<code class="sig-name descname">TAIL_MIN_ANGLE</code><em class="property"> = 0</em><a class="headerlink" href="#nav_algo.servo.servo.TAIL_MIN_ANGLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.servo.servo.mapRange">
+<code class="sig-name descname">mapRange</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em>, <em class="sig-param"><span class="n">min</span></em>, <em class="sig-param"><span class="n">max</span></em>, <em class="sig-param"><span class="n">endMin</span></em>, <em class="sig-param"><span class="n">endMax</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.servo.servo.mapRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns value based on a linear map of MIN -&gt; MAX to a value ENDMIN -&gt; ENDMAX</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.servo.servo.readEncoder">
+<code class="sig-name descname">readEncoder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.servo.servo.readEncoder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.servo.servo.setSail">
+<code class="sig-name descname">setSail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sail_angle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.servo.servo.setSail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Just instantiate the class then enter an angle into “servo”_angle as an
+int SAIL_MIN_ANGLE -&gt; SAIL_MAX_ANGLE degrees</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.servo.servo.setTail">
+<code class="sig-name descname">setTail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tail_angle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.servo.servo.setTail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Just instantiate the class then enter an angle into “servo”_angle as an
+int TAIL_MIN_ANGLE -&gt; TAIL_MAX_ANGLE degrees</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.servo.servo.sleepServo">
+<code class="sig-name descname">sleepServo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sleep</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.servo.servo.sleepServo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Puts the servo driver to sleep to conserve energy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sleep</strong> (<em>bool</em>) – turns off oscillator if True, if false it runs in normal operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -208,7 +290,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2020, CUSail Navigation Subteam.
+        &#169; Copyright 2021, CUSail Navigation Subteam.
 
     </p>
   </div>

@@ -17,8 +17,8 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'CUSail'
-copyright = '2020, CUSail Navigation Subteam'
-author = 'CUSail Navigation Subteam'
+copyright = '2021, CUSail Navigation Subteam'
+author = 'Cornell Autonomous Sailboat Team (CUSail)'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0'
@@ -76,3 +76,8 @@ html_theme_options = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# mock libraries that are not installed
+autodoc_mock_imports = [
+    "smbus2", "adafruit_servokit", "picamera", "cv2", "Adafruit_ADS1x15"
+]
