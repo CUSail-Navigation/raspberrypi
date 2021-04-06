@@ -15,3 +15,6 @@ Run everything from the __raspberrypi__ directory.
 To run the navigation algorithm: python3 -m nav_algo
 
 To run all test cases: python3 -m unittest
+
+To generate the documentation, follow this guide: 
+https://cusail-navigation.github.io/intrasite/website/documentation.html
