@@ -137,7 +137,7 @@ class TestNavigationMethods(unittest.TestCase):
 
     def test_endurance(self):
         # waypoints need to be in a clockwise dir, starting top left
-        waypoints = [(0, 25), (45, 25)(45, 0), (0, 0)]
+        waypoints = [(0, 25), (45, 25),(45, 0), (0, 0)]
         midpoints = [(27.5, 25), (45, 12.5), (27.5, 0), (0, 12.5)]
         offset = 10
         opt_dist = 2
