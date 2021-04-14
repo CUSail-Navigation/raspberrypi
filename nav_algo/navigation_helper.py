@@ -1,3 +1,4 @@
+
 import nav_algo.coordinates as coord
 import nav_algo.boat as boat
 import math
@@ -406,7 +407,9 @@ def unitVector(coords):
 def collisionAvoidance(buoy_waypoints, boat=boat):
     """
     Returns waypoints list for ideal path (no obstacles)
+    buoy_waypoints: (x, y) coordinates of far-away buoy
     """
+    
     orientation = (buoy_waypoints[0] - boat.getPosition().x,
                    buoy_waypoints[1] - boat.getPosition().y)
     first_direction = (orientation[1], -1 * orientation[0])

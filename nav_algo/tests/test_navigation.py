@@ -285,10 +285,30 @@ class TestNavigationMethods(unittest.TestCase):
 
         final_waypoint= (0,0)    
 
+    def test_collision_avoidance(self):
+        # Test 1 positive rectangular setup
+        self.nav_controller.boat_position = coord.Vector(x=5.0, y=5.0)
+        buoy_waypoints = (100.0, 5.0)
+        new_waypoints = self.nav_controller.collisionAvoidance(buoy_waypoints)
+        first = coord.Vector(x=100.0, y=-5.0)
+        second = coord.Vector(x=110.0, y=5.0)
+        third = coord.Vector(x=100.0, y=15.0)
+        fourth = coord.Vector(x=15.0, y=5.0)
+        fifth = coord.Vector(x=5.0, y=5.0)
+        expected_waypoints = [first, second, third, fourth, fifth]
+        self.assertAlmostEqual(new_waypoints, expected_waypoints)
         
-
-
-            
+        # Test 2 positive tilted setup
+        self.nav_controller.boat_position = coord.Vector(x=-1.0, y=2.0)
+        buoy_waypoints = (59.0, 82.0)
+        new_waypoints = self.nav_controller.collisionAvoidance(buoy_waypoints)
+        first = coord.Vector(x=67.0, y=-76.0)
+        second = coord.Vector(x=65.0, y=90.0)
+        third = coord.Vector(x=51.0, y=88.0)
+        fourth = coord.Vector(x=5.0, y=10.0)
+        fifth = coord.Vector(x=-1.0, y=2.0)
+        expected_waypoints = [first, second, third, fourth, fifth]
+        self.assertAlmostEqual(new_waypoints, expected_waypoints)
         
 if __name__ == '__main__':
     unittest.main()
