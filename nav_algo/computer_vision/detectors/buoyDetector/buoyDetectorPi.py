@@ -2,19 +2,23 @@ import cv2
 from enum import Enum
 from nav_algo.computer_vision.detectors.utils import find_distances, get_coords, find_distance_largest_contour
 
-
 class BuoyDetector:
+    """A detector for buoys. 
+    
+    This uses a standard webcam to output visual feedback on the camera screen 
+    and an outline of the buoys. It returns the coordinates of the largest buoy 
+    found.
+
+    Args:
+        img_height: the height of the camera output.
+        img_width: the width of the camera output.
+    """
     BUOY_HEIGHT = 1016  # buoy's height in mm
     BlurType = Enum("BlurType",
                     "Box_Blur Gaussian_Blur Median_Filter Bilateral_Filter")
 
-    BUOY_SIZE = 1016  # regatta buoy size, in mm
-
     def __init__(self, img_height=480, img_width=640):
-        """
-        Initializes all values to presets or None if need to be set
-        """
-
+        """Initializes all values to presets or None if need to be set."""
         self.img_height = img_height
         self.img_width = img_width
 
@@ -73,9 +77,7 @@ class BuoyDetector:
         self.filter_contours_output = None
 
     def process(self, source0):
-        """
-        Runs the pipeline and sets all outputs to new values.
-        """
+        """Runs the pipeline and sets all outputs to new values."""
         # Step RGB_Threshold0:
         self.__rgb_threshold_input = source0
         (self.rgb_threshold_output) = self.__rgb_threshold(

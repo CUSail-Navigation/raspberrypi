@@ -1,4 +1,3 @@
-# from detectors.buoyDetector.buoyDetector import BuoyDetector
 from nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi import *
 import cv2
 import numpy as np
@@ -8,6 +7,9 @@ from picamera import PiCamera
 
 
 def start():
+    """Sets initial values of the camera, then begins loop for running the 
+    detector."""
+
     camera = PiCamera()
     camera.resolution = (640, 480)
     camera.framerate = 32
@@ -24,7 +26,7 @@ def start():
 
 
 def run():
-
+    """Creates a detector object that proesses camera feed."""
     frame = frame.array
     max_dimension = max(image.shape)
     scale = 700 / max_dimension
@@ -33,15 +35,13 @@ def run():
     bd = BuoyDetector()
     bd.process(frame)
 
-    # unnecessary?
     contours = bd.find_contours_output
     found = bd.find_contours_output != None
-    ###
 
     contours = bd.filter_contours_output
     found = contours != None
 
-    # print(bd.find_distances(frame.shape[0], frame.shape[1]))
+    print(bd.find_distances(frame.shape[0], frame.shape[1]))
 
     cv2.drawContours(frame, contours, -1, (0, 255, 0), 3)
 

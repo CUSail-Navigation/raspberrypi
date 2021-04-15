@@ -4,6 +4,16 @@ from nav_algo.computer_vision.detectors.utils import find_distances, get_coords
 
 
 class BuoyDetector:
+    """A detector for buoys. 
+    
+    This uses a standard webcam to output visual feedback on the camera screen 
+    and an outline of the buoys. It returns the coordinates of the largest buoy 
+    found.
+
+    Args:
+        img_height: the height of the camera output.
+        img_width: the width of the camera output.
+    """
     BUOY_HEIGHT = 1016  # buoy's height in mm
     BlurType = Enum('BlurType',
                     'Box_Blur Gaussian_Blur Median_Filter Bilateral_Filter')
@@ -14,10 +24,6 @@ class BuoyDetector:
         """
         self.img_height = img_height
         self.img_width = img_width
-
-        #self.__rgb_threshold_red = [0.0, 255.0]
-        #self.__rgb_threshold_green = [31, 65]
-        #self.__rgb_threshold_blue = [26, 75]
 
         self.__rgb_threshold_red = [100, 255.0]
         self.__rgb_threshold_green = [100, 200]
@@ -203,11 +209,13 @@ class BuoyDetector:
 
     @staticmethod
     def __find_contours(input, external_only):
-        """Sets the values of pixels in a binary image to their distance to the nearest black pixel.
+        """Sets the values of pixels in a binary image to their distance to the 
+        nearest black pixel.
 
         Args:
             input (numpy.ndarray): A numpy.ndarray.
-            external_only (bool): A boolean. If true only external contours are found.
+            external_only (bool): A boolean. If true only external contours are 
+            found.
 
         Returns:
             list: A list of numpy.ndarray where each one represents a contour.
@@ -230,7 +238,8 @@ class BuoyDetector:
         Args:
             input_contours (list): Contours as a list of numpy.ndarray.
             min_area (float): The minimum area of a contour that will be kept.
-            min_perimeter (float): The minimum perimeter of a contour that will be kept.
+            min_perimeter (float): The minimum perimeter of a contour that will 
+            be kept.
             min_width (float): Minimum width of a contour.
             max_width (float): MaxWidth maximum width.
             min_height (float): Minimum height.
@@ -270,13 +279,14 @@ class BuoyDetector:
         return output
 
     def find_distances(self):
-        """Calculates distances from each contour and creates list of obstacle distances from camera.
+        """Calculates distances from each contour and creates list of obstacle 
+        distances from camera.
 
         Args:
-            img_height: height of image passed in, in pixels
+            img_height: height of image passed in, in pixels.
 
         Returns:
-            list: A list where each element represents an obstacle distance 
+            list: A list where each element represents an obstacle distance.
             list: A list where each element represents an x-offset in the image.
         """
         return find_distances(self.filter_contours_output, self.img_height,
@@ -291,7 +301,8 @@ class BuoyDetector:
             curr_y (float): Boat's current y-coordinate
     
         Returns:
-            list: A list of coordinate pairs (x, y) representing the center of each detected buoy
+            list: A list of coordinate pairs (x, y) representing the center of 
+            each detected buoy.
         """
         coord_list = []
         dists, x_offsets = find_distances

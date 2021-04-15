@@ -5,6 +5,8 @@ import time
 
 
 def main():
+    """Sets initial values of the camera, then begins loop for running the 
+    detector, which creates a detector object that proesses camera feed."""
     vid = cv2.VideoCapture(0)
 
     print("Press q to quit.")
