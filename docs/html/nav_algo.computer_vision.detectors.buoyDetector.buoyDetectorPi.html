@@ -202,8 +202,20 @@
 <span id="nav-algo-computer-vision-detectors-buoydetector-buoydetectorpi-module"></span><h1>nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi module<a class="headerlink" href="#module-nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector">
-<em class="property">class </em><code class="sig-prename descclassname">nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.</code><code class="sig-name descname">BuoyDetector</code><a class="headerlink" href="#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.</code><code class="sig-name descname">BuoyDetector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img_height</span><span class="o">=</span><span class="default_value">480</span></em>, <em class="sig-param"><span class="n">img_width</span><span class="o">=</span><span class="default_value">640</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A detector for buoys.</p>
+<p>This uses a standard webcam to output visual feedback on the camera screen
+and an outline of the buoys. It returns the coordinates of the largest buoy
+found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img_height</strong> – the height of the camera output.</p></li>
+<li><p><strong>img_width</strong> – the width of the camera output.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt id="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BUOY_HEIGHT">
 <code class="sig-name descname">BUOY_HEIGHT</code><em class="property"> = 1016</em><a class="headerlink" href="#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BUOY_HEIGHT" title="Permalink to this definition">¶</a></dt>
@@ -234,6 +246,54 @@
 <code class="sig-name descname">Median_Filter</code><em class="property"> = 3</em><a class="headerlink" href="#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.BlurType.Median_Filter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.find_distance_largest_contour">
+<code class="sig-name descname">find_distance_largest_contour</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.find_distance_largest_contour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the distance of the largest contour.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the obstacle distance
+float: the x-offset in the image</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.find_distances">
+<code class="sig-name descname">find_distances</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.find_distances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates distances from each contour and creates list of obstacle distances from camera.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>img_height</strong> – height of image passed in, in pixels</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list where each element represents an obstacle distance
+list: A list where each element represents an x-offset in the image.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.get_buoy_coords">
+<code class="sig-name descname">get_buoy_coords</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">direction</span></em>, <em class="sig-param"><span class="n">curr_x</span></em>, <em class="sig-param"><span class="n">curr_y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.computer_vision.detectors.buoyDetector.buoyDetectorPi.BuoyDetector.get_buoy_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>get_buoy_coords(distance, x_displacement, direction, curr_x, curr_y) returns the
+x and y coordinates of a buoy detected by a buoy detector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>x, y coordinates representing the center of the front projection of another buoy.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

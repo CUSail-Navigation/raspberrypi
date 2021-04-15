@@ -204,6 +204,18 @@
 <dt id="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector">
 <em class="property">class </em><code class="sig-prename descclassname">nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.</code><code class="sig-name descname">BuoyDetector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img_height</span><span class="o">=</span><span class="default_value">480</span></em>, <em class="sig-param"><span class="n">img_width</span><span class="o">=</span><span class="default_value">640</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A detector for buoys.</p>
+<p>This uses a standard webcam to output visual feedback on the camera screen
+and an outline of the buoys. It returns the coordinates of the largest buoy
+found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img_height</strong> – the height of the camera output.</p></li>
+<li><p><strong>img_width</strong> – the width of the camera output.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt id="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.BUOY_HEIGHT">
 <code class="sig-name descname">BUOY_HEIGHT</code><em class="property"> = 1016</em><a class="headerlink" href="#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.BUOY_HEIGHT" title="Permalink to this definition">¶</a></dt>
@@ -239,13 +251,14 @@
 <dl class="py method">
 <dt id="nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.find_distances">
 <code class="sig-name descname">find_distances</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nav_algo.computer_vision.detectors.buoyDetector.buoyDetector.BuoyDetector.find_distances" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates distances from each contour and creates list of obstacle distances from camera.</p>
+<dd><p>Calculates distances from each contour and creates list of obstacle
+distances from camera.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>img_height</strong> – height of image passed in, in pixels</p>
+<dd class="field-odd"><p><strong>img_height</strong> – height of image passed in, in pixels.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list where each element represents an obstacle distance
+<dd class="field-even"><p>A list where each element represents an obstacle distance.
 list: A list where each element represents an x-offset in the image.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
@@ -267,7 +280,8 @@ list: A list where each element represents an x-offset in the image.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of coordinate pairs (x, y) representing the center of each detected buoy</p>
+<dd class="field-even"><p>A list of coordinate pairs (x, y) representing the center of
+each detected buoy.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>list</p>
