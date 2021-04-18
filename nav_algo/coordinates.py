@@ -132,6 +132,9 @@ class Vector:
         """
         return rangeAngle(radToDeg(np.arctan2(self.y, self.x)))
 
+    def scale(self, scaleFactor):
+        return Vector(x=self.x * scaleFactor, y=self.y * scaleFactor)
+    
     def toUnitVector(self):
         """Converts a vector to a unit vector.
 

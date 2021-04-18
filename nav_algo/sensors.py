@@ -79,7 +79,10 @@ class sensorData:
         # use the NMEA parser
         self.gps_serial_port.reset_input_buffer()
         for _ in range(5):
-            line = self.gps_serial_port.readline().decode('utf-8')
+            try:
+                line = self.gps_serial_port.readline().decode('utf-8')
+            except:
+                line = ''
             nmea_data = nmea.NMEA(line)
             if nmea_data.status:
                 self.fix = True
@@ -102,7 +105,7 @@ class sensorData:
         """Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the
         average of the list of ints. This function assumes that anemometer readings are taken semi-frequently
         parameter: newValue - int denoting number to be added to the """
-        self.anemomSMA.append(newValue) / 2
+        self.anemomSMA.append(newValue / 2)
         if (len(self.anemomSMA) > 1):
             self.anemomSMA[-2] = self.anemomSMA[-2] / 2
         if (len(self.anemomSMA) > 10):

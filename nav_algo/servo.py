@@ -1,7 +1,7 @@
 from adafruit_servokit import ServoKit
 
 
-class servo:
+class Servo:
     SAIL_MAX_ANGLE = 148
     SAIL_MIN_ANGLE = 0
     SAIL_MAX = 180
@@ -12,7 +12,7 @@ class servo:
     TAIL_MAX = 180
     TAIL_MIN = 0
 
-    def __init__(self, tailPin, sailPin):
+    def __init__(self):
         """
         instantiates the class. tailPin is the otherwise unused GPIO pin on the pi where the
         tail servo is connected, and sailPin is the otherwise unused GPIO pin where the sail
@@ -20,8 +20,6 @@ class servo:
         """
         self.currentTail = 0
         self.currentSail = 0
-        self.tailPin = tailPin
-        self.sailPin = sailPin
         self.servoDriver = ServoKit(channels=16)
         return
 
@@ -30,16 +28,16 @@ class servo:
         Just instantiate the class then enter an angle into "servo"_angle as an
         int TAIL_MIN_ANGLE -> TAIL_MAX_ANGLE degrees
         """
-        if tail_angle <= servo.TAIL_MAX_ANGLE and tail_angle >= servo.TAIL_MIN_ANGLE:
-            intOnPer = self.mapRange(tail_angle, servo.TAIL_MIN_ANGLE,
-                                     servo.TAIL_MAX_ANGLE, servo.TAIL_MIN,
-                                     servo.TAIL_MAX)
+        if tail_angle <= Servo.TAIL_MAX_ANGLE and tail_angle >= Servo.TAIL_MIN_ANGLE:
+            intOnPer = self.mapRange(tail_angle, Servo.TAIL_MIN_ANGLE,
+                                     Servo.TAIL_MAX_ANGLE, Servo.TAIL_MIN,
+                                     Servo.TAIL_MAX)
             self.servoDriver.servo[0].angle = intOnPer
             self.currentTail = tail_angle
         else:
             print("Did not set tail, desired angle not between " +
-                  str(servo.TAIL_MIN_ANGLE) + "and" +
-                  str(servo.TAIL_MAX_ANGLE))
+                  str(Servo.TAIL_MIN_ANGLE) + "and" +
+                  str(Servo.TAIL_MAX_ANGLE))
         return
 
     def setSail(self, sail_angle):
@@ -47,16 +45,16 @@ class servo:
         Just instantiate the class then enter an angle into "servo"_angle as an
         int SAIL_MIN_ANGLE -> SAIL_MAX_ANGLE degrees
         """
-        if sail_angle <= servo.SAIL_MAX_ANGLE and sail_angle >= servo.SAIL_MIN_ANGLE:
-            intOnPer = self.mapRange(sail_angle, servo.SAIL_MIN_ANGLE,
-                                     servo.SAIL_MAX_ANGLE, servo.SAIL_MIN,
-                                     servo.SAIL_MAX)
+        if sail_angle <= Servo.SAIL_MAX_ANGLE and sail_angle >= Servo.SAIL_MIN_ANGLE:
+            intOnPer = self.mapRange(sail_angle, Servo.SAIL_MIN_ANGLE,
+                                     Servo.SAIL_MAX_ANGLE, Servo.SAIL_MIN,
+                                     Servo.SAIL_MAX)
             self.servoDriver.servo[1].angle = intOnPer
             self.currentTail = sail_angle
         else:
             print("Did not set sail, desired angle not between " +
-                  str(servo.SAIL_MIN_ANGLE) + "and" +
-                  str(servo.SAIL_MAX_ANGLE))
+                  str(Servo.SAIL_MIN_ANGLE) + "and" +
+                  str(Servo.SAIL_MAX_ANGLE))
         return
 
     def sleepServo(self, sleep):

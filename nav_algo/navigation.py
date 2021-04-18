@@ -36,7 +36,7 @@ class NavigationController:
         self.boat = boat.BoatController(
             coordinate_system=self.coordinate_system)
 
-        self.radio = radio.Radio()
+        self.radio = radio.Radio(9600)
         self.radio.transmitString("Waiting for GPS fix...\n")
 
         # wait until we know where we are
@@ -105,6 +105,7 @@ class NavigationController:
 
             self.boat.updateSensors()
             self.boat_position = self.boat.getPosition()
+            self.radio.printData(self.boat)
 
             if self.boat_position.xyDist(
                     self.current_waypoint) < self.DETECTION_RADIUS:

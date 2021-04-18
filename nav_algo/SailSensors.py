@@ -93,6 +93,7 @@ class UARTDevice:
 
     def sendUart(self, message):
         self.serialStream.write(message)
+        self.serialStream.flush()
         return
 
     def recieveUartBytes(self, bytes=1):

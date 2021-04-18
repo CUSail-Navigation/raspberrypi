@@ -1,4 +1,6 @@
 from nav_algo.SailSensors import UARTDevice
+import nav_algo.boat as boat
+import nav_algo.coordinates as coord
 
 
 # TODO document this class
@@ -18,15 +20,14 @@ class Radio(UARTDevice):
     """
 
     def transmitString(self, message: str):
-        self.sendUart(message)
+        self.sendUart(message.encode('utf-8'))
         pass
 
     """
     Sends all of the boat data to the basestation. All arguments are taken in as floats
     """
 
-    def printData(self, origLat, origLong, currentPositionX, currentPositionY,
-                  windDir, pitch, roll, yaw, sailAngle, tailAngle, heading):
+    def printData(self, boatController):
         """Data should be of the form:.
 
         "----------NAVIGATION----------" +
@@ -47,6 +48,18 @@ class Radio(UARTDevice):
         character at the end of the string.
 
         """
+        origLat = boatController.coordinate_system.LAT_OFFSET
+        origLong = boatController.coordinate_system.LAT_OFFSET
+        currentPositionX = boatController.sensors.position.x
+        currentPositionY = boatController.sensors.position.y
+        windDir = boatController.sensors.wind_direction
+        pitch = boatController.sensors.pitch
+        roll = boatController.sensors.roll
+        yaw = boatController.sensors.yaw
+        sailAngle = boatController.sail_angle
+        tailAngle = boatController.tail_angle
+        heading = boatController.sensors.velocity.angle()
+        
         msg = ("----------NAVIGATION----------" + ",Origin Latitude: " +
                str(origLat) + ",Origin Longitude: " + str(origLong) +
                ",X position: " + str(currentPositionX) + ",Y position: " +
@@ -80,7 +93,7 @@ class Radio(UARTDevice):
         """
         msg = "----------WAYPOINTS----------"
         for j in currentWaypointsArray:
-            msg = msg + ",X:" + str(j[0]) + " Y:" + str(j[1])
+            msg = msg + ",X:" + str(j.x) + " Y:" + str(j.y)
         pass
         msg = msg + ",----------END----------" + '\n'
         msg = msg.encode()
