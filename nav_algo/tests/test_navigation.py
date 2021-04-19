@@ -137,7 +137,7 @@ class TestNavigationMethods(unittest.TestCase):
 
     def test_endurance(self):
         # waypoints need to be in a clockwise dir, starting top left
-        waypoints = [(0, 25), (45, 25),(45, 0), (0, 0)]
+        waypoints = [(0, 25), (45, 25), (45, 0), (0, 0)]
         midpoints = [(27.5, 25), (45, 12.5), (27.5, 0), (0, 12.5)]
         offset = 10
         opt_dist = 2
@@ -184,12 +184,12 @@ class TestNavigationMethods(unittest.TestCase):
         expected_waypoints = [(25, 5), (25, 25)]
         self.assertAlmostEqual(new_waypoints, expected_waypoints)
 
-        #keep- given position, yaw, and wind, return: 1) Four 90 degree waypoints to loop
-        #scenario 1- (facing east, optimal angle is 45)
+        # keep- given position, yaw, and wind, return: 1) Four 90 degree waypoints to loop
+        # scenario 1- (facing east, optimal angle is 45)
         self.nav_controller.boat_position = coord.Vector(x=0.0, y=0.0)
         self.nav_controller.boat.sensors.yaw = 0.0
 
-        #ccw path
+        # ccw path
         self.nav_controller.boat.sensors.wind_direction = 45.0
         new_waypoints = self.nav_controller.station_keeping([], 10, "KEEP")
         expected_waypoints = [(5 * math.sqrt(2), 5 * math.sqrt(2)),
@@ -198,7 +198,7 @@ class TestNavigationMethods(unittest.TestCase):
                               (5 * math.sqrt(2), -5 * math.sqrt(2))]
         self.assertAlmostEqual(new_waypoints, expected_waypoints)
 
-        #cw path
+        # cw path
         self.nav_controller.boat.sensors.wind_direction = 315
         new_waypoints = self.nav_controller.station_keeping([], 10, "KEEP")
         first_angle = math.radians(45)
@@ -213,7 +213,7 @@ class TestNavigationMethods(unittest.TestCase):
         self.nav_controller.boat_position = coord.Vector(x=5.0, y=5.0)
         self.nav_controller.boat.sensors.yaw = 60.0
 
-        #ccw path
+        # ccw path
         self.nav_controller.boat.sensors.wind_direction = 45.0
         new_waypoints = self.nav_controller.station_keeping([], 10, "KEEP")
         first_angle = math.radians(60 + 45)
@@ -230,7 +230,7 @@ class TestNavigationMethods(unittest.TestCase):
 
         self.assertAlmostEqual(new_waypoints, expected_waypoints)
 
-        #cw path
+        # cw path
         self.nav_controller.boat.sensors.wind_direction = 90.0
         new_waypoints = self.nav_controller.station_keeping([], 10, "KEEP")
         first_angle = math.radians(60 - 15)
@@ -245,30 +245,30 @@ class TestNavigationMethods(unittest.TestCase):
                                10 * math.sin(first_angle - 3 * math.pi / 2))]
         self.assertAlmostEqual(new_waypoints, expected_waypoints)
 
-        #exit- 4 waypoints, get closest exit
-        waypoints = [(5, 45), (45, 45), (5, 45), (5, 5)]  #center=(25,25)
-        #West exit
+        # exit- 4 waypoints, get closest exit
+        waypoints = [(5, 45), (45, 45), (5, 45), (5, 5)]  # center=(25,25)
+        # West exit
         expected_exit = (-5, 25)
         self.nav_controller.boat_position = coord.Vector(x=15, y=25)
         exit_waypoint = self.nav_controller.station_keeping(
             waypoints, 10, "EXIT")
         self.assertAlmostEqual(exit_waypoint, expected_exit)
 
-        #North exit
+        # North exit
         expected_exit = (25, 55)
         self.nav_controller.boat_position = coord.Vector(x=25, y=35)
         exit_waypoint = self.nav_controller.station_keeping(
             waypoints, 10, "EXIT")
         self.assertAlmostEqual(exit_waypoint, expected_exit)
 
-        #East exit
+        # East exit
         expected_exit = (55, 25)
         self.nav_controller.boat_position = coord.Vector(x=35, y=25)
         exit_waypoint = self.nav_controller.station_keeping(
             waypoints, 10, "EXIT")
         self.assertAlmostEqual(exit_waypoint, expected_exit)
 
-        #South exit
+        # South exit
         expected_exit = (25, -5)
         self.nav_controller.boat_position = coord.Vector(x=25, y=15)
         exit_waypoint = self.nav_controller.station_keeping(
@@ -276,7 +276,7 @@ class TestNavigationMethods(unittest.TestCase):
         self.assertAlmostEqual(exit_waypoint, expected_exit)
 
     def test_precision_navigation(self):
-        #equilateral triangle of side length 50, one vertex in the origin
+        # equilateral triangle of side length 50, one vertex in the origin
         expected_waypoints = []
         buoy_waypoints = [(-1.5, 0), (1.5, 0), (-25, -25 * math.sqrt(3)),
                           (25, -25 * math.sqrt(3))]
@@ -284,6 +284,33 @@ class TestNavigationMethods(unittest.TestCase):
         offset = 5
 
         final_waypoint = (0, 0)
+
+    def test_search(self):
+        center_x = -5
+        center_y = 4
+        center_waypoint = [(center_x, center_y)]
+        waypoints = self.nav_controller.search(center_waypoint)
+        expected_waypoints = [
+            (center_x-100, center_y),
+            (center_x-52.333, center_y-81.504), (center_x+39, center_y-85.216),
+            (center_x+89.669, center_y-12.782), (center_x+57.15, center_y+66.17),
+            (center_x-23.91, center_y+80.83), (center_x-77.918, center_y+22.675),
+            (center_x-58.811, center_y-51.251), (center_x+10.893, center_y-74.071),
+            (center_x+65.351, center_y-29.559), (center_x+57.547, center_y+37.311),
+            (center_x-0.28, center_y+65.442), (center_x-52.573, center_y+33.429),
+            (center_x-53.684, center_y-24.857), (center_x-7.66, center_y-55.492),
+            (center_x+40.169, center_y-34.385), (center_x+47.629, center_y+14.319),
+            (center_x+12.821, center_y+44.794), (center_x-28.692, center_y+32.631),
+            (center_x-39.854, center_y-6.042), (center_x, -15.168 center_y-33.932),
+            (center_x+18.637, center_y-28.469), (center_x+30.884, center_y+0.279),
+            (center_x+14.783, center_y+23.477), (center_x-10.436, center_y+22.279),
+            (center_x-21.271, center_y+2.84), (center_x-11.85, center_y-13.969),
+            (center_x+4.434, center_y-14.515), (center_x+11.585, center_y-3.26),
+            (center_x+6.653, center_y+5.902), (center_x-0.887, center_y+5.683),
+            (center_x-2.388, center_y+1.055)
+        ]
+        for i in range(len(waypoints)):
+            self.assertAlmostEqual(waypoints[i], expected_waypoints[i])
 
 
 if __name__ == '__main__':
