@@ -446,6 +446,7 @@ def search(waypoints, scalar=math.pi, constant=100, boat=boat):
     search_waypoints = []
     center_point = waypoints[0]
 
+    """
     entry_point = coord.Vector(center_point.x+100, center_point.y)
     entry_points = [
         coord.Vector(center_point.x-100, center_point.y),
@@ -465,9 +466,19 @@ def search(waypoints, scalar=math.pi, constant=100, boat=boat):
         theta_offset = math.pi/2
     elif ((entry_point.y == center_point.y-100)):
         theta_offset = -math.pi/2
+    """
+
+    boat_position = boat.getPosition()
+    theta_offset = math.atan2(
+        boat_position.y-center_point.y, boat_position.x-center_point.x)
+    if (boat_position.x < center_point.x):
+        theta_offset += math.pi
+    entry_point = (100*math.cos(theta_offset)+center_point.x,
+                   100*math.sin(theta_offset)+center_point.y)
+    search_waypoints.insert(0, entry_point)
 
     for theta in range(1+theta_offset, 31+theta_offset, 1):
-        r = constant - scalar * theta-theta_offset
+        r = constant - scalar * (theta-theta_offset)
         x = center_point.x + r * math.cos(theta)
         y = center_point.y + r * math.sin(theta)
         new_waypoint = coord.Vector(x=x, y=y)
