@@ -286,8 +286,9 @@ class TestNavigationMethods(unittest.TestCase):
         final_waypoint = (0, 0)
 
     def test_search(self):
-        center_x = -5
-        center_y = 4
+        center_x = 5
+        center_y = 5
+        self.nav_controller.boat_position = coord.Vector(x=-150, y=7)
         center_waypoint = [(center_x, center_y)]
         waypoints = self.nav_controller.search(center_waypoint)
         expected_waypoints = [
@@ -301,7 +302,7 @@ class TestNavigationMethods(unittest.TestCase):
             (center_x-53.684, center_y-24.857), (center_x-7.66, center_y-55.492),
             (center_x+40.169, center_y-34.385), (center_x+47.629, center_y+14.319),
             (center_x+12.821, center_y+44.794), (center_x-28.692, center_y+32.631),
-            (center_x-39.854, center_y-6.042), (center_x, -15.168 center_y-33.932),
+            (center_x-39.854, center_y-6.042), (center_x-15.168, center_y-33.932),
             (center_x+18.637, center_y-28.469), (center_x+30.884, center_y+0.279),
             (center_x+14.783, center_y+23.477), (center_x-10.436, center_y+22.279),
             (center_x-21.271, center_y+2.84), (center_x-11.85, center_y-13.969),

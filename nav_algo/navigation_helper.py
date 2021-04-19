@@ -442,16 +442,35 @@ def collisionAvoidance(buoy_waypoints, boat=boat):
     ]
 
 
-def search(waypoints, scalar=3, constant=(100 - 30 * math.pi), boat=boat):
-    i = 0
+def search(waypoints, scalar=math.pi, constant=100, boat=boat):
     search_waypoints = []
-    center_point = boat.getPosition()
-    for theta in range(40, -1, -1):
-        t = (theta * math.pi / 4)
-        r = constant + scalar * t
-        x = center_point.x + r * math.cos(t)
-        y = center_point.y + r * math.sin(t)
+    center_point = waypoints[0]
+
+    entry_point = coord.Vector(center_point.x+100, center_point.y)
+    entry_points = [
+        coord.Vector(center_point.x-100, center_point.y),
+        coord.Vector(center_point.x, center_point.y+100),
+        coord.Vector(center_point.x, center_point.y-100)
+    ]
+    boat_position = boat.getPosition()
+    for point in entry_points:
+        if (boat_position.xyDist(entry_point) > boat_position.xyDist(point)):
+            entry_point = point
+    search_waypoints.insert(0, entry_point)
+
+    theta_offset = 0
+    if (entry_point.x == center_point.x-100):
+        theta_offset = math.pi
+    elif ((entry_point.y == center_point.y+100)):
+        theta_offset = math.pi/2
+    elif ((entry_point.y == center_point.y-100)):
+        theta_offset = -math.pi/2
+
+    for theta in range(1+theta_offset, 31+theta_offset, 1):
+        r = constant - scalar * theta-theta_offset
+        x = center_point.x + r * math.cos(theta)
+        y = center_point.y + r * math.sin(theta)
         new_waypoint = coord.Vector(x=x, y=y)
-        search_waypoints.insert(0, new_waypoint)
-        i += 1
+        search_waypoints.insert(len(search_waypoints), new_waypoint)
+
     return search_waypoints
