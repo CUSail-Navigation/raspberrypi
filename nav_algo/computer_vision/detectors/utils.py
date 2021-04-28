@@ -21,7 +21,7 @@ def find_distances(contours_output, img_height, img_width, obstacle_width):
         width, height = size
         distances.append((obstacle_width * FOCAL_LENGTH * img_height /
                           (height * SENSOR_HEIGHT)) / 1000)
-        x_displacements.append(center - img_width / 2)
+        x_displacements.append(center[0] - img_width / 2)
 
     return distances, x_displacements
 
