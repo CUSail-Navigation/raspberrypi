@@ -23,10 +23,10 @@ class BuoyDetector:
         self.img_width = img_width
 
         # self.__rgb_threshold_red = [100, 255.0]
-        # self.__rgb_threshold_green = [100, 200]
+        # self.__rgb_threshold_green = [0, 125]
         # self.__rgb_threshold_blue = [0, 100]
 
-        self.__rgb_threshold_red = [75, 220.0]
+        self.__rgb_threshold_red = [125, 220.0]
         self.__rgb_threshold_green = [25, 100]
         self.__rgb_threshold_blue = [25, 75]
 
