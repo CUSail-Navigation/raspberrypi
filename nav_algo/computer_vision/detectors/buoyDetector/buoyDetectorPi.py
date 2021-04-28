@@ -26,8 +26,8 @@ class BuoyDetector:
         # self.__rgb_threshold_green = [100, 200]
         # self.__rgb_threshold_blue = [0, 100]
 
-        self.__rgb_threshold_red = [125, 220]
-        self.__rgb_threshold_green = [25, 1]
+        self.__rgb_threshold_red = [75, 220.0]
+        self.__rgb_threshold_green = [25, 100]
         self.__rgb_threshold_blue = [25, 75]
 
         self.rgb_threshold_output = None
