@@ -1,4 +1,4 @@
-from nav_algo.computer_vision.detectors.buoyDetector.buoyDetector import 
+from nav_algo.computer_vision.detectors.buoyDetector.buoyDetector import BuoyDetector
 import cv2
 import numpy as np
 import time
