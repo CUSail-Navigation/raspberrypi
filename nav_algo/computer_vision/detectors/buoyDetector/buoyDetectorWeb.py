@@ -1,6 +1,6 @@
 import cv2
 from enum import Enum
-from nav_algo.computer_vision.detectors.utils import find_distances, get_coords
+#from nav_algo.computer_vision.detectors.utils import find_distances, get_coords
 
 
 class BuoyDetector:
@@ -278,34 +278,34 @@ class BuoyDetector:
             output.append(contour)
         return output
 
-    def find_distances(self):
-        """Calculates distances from each contour and creates list of obstacle 
-        distances from camera.
+    # def find_distances(self):
+    #     """Calculates distances from each contour and creates list of obstacle 
+    #     distances from camera.
 
-        Args:
-            img_height: height of image passed in, in pixels.
+    #     Args:
+    #         img_height: height of image passed in, in pixels.
 
-        Returns:
-            list: A list where each element represents an obstacle distance.
-            list: A list where each element represents an x-offset in the image.
-        """
-        return find_distances(self.filter_contours_output, self.img_height,
-                              self.img_width, BuoyDetector.BUOY_HEIGHT)
+    #     Returns:
+    #         list: A list where each element represents an obstacle distance.
+    #         list: A list where each element represents an x-offset in the image.
+    #     """
+    #     return find_distances(self.filter_contours_output, self.img_height,
+    #                           self.img_width, BuoyDetector.BUOY_HEIGHT)
 
-    def get_buoy_coords(self, direction, curr_x, curr_y):
-        """Calculates all visible buoy coordinates.
+    # def get_buoy_coords(self, direction, curr_x, curr_y):
+    #     """Calculates all visible buoy coordinates.
 
-        Args:
-            direction (float): Boat's current direction (an angle)
-            curr_x (float): Boat's current x-coordinate
-            curr_y (float): Boat's current y-coordinate
+    #     Args:
+    #         direction (float): Boat's current direction (an angle)
+    #         curr_x (float): Boat's current x-coordinate
+    #         curr_y (float): Boat's current y-coordinate
     
-        Returns:
-            list: A list of coordinate pairs (x, y) representing the center of 
-            each detected buoy.
-        """
-        coord_list = []
-        dists, x_offsets = find_distances
-        for d, x in zip(dists, x_offsets):
-            coord_list.append(get_coords(d, x, direction, curr_x, curr_y))
-        return coord_list
+    #     Returns:
+    #         list: A list of coordinate pairs (x, y) representing the center of 
+    #         each detected buoy.
+    #     """
+    #     coord_list = []
+    #     dists, x_offsets = find_distances
+    #     for d, x in zip(dists, x_offsets):
+    #         coord_list.append(get_coords(d, x, direction, curr_x, curr_y))
+    #     return coord_list

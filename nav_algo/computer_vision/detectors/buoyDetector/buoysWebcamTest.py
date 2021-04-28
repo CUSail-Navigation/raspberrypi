@@ -1,4 +1,5 @@
-from nav_algo.computer_vision.detectors.buoyDetector.buoyDetector import BuoyDetector
+#from .nav_algo.computer_vision.detectors.buoyDetector.buoyDetector import BuoyDetector
+from buoyDetector import BuoyDetectorWeb
 import cv2
 import numpy as np
 import time
@@ -24,7 +25,7 @@ def main():
         contours = bd.filter_contours_output
         found = contours != None
 
-        print(bd.get__buoy_coords(0, 0, 0))  # print sample coordinates
+        #print(bd.get__buoy_coords(0, 0, 0))  # print sample coordinates
 
         cv2.drawContours(frame, contours, -1, (0, 255, 0), 3)
 
