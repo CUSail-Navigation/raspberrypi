@@ -1,5 +1,5 @@
 #from .nav_algo.computer_vision.detectors.buoyDetector.buoyDetector import BuoyDetector
-from buoyDetector import BuoyDetectorWeb
+from buoyDetector import BuoyDetector
 import cv2
 import numpy as np
 import time
@@ -32,7 +32,8 @@ def main():
         cv2.imshow('buoy detection', frame)
 
         # press q to quit
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord('q'):
             break
 
 
