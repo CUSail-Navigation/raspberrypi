@@ -16,7 +16,7 @@ class BuoyDetector:
         img_height: the height of the camera output.
         img_width: the width of the camera output.
     """
-    BUOY_HEIGHT = 1016  # buoy's height in mm
+    BUOY_SIZE = 1016  # buoy's height in mm
     BlurType = Enum("BlurType",
                     "Box_Blur Gaussian_Blur Median_Filter Bilateral_Filter")
 

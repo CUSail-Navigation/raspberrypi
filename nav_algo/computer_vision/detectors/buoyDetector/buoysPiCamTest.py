@@ -15,7 +15,7 @@ def start():
     camera.framerate = 32
     rawCapture = PiRGBArray(camera, size=(640, 480))
 
-    time.sleep(0.1)
+    time.sleep(2.0)
 
     print("Press q to quit.")
 
@@ -43,7 +43,7 @@ def run(frame,rawCapture):
     contours = bd.filter_contours_output
     found = contours != None
 
-    #print(bd.find_distances(frame.shape[0], frame.shape[1]))
+    print(bd.find_distances())
 
     cv2.drawContours(frame, contours, -1, (0, 255, 0), 3)
 
