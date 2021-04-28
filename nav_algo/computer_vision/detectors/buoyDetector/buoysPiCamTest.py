@@ -1,4 +1,4 @@
-import BuoyDetectorPi
+from buoyDetectorPi import BuoyDetector
 import cv2
 import numpy as np
 import time
@@ -22,13 +22,15 @@ def start():
     for frame in camera.capture_continuous(rawCapture,
                                            format="bgr",
                                            use_video_port=True):
-        run()
+        run(frame,rawCapture)
 
 
-def run():
+def run(frame,rawCapture):
     """Creates a detector object that proesses camera feed."""
+    
     frame = frame.array
-    max_dimension = max(image.shape)
+
+    max_dimension = max(frame.shape)
     scale = 700 / max_dimension
     frame = cv2.resize(frame, None, fx=scale, fy=scale)
 
@@ -41,7 +43,7 @@ def run():
     contours = bd.filter_contours_output
     found = contours != None
 
-    print(bd.find_distances(frame.shape[0], frame.shape[1]))
+    #print(bd.find_distances(frame.shape[0], frame.shape[1]))
 
     cv2.drawContours(frame, contours, -1, (0, 255, 0), 3)
 
