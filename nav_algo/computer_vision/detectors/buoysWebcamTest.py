@@ -1,4 +1,3 @@
-#from .nav_algo.computer_vision.detectors.buoyDetector.buoyDetector import BuoyDetector
 from buoyDetector import BuoyDetector
 import cv2
 import numpy as np
@@ -25,7 +24,7 @@ def main():
         contours = bd.filter_contours_output
         found = contours != None
 
-        #print(bd.get__buoy_coords(0, 0, 0))  # print sample coordinates
+        print(bd.find_distance_largest_contour())
 
         cv2.drawContours(frame, contours, -1, (0, 255, 0), 3)
 
@@ -34,7 +33,7 @@ def main():
         # press q to quit
         key = cv2.waitKey(1) & 0xFF
         if key == ord('q'):
-            break
+            exit()
 
 
 if __name__ == '__main__':

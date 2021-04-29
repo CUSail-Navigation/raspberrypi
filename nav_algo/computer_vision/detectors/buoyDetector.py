@@ -1,6 +1,6 @@
 import cv2
 from enum import Enum
-#from nav_algo.computer_vision.detectors.utils import find_distances, get_coords
+from utils import find_distances, get_coords, find_distance_largest_contour
 
 
 class BuoyDetector:
@@ -14,7 +14,7 @@ class BuoyDetector:
         img_height: the height of the camera output.
         img_width: the width of the camera output.
     """
-    BUOY_HEIGHT = 1016  # buoy's height in mm
+    BUOY_SIZE = 1016  # buoy's height in mm
     BlurType = Enum('BlurType',
                     'Box_Blur Gaussian_Blur Median_Filter Bilateral_Filter')
 
@@ -278,34 +278,36 @@ class BuoyDetector:
             output.append(contour)
         return output
 
-    # def find_distances(self):
-    #     """Calculates distances from each contour and creates list of obstacle 
-    #     distances from camera.
+    def find_distances(self):
+        """Calculates distances from each contour and creates list of obstacle distances from camera.
 
-    #     Args:
-    #         img_height: height of image passed in, in pixels.
+        Args:
+            img_height: height of image passed in, in pixels
 
-    #     Returns:
-    #         list: A list where each element represents an obstacle distance.
-    #         list: A list where each element represents an x-offset in the image.
-    #     """
-    #     return find_distances(self.filter_contours_output, self.img_height,
-    #                           self.img_width, BuoyDetector.BUOY_HEIGHT)
+        Returns:
+            list: A list where each element represents an obstacle distance 
+            list: A list where each element represents an x-offset in the image.
+        """
+        return find_distances(self.filter_contours_output, self.img_height,
+                              self.img_width, BuoyDetector.BUOY_SIZE)
+ 
+    def find_distance_largest_contour(self):
+        """Calculates the distance of the largest contour.
 
-    # def get_buoy_coords(self, direction, curr_x, curr_y):
-    #     """Calculates all visible buoy coordinates.
+        Returns:
+            float: the obstacle distance
+            float: the x-offset in the image
+        """
+        return find_distance_largest_contour(self.filter_contours_output,
+                                             self.img_height, self.img_width,
+                                             BuoyDetector.BUOY_SIZE)
 
-    #     Args:
-    #         direction (float): Boat's current direction (an angle)
-    #         curr_x (float): Boat's current x-coordinate
-    #         curr_y (float): Boat's current y-coordinate
-    
-    #     Returns:
-    #         list: A list of coordinate pairs (x, y) representing the center of 
-    #         each detected buoy.
-    #     """
-    #     coord_list = []
-    #     dists, x_offsets = find_distances
-    #     for d, x in zip(dists, x_offsets):
-    #         coord_list.append(get_coords(d, x, direction, curr_x, curr_y))
-    #     return coord_list
+    def get_buoy_coords(self, direction, curr_x, curr_y):
+        """get_buoy_coords(distance, x_displacement, direction, curr_x, curr_y) returns the
+        x and y coordinates of a buoy detected by a buoy detector.
+
+        Return:
+            list: x, y coordinates representing the center of the front projection of another buoy.
+        """
+        dist, x_offset = find_distance_largest_contour(self)
+        return get_coords([dist], [x_offset], direction, curr_x, curr_y)[0]

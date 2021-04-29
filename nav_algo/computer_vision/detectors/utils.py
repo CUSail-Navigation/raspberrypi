@@ -39,8 +39,7 @@ def find_distance_largest_contour(contours_output, img_height, img_width,
     width, height = size
     distance = (obstacle_width * FOCAL_LENGTH * img_height /
                 (height * SENSOR_HEIGHT)) / 1000
-    x_displacement = center - img_width / 2
-
+    x_displacement = center[0] - img_width / 2
     return distance, x_displacement
 
 

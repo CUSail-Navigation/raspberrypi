@@ -29,11 +29,14 @@ class Camera:
             self.buoyDetector.process(frame)
             self.boatDetector.process(frame)
 
-            buoyCoords = self.buoyDetector.get_buoy_coords(
+            buoyCoordsTuple = self.buoyDetector.get_buoy_coords(
                 direction, curr_x, curr_y)
-            boatCoords = self.boatDetector.get_boat_coords(
+            boatCoordsTuple = self.boatDetector.get_boat_coords(
                 direction, curr_x, curr_y)
 
             self.rawCapture.truncate(0)
+
+            buoyCoords = coord.Vector(x=buoyCoordsTuple[0], y=buoyCoordsTuple[1])
+            boatCoords = coord.Vector(x=boatCoordsTuple[0], y=boatCoordsTuple[1])
 
             return buoyCoords, boatCoords

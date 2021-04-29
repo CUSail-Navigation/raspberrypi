@@ -43,7 +43,7 @@ def run(frame,rawCapture):
     contours = bd.filter_contours_output
     found = contours != None
 
-    print(bd.find_distances())
+    print(bd.find_distance_largest_contour())
 
     cv2.drawContours(frame, contours, -1, (0, 255, 0), 3)
 
@@ -58,3 +58,4 @@ def run(frame,rawCapture):
 
 if __name__ == '__main__':
     start()
+    
