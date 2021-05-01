@@ -20,6 +20,7 @@ class Radio(UARTDevice):
     """
 
     def transmitString(self, message: str):
+        print(message)
         self.sendUart(message.encode('utf-8'))
         pass
 
@@ -59,7 +60,7 @@ class Radio(UARTDevice):
         sailAngle = boatController.sail_angle
         tailAngle = boatController.tail_angle
         heading = boatController.sensors.velocity.angle()
-        
+
         msg = ("----------NAVIGATION----------" + ",Origin Latitude: " +
                str(origLat) + ",Origin Longitude: " + str(origLong) +
                ",X position: " + str(currentPositionX) + ",Y position: " +
@@ -68,6 +69,7 @@ class Radio(UARTDevice):
                str(yaw) + ",Sail Angle: " + str(sailAngle) + ",Tail Angle: " +
                str(tailAngle) + ",Heading: " + str(heading) +
                ",----------END----------" + '\n')
+        print(msg)
         msg = msg.encode()
         self.sendUart(msg)
         return
@@ -96,6 +98,7 @@ class Radio(UARTDevice):
             msg = msg + ",X:" + str(j.x) + " Y:" + str(j.y)
         pass
         msg = msg + ",----------END----------" + '\n'
+        print(msg)
         msg = msg.encode()
         self.sendUart(msg)
         return
@@ -120,6 +123,7 @@ class Radio(UARTDevice):
         """
         msg = ("----------HIT----------" + ",X:" + hitWaypoint[0] + " Y:" +
                hitWaypoint[1] + ",----------END----------" + '\n')
+        print(msg)
         msg = msg.encode()
         self.sendUart(msg)
         return
