@@ -18,9 +18,11 @@ class Servo:
         tail servo is connected, and sailPin is the otherwise unused GPIO pin where the sail
         servo is connected.
         """
-        self.currentTail = 0
-        self.currentSail = 0
         self.servoDriver = ServoKit(channels=16)
+        self.currentTail = 90
+        self.setTail(90)
+        self.currentSail = 90
+        self.setSail(90)
         return
 
     def setTail(self, tail_angle):
