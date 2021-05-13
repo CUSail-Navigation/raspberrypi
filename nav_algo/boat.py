@@ -27,16 +27,17 @@ class BoatController:
             angle_of_attack = -15.0
 
         offset = self.sensors.yaw - intended_angle
-        tail = round(self.sensors.wind_direction + offset)
-        sail = round(tail + angle_of_attack)
-
-        # put in range [0, 360)
-        tail = ((tail % 360) + 360) % 360
-        sail = ((sail % 360) + 360) % 360
+        # -90 to put in sero coords
+        tail = round(self.sensors.wind_direction + offset) - 90
+        sail = round(tail + angle_of_attack) - 90
 
         # convert sail and tail from wrt north to wrt boat
         tail = tail - self.sensors.yaw
         sail = sail - self.sensors.yaw
+
+        # put in range [0, 360)
+        tail = coord.rangeAngle(tail)
+        sail = coord.rangeAngle(sail)
 
         return sail, tail
 
@@ -44,5 +45,5 @@ class BoatController:
         self.sail_angle, self.tail_angle = self.getServoAngles(intended_angle)
 
         # set the servos
-        self.servos.setTail(coord.rangeAngle(self.tail_angle))
-        self.servos.setSail(coord.rangeAngle(self.sail_angle))
+        self.servos.setTail(self.tail_angle)
+        self.servos.setSail(self.sail_angle)
