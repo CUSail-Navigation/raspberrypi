@@ -4,7 +4,7 @@ import nav_algo.coordinates as coord
 import nav_algo.radio as radio
 from nav_algo.events import Events
 from nav_algo.navigation_helper import *
-from nav_algo.camera import Camera
+# from nav_algo.camera import Camera
 
 
 class NavigationController:

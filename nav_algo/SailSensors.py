@@ -86,18 +86,25 @@ class UARTDevice:
     Superclass used to create a UARTDevice. Contians various functions for communication
     """
     def __init__(self, baudrate, serialPort='/dev/ttyS0', t=1):
-        self.serialStream = serial.Serial(port=serialPort,
+        self.port = serialPort
+        # open the port only when necessary
+        self.serialStream = serial.Serial(port=None,
                                           baudrate=baudrate,
                                           timeout=t)
+        self.serialStream.port = self.port
         return
 
     def sendUart(self, message):
+        self.serialStream.open()
         self.serialStream.write(message)
         self.serialStream.flush()
+        self.serialStream.close()
         return
 
     def recieveUartBytes(self, bytes=1):
+        self.serialStream.open()
         self.serialStream.read(bytes)
+        self.serialStream.close()
         return
 
 

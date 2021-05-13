@@ -32,9 +32,11 @@ class sensorData:
         #Sensor objects
         self.IMU = SailSensors.SailIMU()
         self.anemometer = SailSensors.SailAnemometer(0)
-        self.gps_serial_port = serial.Serial(port='/dev/ttyAMA2',
+        # do not open gps port yet (don't give a port in the initialization)
+        self.gps_serial_port = serial.Serial(port=None,
                                              baudrate=9600,
                                              timeout=1)
+        self.gps_serial_port.port = '/dev/ttyAMA2'
 
         #sensorData
         self.boat_direction = 0  # angle of the sail wrt north.
@@ -75,8 +77,8 @@ class sensorData:
         return
 
     def readGPS(self):
-        # TODO update fix, lat, long, and velocity
         # use the NMEA parser
+        self.gps_serial_port.open()
         self.gps_serial_port.reset_input_buffer()
         for _ in range(5):
             try:
@@ -100,6 +102,7 @@ class sensorData:
                     self.velocity.scale(1.0 / (cur_time - self.prev_time))
                     self.position = new_position
                     self.prev_time = cur_time
+        self.gps_serial_port.close()
 
     def _addAverage(self, newValue):
         """Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the
