@@ -20,9 +20,9 @@ class Servo:
         """
         self.servoDriver = ServoKit(channels=16)
         self.currentTail = 90
-        self.setTail(90)
+        self.setTail(30)
         self.currentSail = 90
-        self.setSail(90)
+        self.setSail(74)
         return
 
     def setTail(self, tail_angle):
@@ -30,34 +30,28 @@ class Servo:
         Just instantiate the class then enter an angle into "servo"_angle as an
         int TAIL_MIN_ANGLE -> TAIL_MAX_ANGLE degrees
         """
-        if tail_angle <= Servo.TAIL_MAX_ANGLE and tail_angle >= Servo.TAIL_MIN_ANGLE:
-            intOnPer = self.mapRange(tail_angle, Servo.TAIL_MIN_ANGLE,
-                                     Servo.TAIL_MAX_ANGLE, Servo.TAIL_MIN,
-                                     Servo.TAIL_MAX)
-            self.servoDriver.servo[0].angle = intOnPer
-            self.currentTail = tail_angle
-        else:
-            print("Did not set tail, desired angle not between " +
-                  str(Servo.TAIL_MIN_ANGLE) + "and" +
-                  str(Servo.TAIL_MAX_ANGLE))
-        return
+        if tail_angle > Servo.TAIL_MAX_ANGLE:
+            tail_angle = Servo.TAIL_MAX_ANGLE
+        elif tail_angle < Servo.TAIL_MIN_ANGLE:
+            tail_angle = Servo.TAIL_MIN_ANGLE
+    
+        intOnPer = self.mapRange(tail_angle, Servo.TAIL_MIN_ANGLE, Servo.TAIL_MAX_ANGLE, Servo.TAIL_MIN, Servo.TAIL_MAX)
+        self.servoDriver.servo[1].angle = intOnPer
+        self.currentTail = tail_angle
 
     def setSail(self, sail_angle):
         """
         Just instantiate the class then enter an angle into "servo"_angle as an
         int SAIL_MIN_ANGLE -> SAIL_MAX_ANGLE degrees
         """
-        if sail_angle <= Servo.SAIL_MAX_ANGLE and sail_angle >= Servo.SAIL_MIN_ANGLE:
-            intOnPer = self.mapRange(sail_angle, Servo.SAIL_MIN_ANGLE,
-                                     Servo.SAIL_MAX_ANGLE, Servo.SAIL_MIN,
-                                     Servo.SAIL_MAX)
-            self.servoDriver.servo[1].angle = intOnPer
-            self.currentTail = sail_angle
-        else:
-            print("Did not set sail, desired angle not between " +
-                  str(Servo.SAIL_MIN_ANGLE) + "and" +
-                  str(Servo.SAIL_MAX_ANGLE))
-        return
+        if sail_angle < Servo.SAIL_MIN_ANGLE:
+            sail_angle = Servo.SAIL_MIN_ANGLE
+        elif sail_angle > Servo.SAIL_MAX_ANGLE:
+            sail_angle = Servo.SAIL_MAX_ANGLE
+    
+        intOnPer = self.mapRange(sail_angle, Servo.SAIL_MIN_ANGLE, Servo.SAIL_MAX_ANGLE, Servo.SAIL_MIN,Servo.SAIL_MAX)
+        self.servoDriver.servo[0].angle = intOnPer
+        self.currentSail = sail_angle
 
     def sleepServo(self, sleep):
         """Puts the servo driver to sleep to conserve energy.
@@ -75,8 +69,8 @@ class Servo:
         print("encoder?")
         return
 
-    def mapRange(self, val, min, max, endMin, endMax):
+    def mapRange(self, val, startmin, startmax, endMin, endMax):
         """
         Returns value based on a linear map of MIN -> MAX to a value ENDMIN -> ENDMAX
         """
-        return ((val / (max - min)) * (endMax - endMin)) + endMin
+        return ((val / (startmax - startmin)) * (endMax - endMin)) + endMin

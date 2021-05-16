@@ -90,6 +90,7 @@ class sensorData:
                 self.fix = True
                 self.latitude = nmea_data.latitude
                 self.longitude = nmea_data.longitude
+                print("got lat {}, long {}".format(self.latitude, self.longitude))
                 new_position = coord.Vector(self.coordinate_system,
                                             self.latitude, self.longitude)
                 cur_time = time.time()

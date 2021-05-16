@@ -50,7 +50,7 @@ class Radio(UARTDevice):
 
         """
         origLat = boatController.coordinate_system.LAT_OFFSET
-        origLong = boatController.coordinate_system.LAT_OFFSET
+        origLong = boatController.coordinate_system.LONG_OFFSET
         currentPositionX = boatController.sensors.position.x
         currentPositionY = boatController.sensors.position.y
         windDir = boatController.sensors.wind_direction
