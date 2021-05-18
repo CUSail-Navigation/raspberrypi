@@ -308,9 +308,9 @@ def check_overlap(box_coords, obst_coords, axis):
     box_list = []
     obst_list = []
     for index in range(len(box_coords)):
-        box_prod = box_coords[index] @ axis
+        box_prod = np.dot(box_coords[index], axis)
         box_list.append(box_prod)
-        obst_prod = obst_coords[index] @ axis
+        obst_prod = np.dot(obst_coords[index], axis)
         obst_list.append(obst_prod)
     if min(obst_list) > max(box_list) or min(box_list) > max(obst_list):
         return False
