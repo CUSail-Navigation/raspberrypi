@@ -1,9 +1,8 @@
 import unittest
 import numpy as np
-import nav_algo.navigation as nav
 import nav_algo.coordinates as coord
 import nav_algo.navigation_helper as help
-
+import nav_algo.navigation as nav
 
 class TestNavigationMethods(unittest.TestCase):
     def setUp(self):
