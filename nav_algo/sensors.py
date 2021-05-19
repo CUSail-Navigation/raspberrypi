@@ -69,7 +69,7 @@ class sensorData:
         if rawData >= 1601:
             rawAngle = 0
         else:
-            rawAngle = rawData * 360 / 1600
+            rawAngle = rawData * 360 / 1600 + 180
 
         windWrtN = (rawAngle + self.sailAngleBoat) % 360
         windWrtN = (windWrtN + self.boat_direction) % 360
@@ -111,7 +111,8 @@ class sensorData:
         parameter: newValue - int denoting number to be added to the """
         self.anemomSMA.append(newValue / 2)
         if (len(self.anemomSMA) > 1):
-            self.anemomSMA[-2] = self.anemomSMA[-2] / 2
+            for i in range(len(self.anemomSMA)-1):
+                self.anemomSMA[i] = self.anemomSMA[i] / 2
         if (len(self.anemomSMA) > 10):
             self.anemomSMA.pop(0)
         sum = 0
