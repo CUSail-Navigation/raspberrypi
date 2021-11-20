@@ -22,9 +22,11 @@ class NavigationController:
         current_waypoint (Vector): The current target waypoint.
         boat_position (Vector): The current position of the boat.
         boat_to_target (Vector): The vector from the boat to the target position.
+        simulation (bool): If we are running a simulation
 
     """
-    def __init__(self, event=None, waypoints=[]):
+
+    def __init__(self, event=None, waypoints=[], simulation=False):
         self.DETECTION_RADIUS = 5.0
 
         self.coordinate_system = coord.CoordinateSystem(
