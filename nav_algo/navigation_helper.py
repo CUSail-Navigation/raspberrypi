@@ -2,6 +2,8 @@ import nav_algo.coordinates as coord
 import nav_algo.boat as boat
 import math
 import numpy as np
+from nav_algo.computer_vision.detectors.buoyDetectorPi import bouyDetector
+import nav_algo.computer_vision.detectors.buoyPi as buoyPi
 
 
 def newSailingAngle(boat, target):
@@ -477,11 +479,19 @@ def search(waypoints, scalar=math.pi, constant=100, boat=boat):
                    100*math.sin(theta_offset)+center_point.y)
     search_waypoints.insert(0, entry_point)
 
+    buoyPi.start()
     for theta in range(1+theta_offset, 31+theta_offset, 1):
         r = constant - scalar * (theta-theta_offset)
         x = center_point.x + r * math.cos(theta)
         y = center_point.y + r * math.sin(theta)
-        new_waypoint = coord.Vector(x=x, y=y)
-        search_waypoints.insert(len(search_waypoints), new_waypoint)
+
+        size, buoy_x, buoy_y = bouyPi.run()
+        if size != 0:
+            new_waypoint = coord.Vector(x=buoy_x, y=buoy_y)
+            search_waypoints.insert(0, new_waypoint)
+        else:
+            new_waypoint = coord.Vector(x=x, y=y)
+            search_waypoints.insert(len(search_waypoints), new_waypoint)
+            break
 
     return search_waypoints

@@ -60,3 +60,20 @@ def get_coords(distance, x_displacement, direction, curr_x, curr_y):
 
     # camera facing same direction as boat
     return buoy_x, buoy_y  # returns one buoy's coordinates in our coordinate system
+
+def largest_contour(contours_output, img_height, img_width,
+                                  obstacle_width):
+    """Calculates size, x_coordinate, and y_coordinate of the largest contour.
+    Args:
+      img_height (int): height of image passed in, in pixels
+    Returns:
+      int: size of the largest buoy in meters
+      int: x coordinate of that buoy
+      int: y coordinate of that buoy
+    """
+    c = max(contours_output, key=cv2.contourArea)
+    center, size, angle = cv2.minAreaRect(c)
+    width, height = size
+    x, y = get_coords(distance, x_displacement, direction, curr_x, curr_y)
+
+    return max(width, height), x, y
