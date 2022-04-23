@@ -3,12 +3,12 @@ from adafruit_servokit import ServoKit
 
 class Servo:
     SAIL_MAX_ANGLE = 90
-    SAIL_MIN_ANGLE = 90
+    SAIL_MIN_ANGLE = -90
     SAIL_MAX = 0
     SAIL_MIN = 0
 
-    TAIL_MAX_ANGLE = 60
-    TAIL_MIN_ANGLE = 0
+    TAIL_MAX_ANGLE = 30
+    TAIL_MIN_ANGLE = -30
     TAIL_MAX = 180
     TAIL_MIN = 0
 
@@ -35,7 +35,7 @@ class Servo:
         elif tail_angle < Servo.TAIL_MIN_ANGLE:
             tail_angle = Servo.TAIL_MIN_ANGLE
     
-        intOnPer = self.mapRange(tail_angle, Servo.TAIL_MIN_ANGLE, Servo.TAIL_MAX_ANGLE, Servo.TAIL_MIN, Servo.TAIL_MAX)
+        intOnPer =  35 - tail_angle
         self.servoDriver.servo[1].angle = intOnPer
         self.currentTail = tail_angle
 
@@ -49,7 +49,7 @@ class Servo:
         elif sail_angle > Servo.SAIL_MAX_ANGLE:
             sail_angle = Servo.SAIL_MAX_ANGLE
     
-        intOnPer = 3 * (sail_angle + 180) * (180/1800)
+        intOnPer = (sail_angle + 90) 
         self.servoDriver.servo[0].angle = intOnPer
         self.currentSail = sail_angle
 
