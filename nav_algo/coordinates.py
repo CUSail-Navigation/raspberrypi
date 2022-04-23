@@ -169,6 +169,22 @@ class Vector:
 
         return Vector(x=self.x - dx, y=self.y - dy)
 
+    def angleBetween(self, other):
+        """Calculates the angle between two vectors
+
+        Args:
+            self: vector
+            other: vector
+        
+        Returns:
+            float: An angle within the range of 0 to 360.
+        
+        """
+        top = self.x * other.x + self.y * other.y
+        bot = math.sqrt( math.pow(self.x, 2)  + math.pow(other.x, 2)) * math.sqrt( math.pow(self.y, 2)  + math.pow(other.y, 2))
+        return math.acos(top/bot)
+
+
     @staticmethod
     def zeroVector():
         """Constructs a zero vector.

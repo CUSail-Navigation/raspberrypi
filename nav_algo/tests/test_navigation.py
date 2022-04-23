@@ -9,7 +9,7 @@ import math
 class TestNavigationMethods(unittest.TestCase):
     def setUp(self):
         self.waypoints = [(42.444241, 76.481933), (42.446016, 76.484713)]
-        self.nav_controller = nav.NavigationController(self.waypoints,
+        self.nav_controller = nav.NavigationController(waypoints=self.waypoints,
                                                        simulation=True)
 
         # mock sensor readings - some of these aren't always used
