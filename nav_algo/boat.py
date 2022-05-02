@@ -46,8 +46,10 @@ class BoatController:
         #sail = sail + 74.0
 
         # put in range [0, 360)
-        tail = coord.rangeAngle(tail)
-        sail = coord.rangeAngle(sail)
+        if(tail > 30):
+            tail = 30
+        elif(tail < 30):
+            tail = -30
 
         return sail, tail
 

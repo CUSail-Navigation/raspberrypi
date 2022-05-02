@@ -4,5 +4,5 @@ import time
 servoController = Servo()
 print("done")
 
-servoController.setSail(90)
-servoController.setTail(-30)
+servoController.setSail(0)
+servoController.setTail(0)

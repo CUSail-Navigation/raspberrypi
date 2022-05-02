@@ -49,7 +49,7 @@ class Servo:
         elif sail_angle > Servo.SAIL_MAX_ANGLE:
             sail_angle = Servo.SAIL_MAX_ANGLE
     
-        intOnPer = (sail_angle + 90) 
+        intOnPer = self.maprange(sail_angle,-90,-90,65,135)
         self.servoDriver.servo[0].angle = intOnPer
         self.currentSail = sail_angle
 
@@ -73,4 +73,4 @@ class Servo:
         """
         Returns value based on a linear map of MIN -> MAX to a value ENDMIN -> ENDMAX
         """
-        return ((val / (startmax - startmin)) * (endMax - endMin)) + endMin
+        return (((val - startmin) / (startmax - startmin)) * (endMax - endMin)) + endMin
