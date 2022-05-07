@@ -49,9 +49,9 @@ class Servo:
         elif sail_angle > Servo.SAIL_MAX_ANGLE:
             sail_angle = Servo.SAIL_MAX_ANGLE
     
-        intOnPer = self.maprange(sail_angle,-90,-90,65,135)
+        intOnPer = self.mapRange(sail_angle,-90,90,65,135)
         self.servoDriver.servo[0].angle = intOnPer
-        self.currentSail = sail_angle
+        self.currentSail = sail_angle - 90
 
     def sleepServo(self, sleep):
         """Puts the servo driver to sleep to conserve energy.

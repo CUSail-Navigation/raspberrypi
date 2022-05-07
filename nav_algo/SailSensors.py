@@ -130,7 +130,7 @@ class ADCDevice:
         Args:
             gain (int): The gain of the sensor input.
         """
-        return ADCDevice.mainADC.read_adc(self.pinNumber)
+        return ADCDevice.mainADC.read_adc(self.pinNumber,gain)
 
 
 class SailIMU(I2CDevice):
@@ -201,7 +201,7 @@ class SailAnemometer(ADCDevice):
         """
         super().__init__(pinNumber)
 
-    def readAnemometerVoltage(self, gain=1):
+    def readAnemometerVoltage(self, gain=2/3):
         """Returns the given voltage of the anemometer using the ADC.
         
         Args:

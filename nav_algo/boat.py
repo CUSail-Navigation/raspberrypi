@@ -48,7 +48,7 @@ class BoatController:
         # put in range [0, 360)
         if(tail > 30):
             tail = 30
-        elif(tail < 30):
+        if(tail < 30):
             tail = -30
 
         return sail, tail

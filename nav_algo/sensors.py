@@ -36,7 +36,7 @@ class sensorData:
         self.gps_serial_port = serial.Serial(port=None,
                                              baudrate=9600,
                                              timeout=1)
-        self.gps_serial_port.port = '/dev/ttyAMA2'
+        self.gps_serial_port.port = '/dev/ttyAMA2' #ttyAMA2 needs to be
 
         #sensorData
         self.boat_direction = 0  # angle of the sail wrt north.
@@ -65,11 +65,9 @@ class sensorData:
 
     def readWindDirection(self):
         rawData = self.anemometer.readAnemometerVoltage()
-        self.rawWind = rawData
-        if rawData >= 1601:
-            rawAngle = 0
-        else:
-            rawAngle = rawData * 360 / 1600 + 180
+        """print(rawData)"""
+        rawWind = rawData
+        rawAngle = 360 - rawData * 360 / 1700 -90
 
         windWrtN = (rawAngle + self.sailAngleBoat) % 360
         windWrtN = (windWrtN + self.boat_direction) % 360
