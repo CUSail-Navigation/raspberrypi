@@ -15,10 +15,10 @@ class Radio(UARTDevice):
     def __init__(self,
                  baudrate,
                  boatController=None,
-                 fleetRace = False,
+                 fleetRace=False,
                  serialPort='/dev/ttyS0',
                  t=1):
-        super().__init__(baudrate, serialPort, t , fleetRace)
+        super().__init__(baudrate, serialPort, t, fleetRace)
         self.boatController = boatController
 
     """
@@ -42,8 +42,19 @@ class Radio(UARTDevice):
             print("Quitting...")
             self.sendUart("Quitting...".encode('utf-8'))
             time.sleep(1)  # give time to send message, then quit
+            self.serialStream.close()
             exit(0)
-        else:
+        elif l == 'o':
+            # manual override
+            print("Entering Manual Override...")
+            self.sendUart("Entering Manual Override...".encode('utf-8'))
+            self.fleetRace = True
+        elif l == 'a':
+            # turn on autopilot
+            print("Entering Autopilot Mode...")
+            self.sendUart("Entering Autopilot Mode...".encode('utf-8'))
+            self.fleetRace = False
+        elif self.fleetRace:
             # assumes the only other possibility is setting sail angles
             self.readAngles(l)
 

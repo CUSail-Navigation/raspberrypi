@@ -36,7 +36,7 @@ class sensorData:
         self.gps_serial_port = serial.Serial(port=None,
                                              baudrate=9600,
                                              timeout=1)
-        self.gps_serial_port.port = '/dev/ttyAMA2' #ttyAMA2 needs to be
+        self.gps_serial_port.port = '/dev/ttyAMA2'  #ttyAMA2 needs to be
 
         #sensorData
         self.boat_direction = 0  # angle of the sail wrt north.
@@ -67,7 +67,7 @@ class sensorData:
         rawData = self.anemometer.readAnemometerVoltage()
         """print(rawData)"""
         rawWind = rawData
-        rawAngle = 360 - rawData * 360 / 1700 -90
+        rawAngle = 360 - rawData * 360 / 1700 - 90
 
         windWrtN = (rawAngle + self.sailAngleBoat) % 360
         windWrtN = (windWrtN + self.boat_direction) % 360
@@ -76,6 +76,7 @@ class sensorData:
 
     def readGPS(self):
         # use the NMEA parser
+        # TODO you may want to just leave this open
         self.gps_serial_port.open()
         self.gps_serial_port.reset_input_buffer()
         for _ in range(5):
@@ -88,7 +89,8 @@ class sensorData:
                 self.fix = True
                 self.latitude = nmea_data.latitude
                 self.longitude = nmea_data.longitude
-                print("got lat {}, long {}".format(self.latitude, self.longitude))
+                print("got lat {}, long {}".format(self.latitude,
+                                                   self.longitude))
                 new_position = coord.Vector(self.coordinate_system,
                                             self.latitude, self.longitude)
                 cur_time = time.time()
@@ -109,7 +111,7 @@ class sensorData:
         parameter: newValue - int denoting number to be added to the """
         self.anemomSMA.append(newValue / 2)
         if (len(self.anemomSMA) > 1):
-            for i in range(len(self.anemomSMA)-1):
+            for i in range(len(self.anemomSMA) - 1):
                 self.anemomSMA[i] = self.anemomSMA[i] / 2
         if (len(self.anemomSMA) > 10):
             self.anemomSMA.pop(0)
