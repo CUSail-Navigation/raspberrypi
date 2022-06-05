@@ -38,8 +38,10 @@ class NavigationController:
         # NOTE commands should end with \n, send 'q' to quit, angles are space delineated 'main tail'
         if event == Events.FLEET_RACE:
             while True:
-                # TODO might want this in a try-except just in case
-                self.radio.receiveString()  # timeout is 1 sec
+                try:
+                    self.radio.receiveString()  # timeout is 1 sec
+                except:
+                    pass
 
         self.DETECTION_RADIUS = 5.0
 
