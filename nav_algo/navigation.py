@@ -30,13 +30,16 @@ class NavigationController:
                  waypoints=[],
                  simulation=False):
 
-        self.radio = radio.Radio(9600)
-
         # TODO this is the hacky way of doing this. At some point, someone should fix it
         # so that you can actually get sensor data and stuff - CM
         # If the event is fleet race, we don't care about the algo, just set angles
         # NOTE commands should end with \n, send 'q' to quit, angles are space delineated 'main tail'
         if event == Events.FLEET_RACE:
+            self.boat = boat.BoatController()
+            self.radio = radio.Radio(9600, self.boat)
+            self.radio.transmitString(
+                "Starting Fleet Race\nSend angles of the form 'sail_angle rudder_angle'"
+            )
             while True:
                 try:
                     self.radio.receiveString()  # timeout is 1 sec
@@ -54,6 +57,7 @@ class NavigationController:
         self.boat = boat.BoatController(
             coordinate_system=self.coordinate_system)
 
+        self.radio = radio.Radio(9600)
         self.radio.transmitString("Waiting for GPS fix...\n")
 
         # wait until we know where we are

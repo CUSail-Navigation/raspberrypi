@@ -12,9 +12,13 @@ class Radio(UARTDevice):
     -serialport, the serial port the xbee is connected to(just leave default for the xbee)
     -t is the uart timeout period(just leave at 1 for normal operation)
     """
-    def __init__(self, baudrate, serialPort='/dev/ttyS0', t=1):
+    def __init__(self,
+                 baudrate,
+                 boatController=None,
+                 serialPort='/dev/ttyS0',
+                 t=1):
         super().__init__(baudrate, serialPort, t)
-        pass
+        self.boatController = boatController
 
     """
     Prints the given messge to the basestation. string must be sent with a 'b' before the string
@@ -55,7 +59,7 @@ class Radio(UARTDevice):
 
         sail = float(spl[0])
         tail = float(spl[1])
-        boat.setAngles(sail, tail)
+        self.boatController.setAngles(sail, tail)
 
     """
     Sends all of the boat data to the basestation. All arguments are taken in as floats
