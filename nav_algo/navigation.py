@@ -59,6 +59,7 @@ class NavigationController:
 
         self.radio = radio.Radio(9600)
         self.radio.transmitString("Waiting for GPS fix...\n")
+        self.radio.boatController = self.boat
 
         # wait until we know where we are
         while self.boat.sensors.velocity is None:
