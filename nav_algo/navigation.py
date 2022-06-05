@@ -124,14 +124,14 @@ class NavigationController:
         while self.current_waypoint is not None:
             # read for a quit signal ('q') or manual override ('o')
             try:
-                self.radio.readline()
+                self.radio.receiveString()
             except:
                 pass
 
             while self.radio.fleetRace:
                 # manual override has been engaged, wait for autopilot signal ('a')
                 try:
-                    self.radio.readline()
+                    self.radio.receiveString()
                 except:
                     pass
 
