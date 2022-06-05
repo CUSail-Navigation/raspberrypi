@@ -36,7 +36,7 @@ class NavigationController:
         # NOTE commands should end with \n, send 'q' to quit, angles are space delineated 'main tail'
         if event == Events.FLEET_RACE:
             self.boat = boat.BoatController()
-            self.radio = radio.Radio(9600, self.boat)
+            self.radio = radio.Radio(9600, self.boat, True, t=10)
             self.radio.transmitString(
                 "Starting Fleet Race\nSend angles of the form 'sail_angle rudder_angle'"
             )

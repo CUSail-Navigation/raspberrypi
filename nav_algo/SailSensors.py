@@ -85,34 +85,41 @@ class UARTDevice:
     """
     Superclass used to create a UARTDevice. Contians various functions for communication
     """
-    def __init__(self, baudrate, serialPort='/dev/ttyS0', t=1):
+    def __init__(self, baudrate, serialPort='/dev/ttyS0', t=1, fleetRace = False):
         self.port = serialPort
         # open the port only when necessary
         self.serialStream = serial.Serial(port=None,
                                           baudrate=baudrate,
                                           timeout=t)
         self.serialStream.port = self.port
+        self.fleetRace = fleetRace
+        
+        if(self.fleetRace == True):
+            self.serialStream.open()
         return
 
     def sendUart(self, message):
-        self.serialStream.open()
+        if(self.fleetRace == False):
+            self.serialStream.open()
+
         self.serialStream.write(message)
         self.serialStream.flush()
-        self.serialStream.close()
+        
+        if(self.fleetRace == False):
+            self.serialStream.close()
         return
 
     def recieveUartBytes(self, bytes=1):
         # TODO this may need to be open constantly in order to read
-        self.serialStream.open()
         self.serialStream.read(bytes)  #TODO you'll also want to return this
-        self.serialStream.close()
         return
 
     def readline(self):
         # TODO port may need to be open constantly to read...
-        self.serialStream.open()
-        l = self.serialStream.readline()
-        self.serialStream.close()
+
+        l = self.serialStream.readline().decode('utf-8')
+        print(l)
+
         return l
 
 
