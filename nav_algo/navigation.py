@@ -25,8 +25,22 @@ class NavigationController:
         simulation (bool): If we are running a simulation
 
     """
+    def __init__(self,
+                 event=Events.FLEET_RACE,
+                 waypoints=[],
+                 simulation=False):
 
-    def __init__(self, event=None, waypoints=[], simulation=False):
+        self.radio = radio.Radio(9600)
+
+        # TODO this is the hacky way of doing this. At some point, someone should fix it
+        # so that you can actually get sensor data and stuff - CM
+        # If the event is fleet race, we don't care about the algo, just set angles
+        # NOTE commands should end with \n, send 'q' to quit, angles are space delineated 'main tail'
+        if event == Events.FLEET_RACE:
+            while True:
+                # TODO might want this in a try-except just in case
+                self.radio.receiveString()  # timeout is 1 sec
+
         self.DETECTION_RADIUS = 5.0
 
         self.coordinate_system = coord.CoordinateSystem(
@@ -38,7 +52,6 @@ class NavigationController:
         self.boat = boat.BoatController(
             coordinate_system=self.coordinate_system)
 
-        self.radio = radio.Radio(9600)
         self.radio.transmitString("Waiting for GPS fix...\n")
 
         # wait until we know where we are

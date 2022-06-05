@@ -7,3 +7,4 @@ class Events(Enum):
     PRECISION_NAVIGATION = 3
     COLLISION_AVOIDANCE = 4
     SEARCH = 5
+    FLEET_RACE = 6

@@ -102,10 +102,18 @@ class UARTDevice:
         return
 
     def recieveUartBytes(self, bytes=1):
+        # TODO this may need to be open constantly in order to read
         self.serialStream.open()
-        self.serialStream.read(bytes)
+        self.serialStream.read(bytes)  #TODO you'll also want to return this
         self.serialStream.close()
         return
+
+    def readline(self):
+        # TODO port may need to be open constantly to read...
+        self.serialStream.open()
+        l = self.serialStream.readline()
+        self.serialStream.close()
+        return l
 
 
 class ADCDevice:
@@ -130,7 +138,7 @@ class ADCDevice:
         Args:
             gain (int): The gain of the sensor input.
         """
-        return ADCDevice.mainADC.read_adc(self.pinNumber,gain)
+        return ADCDevice.mainADC.read_adc(self.pinNumber, gain)
 
 
 class SailIMU(I2CDevice):
@@ -201,7 +209,7 @@ class SailAnemometer(ADCDevice):
         """
         super().__init__(pinNumber)
 
-    def readAnemometerVoltage(self, gain=2/3):
+    def readAnemometerVoltage(self, gain=2 / 3):
         """Returns the given voltage of the anemometer using the ADC.
         
         Args:

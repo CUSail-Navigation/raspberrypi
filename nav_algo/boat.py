@@ -42,13 +42,13 @@ class BoatController:
 
         offset = self.sensors.yaw - intended_angle
         # map to range of servos
-        tail = round(offset) #+ 30.0
+        tail = round(offset)  #+ 30.0
         #sail = sail + 74.0
 
         # put in range [0, 360)
-        if(tail > 30):
+        if (tail > 30):
             tail = 30
-        if(tail < 30):
+        if (tail < 30):
             tail = -30
 
         return sail, tail
@@ -57,6 +57,12 @@ class BoatController:
         self.sail_angle, self.tail_angle = self.getServoAngles(intended_angle)
 
         # set the servos
-        print("setting sail {} tail {}".format(self.sail_angle, self.tail_angle))
+        print("setting sail {} tail {}".format(self.sail_angle,
+                                               self.tail_angle))
         self.servos.setTail(self.tail_angle)
         self.servos.setSail(self.sail_angle)
+
+    def setAngles(self, mainsail: float, tail: float):
+        print("setting sail {} tail {}".format(mainsail, tail))
+        self.servos.setSail(mainsail)
+        self.servos.setTail(tail)

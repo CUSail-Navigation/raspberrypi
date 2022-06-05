@@ -1,6 +1,7 @@
 from nav_algo.SailSensors import UARTDevice
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
+from time import time
 
 
 # TODO document this class
@@ -23,6 +24,38 @@ class Radio(UARTDevice):
         print(message)
         self.sendUart(message.encode('utf-8'))
         pass
+
+    """
+    Reads in a line from the XBee. NOTE this assumes that the line ends with \n
+    If 'q' is received, the nav algo will quit.
+    """
+
+    def receiveString(self):
+        l = self.readline()
+        l = l.replace('\n', '')
+        if l == 'q':
+            print("Quitting...")
+            self.sendUart("Quitting...".encode('utf-8'))
+            time.sleep(1)  # give time to send message, then quit
+            exit(0)
+        else:
+            # assumes the only other possibility is setting sail angles
+            self.readAngles(l)
+
+    """
+    Reads in manual sail and rudder (tail sail) angles of the form "a b" (space delineated)
+    """
+
+    def readAngles(self, message: str):
+        spl = message.split(" ")
+        if not len(spl) == 2:
+            self.sendUart(
+                "Angles in incorrect format. Ignoring.".encode('utf-8'))
+            return
+
+        sail = float(spl[0])
+        tail = float(spl[1])
+        boat.setAngles(sail, tail)
 
     """
     Sends all of the boat data to the basestation. All arguments are taken in as floats
