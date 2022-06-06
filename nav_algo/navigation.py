@@ -30,22 +30,6 @@ class NavigationController:
                  waypoints=[],
                  simulation=False):
 
-        # TODO this is the hacky way of doing this. At some point, someone should fix it
-        # so that you can actually get sensor data and stuff - CM
-        # If the event is fleet race, we don't care about the algo, just set angles
-        # NOTE commands should end with \n, send 'q' to quit, angles are space delineated 'main tail'
-        if event == Events.FLEET_RACE:
-            self.boat = boat.BoatController()
-            self.radio = radio.Radio(9600, self.boat, True, t=10)
-            self.radio.transmitString(
-                "Starting Fleet Race\nSend angles of the form 'sail_angle rudder_angle'"
-            )
-            while True:
-                try:
-                    self.radio.receiveString()  # timeout is 1 sec
-                except:
-                    pass
-
         self.DETECTION_RADIUS = 5.0
 
         self.coordinate_system = coord.CoordinateSystem(
@@ -71,7 +55,22 @@ class NavigationController:
         # self.current_waypoint = self.waypoints[desired_fst_waypoint]
         # TODO: add modified ^ to event algos before each navigate call
 
-        if event == Events.ENDURANCE:
+        # If the event is fleet race, we don't care about the algo, just set angles
+        # NOTE commands should end with \n, send 'q' to quit, angles are space delineated 'main tail'
+        if event == Events.FLEET_RACE:
+            self.radio.fleetRace = True
+            self.radio.transmitString(
+                "Starting Fleet Race\nSend angles of the form 'sail_angle rudder_angle'"
+            )
+            while True:
+                try:
+                    self.radio.receiveString()  # timeout is 1 sec
+                except:
+                    pass
+                self.boat.updateSensors()
+                self.radio.printData(self.boat)
+
+        elif event == Events.ENDURANCE:
             # 7 hrs = 25200 sec
             exit_before = 25200
             start_time = time.time()
@@ -135,6 +134,8 @@ class NavigationController:
                     self.radio.receiveString()
                 except:
                     pass
+                self.boat.updateSensors()
+                self.radio.printData(self.boat)
 
             all_waypts = [pt for pt in self.waypoints]
             all_waypts.append(self.current_waypoint)
