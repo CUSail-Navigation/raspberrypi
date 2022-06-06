@@ -2,6 +2,7 @@ from nav_algo.SailSensors import UARTDevice
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 from time import time
+import sys
 
 
 # TODO document this class
@@ -41,8 +42,8 @@ class Radio(UARTDevice):
         if l == 'q':
             print("Quitting...")
             self.sendUart("Quitting...".encode('utf-8'))
-            time.sleep(1)  # give time to send message, then quit
-            exit(0)
+            sys.exit()
+            time.sleep(1)  # give time to send message, then quit 
         else:
             # assumes the only other possibility is setting sail angles
             self.readAngles(l)

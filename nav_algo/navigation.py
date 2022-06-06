@@ -35,7 +35,9 @@ class NavigationController:
         # If the event is fleet race, we don't care about the algo, just set angles
         # NOTE commands should end with \n, send 'q' to quit, angles are space delineated 'main tail'
         if event == Events.FLEET_RACE:
-            self.boat = boat.BoatController()
+            self.coordinate_system = coord.CoordinateSystem(
+                                    waypoints[0][0], waypoints[0][1])
+            self.boat = boat.BoatController(self.coordinate_system)
             self.radio = radio.Radio(9600, self.boat, True, t=10)
             self.radio.transmitString(
                 "Starting Fleet Race\nSend angles of the form 'sail_angle rudder_angle'"
@@ -43,6 +45,7 @@ class NavigationController:
             while True:
                 try:
                     self.radio.receiveString()  # timeout is 1 sec
+                    self.radio.printData(self.boat)
                 except:
                     pass
 
@@ -79,7 +82,7 @@ class NavigationController:
             while (time.time() - start_time < exit_before):
                 self.waypoints = loop_waypoints
                 self.current_waypoint = self.waypoints.pop(0)
-                self.navigate
+                self.navigate()
         elif event == Events.STATION_KEEPING:
             # to find an optimal radius, 10 for now
             exit_before = 300
