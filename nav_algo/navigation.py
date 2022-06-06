@@ -30,6 +30,10 @@ class NavigationController:
                  waypoints=[],
                  simulation=False):
 
+        # Make sure we have at least one waypoint
+        if (len(waypoints) < 1):
+            raise RuntimeError('At least one waypoint is required.')
+
         self.DETECTION_RADIUS = 5.0
 
         self.coordinate_system = coord.CoordinateSystem(
@@ -42,6 +46,9 @@ class NavigationController:
             coordinate_system=self.coordinate_system)
 
         self.radio = radio.Radio(9600)
+        self.radio.transmitString(
+            "Using lat/long point ({}, {}) as the center of the coordinate system.\n"
+            .format(waypoints[0][0], waypoints[0][1]))
         self.radio.transmitString("Waiting for GPS fix...\n")
         self.radio.boatController = self.boat
 
