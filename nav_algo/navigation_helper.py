@@ -1,5 +1,4 @@
 import nav_algo.coordinates as coord
-import nav_algo.boat as boat
 import math
 import numpy as np
 
@@ -109,7 +108,7 @@ def endurance(waypoints, opt_dist, offset):
     ]
 
 
-def stationKeeping(waypoints, circle_radius, state, opt_angle=45, boat=boat):
+def stationKeeping(waypoints, circle_radius, state, boat, opt_angle=45):
     if state == "ENTRY":
         stationKeepingWaypoints = []  # Necessary waypoints
         # entry point to the square
@@ -131,7 +130,6 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45, boat=boat):
         # center of the square
         center = waypoints[0].midpoint(waypoints[2])
         stationKeepingWaypoints.append(center)
-        # waypoints = stationKeepingWaypoints
         return stationKeepingWaypoints
 
     elif state == "KEEP":
@@ -168,9 +166,13 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45, boat=boat):
         return keep_waypoints
 
     elif state == "EXIT":
+        # TODO this assumes that the buoys are cardinal aligned, but this is
+        # probably not true. I set the distance to move away from the box to
+        # be large to account for this, but in the future, this should be
+        # rewritten without that assumption.
+
         # corner waypoint order: NW, NE, SE, SW
-        # TODO: ask Courtney about the units of x-y coord
-        units_away = 10
+        units_away = 40
         # north exit
         north_exit = waypoints[0].midpoint(waypoints[1])
         north_exit.y += units_away

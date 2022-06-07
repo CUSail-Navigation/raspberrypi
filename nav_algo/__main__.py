@@ -20,6 +20,8 @@ def main():
     How to set the waypoints for the different event algorithms:
     - Precision navigation: set the waypoints as the positions of the 4 buoys
     in the order [top left, top right, bottom left, bottom right]
+    - Station keeping: set the waypoints as the positions of the 4 buoys in the
+    order [north west, north east, south east, south west]
     """
     # waypoints is an array of (lat, long) tuples
     waypoint_file = 'nav_algo/waypoints/test.csv'
