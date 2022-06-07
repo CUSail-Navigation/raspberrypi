@@ -44,7 +44,7 @@ class Radio(UARTDevice):
             self.sendUart("Quitting...".encode('utf-8'))
             time.sleep(1)  # give time to send message, then quit
             self.serialStream.close()
-            exit(0)
+            raise RuntimeError('Quitting navigation algorithm.')
         elif l == 'o':
             # manual override
             print("Entering Manual Override...")

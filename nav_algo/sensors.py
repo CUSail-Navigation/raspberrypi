@@ -36,7 +36,7 @@ class sensorData:
         self.gps_serial_port = serial.Serial(port=None,
                                              baudrate=9600,
                                              timeout=1)
-        self.gps_serial_port.port = '/dev/ttyAMA2'  #ttyAMA2 needs to be
+        self.gps_serial_port.port = '/dev/ttyAMA0'  #ttyAMA2 needs to be
 
         #sensorData
         self.boat_direction = 0  # angle of the sail wrt north.
