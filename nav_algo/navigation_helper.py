@@ -195,92 +195,71 @@ def stationKeeping(waypoints, circle_radius, state, opt_angle=45, boat=boat):
 
 def find_inner_outer_points(start_point, end_point, dist, flag):
     # 1 is in, -1 is out, 0 is on the line
-    slope = (start_point.y - end_point.y) / (start_point.x - end_point.x)
-    theta_slope = math.atan(slope)
+    slope_y = start_point.y - end_point.y
+    slope_x = start_point.x - end_point.x
+    theta_slope = math.atan2(slope_y, slope_x)
     x = start_point.x + dist * math.cos(theta_slope)
     y = start_point.y + dist * math.sin(theta_slope)
     if flag != 0:
         x += -flag * 0.1 * dist * math.sin(theta_slope)
         y += flag * 0.1 * dist * math.cos(theta_slope)
-    return (x, y)
+    return coord.Vector(x=x, y=y)
 
 
 def buoy_offset(start_point, buoy, dist):
-    slope = (start_point.y - buoy.y) / (start_point.x - buoy.x)
-    theta_slope = math.atan(slope)
+    slope_y = start_point.y - buoy.y
+    slope_x = start_point.x - buoy.x
+    theta_slope = math.atan2(slope_y, slope_x)
     x = buoy.x + dist * math.cos(theta_slope)
     y = buoy.y + dist * math.sin(theta_slope)
-    return (x, y)
+    return coord.Vector(x=x, y=y)
 
 
-def precisionNavigation(waypoints, offset=5.0, side_length=50.0, boat=boat):
+def precisionNavigation(waypoints):
     # waypoints:[topleft_buoy, topright_buoy, botleft_buoy, botright_buoy]
     topleft_buoy = waypoints[0]
     topright_buoy = waypoints[1]
     botleft_buoy = waypoints[2]
     botright_buoy = waypoints[3]
 
+    out_waypoints = []
+
+    # start/finish position between top buoys
     start_pos = topleft_buoy.midpoint(topright_buoy)
+
     # find inner and outer waypoints on first side of triangle
-    start_point = start_pos
-    end_point = botleft_buoy
-    dist = (start_point.xyDist(end_point)) / 3
-    point_line = find_inner_outer_points(start_point, end_point, dist, 0)
-    first_waypoint = find_inner_outer_points(point_line, end_point, dist, 1)
-    dist_out = 2 * dist
-    point_line_2 = find_inner_outer_points(start_point, end_point, dist_out, 0)
-    second_waypoint = find_inner_outer_points(point_line_2, end_point,
-                                              dist_out, -1)
+    dist = start_pos.xyDist(botleft_buoy) / 3
+    out_waypoints.append(
+        find_inner_outer_points(start_pos, botleft_buoy, dist, 1))
+    out_waypoints.append(
+        find_inner_outer_points(start_pos, botleft_buoy, dist * 2, -1))
+
     # first offset from buoy
-    dist_buoy = (start_point.xyDist(end_point)) / 10
-    third_waypoint = buoy_offset(start_point, end_point, dist_buoy)
+    dist_buoy = (start_pos.xyDist(botleft_buoy)) / 10
+    out_waypoints.append(buoy_offset(start_pos, botleft_buoy, dist_buoy))
 
-    # find inner and outer waypoints on second side of triangle
-    start_point = end_point
-    end_point = botright_buoy
+    # find inner and outer waypoints on second side of triangle (bottom)
+    dist = (botleft_buoy.xyDist(botright_buoy)) / 3
+    out_waypoints.append(
+        find_inner_outer_points(botleft_buoy, botright_buoy, dist, -1))
+    out_waypoints.append(
+        find_inner_outer_points(botleft_buoy, botright_buoy, dist * 2, -1))
 
-    dist = (start_point.xyDist(end_point)) / 3
-    point_line = find_inner_outer_points(start_point, end_point, dist, 0)
-    fourth_waypoint = find_inner_outer_points(point_line, end_point, dist, 1)
-    dist_out = 2 * dist
-    point_line_2 = find_inner_outer_points(start_point, end_point, dist_out, 0)
-    fifth_waypoint = find_inner_outer_points(point_line_2, end_point, dist_out,
-                                             -1)
     # second offset from buoy
-    dist_buoy = (start_point.xyDist(end_point)) / 10
-    sixth_waypoint = buoy_offset(start_point, end_point, dist_buoy)
+    dist_buoy = (botleft_buoy.xyDist(botright_buoy)) / 10
+    out_waypoints.append(buoy_offset(botleft_buoy, botright_buoy, dist_buoy))
 
     # find inner and outer waypoints on third side of triangle
-    start_point = end_point
-    end_point = start_point
-    dist = (start_point.xyDist(end_point)) / 3
-    point_line = find_inner_outer_points(start_point, end_point, dist, 0)
-    seventh_waypoint = find_inner_outer_points(point_line, end_point, dist, -1)
-    dist_out = 2 * dist
-    point_line_2 = find_inner_outer_points(start_point, end_point, dist_out, 0)
-    eighth_waypoint = find_inner_outer_points(point_line_2, end_point,
-                                              dist_out, 1)
+    dist = (botright_buoy.xyDist(start_pos)) / 3
+    out_waypoints.append(
+        find_inner_outer_points(botright_buoy, start_pos, dist, -1))
+    out_waypoints.append(
+        find_inner_outer_points(botright_buoy, start_pos, dist * 2, 1))
+
     # final waypoint is start_point
-    ninth_waypoint = start_pos
+    out_waypoints.append(start_pos)
 
-    # Convert to coord vectors
-    first_waypoint = coord.Vector(x=first_waypoint[0], y=first_waypoint[1])
-    second_waypoint = coord.Vector(x=second_waypoint[0], y=second_waypoint[1])
-    third_waypoint = coord.Vector(x=third_waypoint[0], y=third_waypoint[1])
-    fourth_waypoint = coord.Vector(x=fourth_waypoint[0], y=fourth_waypoint[1])
-    fifth_waypoint = coord.Vector(x=fifth_waypoint[0], y=fifth_waypoint[1])
-    sixth_waypoint = coord.Vector(x=sixth_waypoint[0], y=sixth_waypoint[1])
-    seventh_waypoint = coord.Vector(x=seventh_waypoint[0],
-                                    y=seventh_waypoint[1])
-    eighth_waypoint = coord.Vector(x=eighth_waypoint[0], y=eighth_waypoint[1])
-    ninth_waypoint = coord.Vector(x=ninth_waypoint[0], y=ninth_waypoint[1])
-
-    waypoints = [
-        first_waypoint, second_waypoint, third_waypoint, fourth_waypoint,
-        fifth_waypoint, sixth_waypoint, seventh_waypoint, eighth_waypoint,
-        ninth_waypoint
-    ]
-    return waypoints
+    return out_waypoints
 
 
 def getRectangleBox(center, theta):
@@ -445,7 +424,6 @@ def collisionAvoidance(buoy_waypoints, boat=boat):
 def search(waypoints, scalar=math.pi, constant=100, boat=boat):
     search_waypoints = []
     center_point = waypoints[0]
-
     """
     entry_point = coord.Vector(center_point.x+100, center_point.y)
     entry_points = [
@@ -469,16 +447,16 @@ def search(waypoints, scalar=math.pi, constant=100, boat=boat):
     """
 
     boat_position = boat.getPosition()
-    theta_offset = math.atan2(
-        boat_position.y-center_point.y, boat_position.x-center_point.x)
+    theta_offset = math.atan2(boat_position.y - center_point.y,
+                              boat_position.x - center_point.x)
     if (boat_position.x < center_point.x):
         theta_offset += math.pi
-    entry_point = (100*math.cos(theta_offset)+center_point.x,
-                   100*math.sin(theta_offset)+center_point.y)
+    entry_point = (100 * math.cos(theta_offset) + center_point.x,
+                   100 * math.sin(theta_offset) + center_point.y)
     search_waypoints.insert(0, entry_point)
 
-    for theta in range(1+theta_offset, 31+theta_offset, 1):
-        r = constant - scalar * (theta-theta_offset)
+    for theta in range(1 + theta_offset, 31 + theta_offset, 1):
+        r = constant - scalar * (theta - theta_offset)
         x = center_point.x + r * math.cos(theta)
         y = center_point.y + r * math.sin(theta)
         new_waypoint = coord.Vector(x=x, y=y)
