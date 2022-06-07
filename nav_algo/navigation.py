@@ -88,23 +88,32 @@ class NavigationController:
                 self.current_waypoint = self.waypoints.pop(0)
                 self.navigate()
         elif event == Events.STATION_KEEPING:
-            # to find an optimal radius, 10 for now
+            # TODO find an optimal radius, 10m for now
+            buoy_waypoints = self.waypoints
             exit_before = 300
             circle_radius = 10
-            self.waypoints = stationKeeping(self.waypoints, circle_radius,
-                                            "ENTRY")
+            self.waypoints = stationKeeping(buoy_waypoints,
+                                            circle_radius,
+                                            "ENTRY",
+                                            boat=self.boat)
             self.current_waypoint = self.waypoints.pop(0)
             self.navigate()
+
             # Set timer
             start_time = time.time()
-            loop_waypoints = stationKeeping(self.waypoints, circle_radius,
-                                            "KEEP")
+            loop_waypoints = stationKeeping(buoy_waypoints,
+                                            circle_radius,
+                                            "KEEP",
+                                            boat=self.boat)
             while time.time() - start_time < exit_before:
                 self.waypoints = loop_waypoints
                 self.current_waypoint = self.waypoints.pop(0)
                 self.navigate()
-            self.waypoints = stationKeeping(self.waypoints, circle_radius,
-                                            "EXIT")
+            self.waypoints = stationKeeping(buoy_waypoints,
+                                            circle_radius,
+                                            "EXIT",
+                                            boat=self.boat)
+
         elif event == Events.PRECISION_NAVIGATION:
             self.waypoints = precisionNavigation(self.waypoints)
         elif event == Events.COLLISION_AVOIDANCE:

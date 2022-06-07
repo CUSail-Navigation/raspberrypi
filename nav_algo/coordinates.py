@@ -54,8 +54,9 @@ class Vector:
                  angle=None,
                  x=None,
                  y=None):
-        if (coord_sys is not None) and (latitude is not None) and (longitude is
-                                                                   not None):
+        if (coord_sys is not None) and (latitude
+                                        is not None) and (longitude
+                                                          is not None):
             self.coordinate_system = coord_sys
             self.latitude = latitude
             self.longitude = longitude
@@ -134,7 +135,7 @@ class Vector:
 
     def scale(self, scaleFactor):
         return Vector(x=self.x * scaleFactor, y=self.y * scaleFactor)
-    
+
     def toUnitVector(self):
         """Converts a vector to a unit vector.
 
@@ -180,10 +181,9 @@ class Vector:
             float: An angle within the range of 0 to 360.
         
         """
-        top = self.x * other.x + self.y * other.y
-        bot = math.sqrt( math.pow(self.x, 2)  + math.pow(other.x, 2)) * math.sqrt( math.pow(self.y, 2)  + math.pow(other.y, 2))
-        return math.acos(top/bot)
-
+        top = self.dot(other)
+        bot = self.magnitude() * other.magnitude()
+        return radToDeg(np.arccos(top / bot))
 
     @staticmethod
     def zeroVector():
@@ -232,7 +232,4 @@ def rangeAngle(angle):
         float: An angle within the range of 0 to 360.
     
     """
-    while angle < 0:
-        angle = angle + 360
-    angle = angle % 360
-    return angle
+    return angle % 360
