@@ -62,6 +62,7 @@ class NavigationController:
 
         self.radio = radio.Radio(9600)
         self.radio.transmitString("Waiting for GPS fix...\n")
+        self.radio.boatController = self.boat
 
         # wait until we know where we are
         while self.boat.sensors.velocity is None:
@@ -115,6 +116,9 @@ class NavigationController:
         self.current_waypoint = self.waypoints.pop(0)
         self.navigate()
 
+        # TODO Clean up ports
+        self.radio.serialStream.close()
+
     def navigate(self):
         """ Execute the navigation algorithm.
 
@@ -122,6 +126,19 @@ class NavigationController:
 
         """
         while self.current_waypoint is not None:
+            # read for a quit signal ('q') or manual override ('o')
+            try:
+                self.radio.receiveString()
+            except:
+                pass
+
+            while self.radio.fleetRace:
+                # manual override has been engaged, wait for autopilot signal ('a')
+                try:
+                    self.radio.receiveString()
+                except:
+                    pass
+
             all_waypts = [pt for pt in self.waypoints]
             all_waypts.append(self.current_waypoint)
             self.radio.printAllWaypoints(all_waypts)

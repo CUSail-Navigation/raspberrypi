@@ -6,7 +6,7 @@ def main():
     # waypoints is an array of (lat, long) tuples
     waypoints = [(42.04690135,-76.5024614),(42.4688799,-76.5028114)]  # test values
 
-    nav_controller = nav.NavigationController(waypoints=waypoints,event=None)
+    nav_controller = nav.NavigationController(waypoints=waypoints)
 
 
 if __name__ == "__main__":
