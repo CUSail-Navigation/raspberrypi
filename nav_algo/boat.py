@@ -55,6 +55,7 @@ class BoatController:
 
     def setServos(self, intended_angle: float):
         self.sail_angle, self.tail_angle = self.getServoAngles(intended_angle)
+        self.sensors.sailAngleBoat = self.sail_angle
 
         # set the servos
         print("setting sail {} tail {}".format(self.sail_angle,

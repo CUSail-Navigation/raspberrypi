@@ -36,7 +36,7 @@ class sensorData:
         self.gps_serial_port = serial.Serial(port=None,
                                              baudrate=9600,
                                              timeout=1)
-        self.gps_serial_port.port = '/dev/ttyAMA0'  #ttyAMA2 needs to be
+        self.gps_serial_port.port = '/dev/ttyAMA3'  #ttyAMA3 needs to bes
 
         #sensorData
         self.boat_direction = 0  # angle of the sail wrt north.
@@ -67,7 +67,7 @@ class sensorData:
         rawData = self.anemometer.readAnemometerVoltage()
         """print(rawData)"""
         rawWind = rawData
-        rawAngle = 360 - rawData * 360 / 1700 - 90
+        rawAngle = 360 - rawData * 360 / 1700
 
         windWrtN = (rawAngle + self.sailAngleBoat) % 360
         windWrtN = (windWrtN + self.boat_direction) % 360
@@ -82,6 +82,7 @@ class sensorData:
         for _ in range(5):
             try:
                 line = self.gps_serial_port.readline().decode('utf-8')
+                #print(line)
             except:
                 line = ''
             nmea_data = nmea.NMEA(line)
@@ -103,7 +104,9 @@ class sensorData:
                     self.velocity.scale(1.0 / (cur_time - self.prev_time))
                     self.position = new_position
                     self.prev_time = cur_time
+                    
         self.gps_serial_port.close()
+        
 
     def _addAverage(self, newValue):
         """Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the

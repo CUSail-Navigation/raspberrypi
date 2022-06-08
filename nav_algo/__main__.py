@@ -6,7 +6,10 @@ def readWaypoints(filename):
     waypoints = []
     with open(filename, 'r') as f:
         for line in f:
+            line = line.replace('\n',"")
+            
             l = line.split(",")
+            print(l)
             waypoints.append((float(l[0]), float(l[1])))
     return waypoints
 
@@ -24,10 +27,10 @@ def main():
     order [north west, north east, south east, south west]
     """
     # waypoints is an array of (lat, long) tuples
-    waypoint_file = 'nav_algo/waypoints/test.csv'
+    waypoint_file = 'nav_algo/waypoints/precision.csv'
     waypoints = readWaypoints(waypoint_file)
 
-    nav_controller = nav.NavigationController(waypoints=waypoints)
+    nav_controller = nav.NavigationController(waypoints=waypoints,event=3)
 
 
 if __name__ == "__main__":

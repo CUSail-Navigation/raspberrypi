@@ -346,7 +346,7 @@ def getVelocity(point_before, point_after, t):
     return [speed, theta]
 
 
-def collisionWaypoint(time, boat=boat):
+def collisionWaypoint(time, boat):
     """
     Returns waypoint 2m away to avoid obstacle detected at time time
     """
@@ -358,7 +358,7 @@ def collisionWaypoint(time, boat=boat):
                         boat.getPosition().y + 2 * math.sin(angle_rad))
 
 
-def assessCollision(obst_point, obst_point_2, time, boat=boat):
+def assessCollision(obst_point, obst_point_2, time, boat):
     """
       Checks if collision occurs. Returns new waypoint if collision, else None
 
@@ -392,7 +392,7 @@ def unitVector(coords):
     return (coords[0] / magnitude, coords[1] / magnitude)
 
 
-def collisionAvoidance(buoy_waypoints, boat=boat):
+def collisionAvoidance(buoy_waypoints, boat):
     """
     Returns waypoints list for ideal path (no obstacles)
     """
@@ -423,7 +423,7 @@ def collisionAvoidance(buoy_waypoints, boat=boat):
     ]
 
 
-def search(waypoints, scalar=math.pi, constant=100, boat=boat):
+def search(waypoints, boat, scalar=math.pi, constant=100):
     search_waypoints = []
     center_point = waypoints[0]
     """

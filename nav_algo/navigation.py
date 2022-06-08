@@ -121,7 +121,7 @@ class NavigationController:
             self.current_waypoint = self.waypoints[0]
             self.navigateDetection()
         elif event == Events.SEARCH:
-            self.waypoints = search(self.waypoints)
+            self.waypoints = search(self.waypoints,boat=self.boat)
             self.current_waypoint = self.waypoints[0]
             self.navigateDetection(event=Events.SEARCH)
 
