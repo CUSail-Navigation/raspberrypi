@@ -50,7 +50,7 @@ class BoatController:
 
         if (tail > 30):
             tail = 30
-        if (tail < 30):
+        if (tail < -30):
             tail = -30
 
         return sail, tail
