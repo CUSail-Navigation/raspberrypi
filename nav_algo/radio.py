@@ -172,8 +172,8 @@ class Radio(UARTDevice):
         Note 'printAllWaypoints' should be called immediately after this.
 
         """
-        msg = ("----------HIT----------" + ",X:" + hitWaypoint[0] + " Y:" +
-               hitWaypoint[1] + ",----------END----------" + '\n')
+        msg = ("----------HIT----------" + ",X:" + str(hitWaypoint.x) + " Y:" +
+               str(hitWaypoint.y) + ",----------END----------" + '\n')
         print(msg)
         msg = msg.encode()
         self.sendUart(msg)
