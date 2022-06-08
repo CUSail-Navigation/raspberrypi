@@ -81,12 +81,15 @@ class NavigationController:
             # 7 hrs = 25200 sec
             exit_before = 25200
             start_time = time.time()
-            loop_waypoints = endurance(self.waypoints, opt_dist=10, offset=10)
-            self.current_waypoint = loop_waypoints[3]
+            loop_waypoints = counterClockwiseRect(self.waypoints,
+                                                  self.boat,
+                                                  buoy_offset=5)
+
             while (time.time() - start_time < exit_before):
                 self.waypoints = loop_waypoints
                 self.current_waypoint = self.waypoints.pop(0)
                 self.navigate()
+
         elif event == Events.STATION_KEEPING:
             # TODO find an optimal radius, 10m for now
             buoy_waypoints = self.waypoints
@@ -121,7 +124,7 @@ class NavigationController:
             self.current_waypoint = self.waypoints[0]
             self.navigateDetection()
         elif event == Events.SEARCH:
-            self.waypoints = search(self.waypoints,boat=self.boat)
+            self.waypoints = search(self.waypoints, boat=self.boat)
             self.current_waypoint = self.waypoints[0]
             self.navigateDetection(event=Events.SEARCH)
 
