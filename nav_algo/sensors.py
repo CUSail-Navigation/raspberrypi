@@ -67,12 +67,13 @@ class sensorData:
         rawData = self.anemometer.readAnemometerVoltage()
         """print(rawData)"""
         rawWind = rawData
-        rawAngle = 360 - rawData * 360 / 1700
+        rawAngle = (360 - rawData * 360 / 1700) + 180
 
-        windWrtN = (rawAngle + self.sailAngleBoat) % 360
-        windWrtN = (windWrtN + self.boat_direction) % 360
+        windWrtN = (rawAngle + self.sailAngleBoat)
+        windWrtN = (windWrtN + self.boat_direction + 270) % 360
         self.wind_direction = self._addAverage(windWrtN)
         return
+
 
     def readGPS(self):
         # use the NMEA parser
@@ -106,7 +107,9 @@ class sensorData:
                     self.prev_time = cur_time
                     
         self.gps_serial_port.close()
-        
+
+
+
 
     def _addAverage(self, newValue):
         """Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the

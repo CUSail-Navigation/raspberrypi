@@ -23,29 +23,31 @@ class BoatController:
     def getServoAngles(self, intended_angle: float):
         # TODO check logic for all of this, I'm 99% sure it's wrong - CM
         angle_of_attack = 15.0
-        if self.sensors.wind_direction < 180.0:
-            angle_of_attack = -15.0
+        
         sail = 0
-        angle_of_attack = intended_angle - self.sensors.wind_direction
-        if abs(angle_of_attack) < 15.0:
+        angle_of_attack = self.sensors.wind_direction - self.sensors.yaw
+        if abs(angle_of_attack) > 180.0:
+            angle_of_attack = (abs(angle_of_attack) - 180) * -1 + 180
+            
+        if abs(angle_of_attack) > 160.0:
             sail = 90.0 * np.sign(angle_of_attack)
-        elif abs(angle_of_attack) < 45.0:
-            sail = 20.0 * np.sign(angle_of_attack)
-        elif abs(angle_of_attack) < 75.0:
-            sail = 45.0 * np.sign(angle_of_attack)
-        elif abs(angle_of_attack) < 105.0:
+        elif abs(angle_of_attack) > 110.0:
             sail = 60.0 * np.sign(angle_of_attack)
-        elif abs(angle_of_attack) < 135.0:
-            sail = 75.0 * np.sign(angle_of_attack)
+        elif abs(angle_of_attack) > 75.0:
+            sail = 45.0 * np.sign(angle_of_attack)
+        elif abs(angle_of_attack) > 35.0:
+            sail = 30.0 * np.sign(angle_of_attack)
         else:
-            sail = 90.0 * np.sign(angle_of_attack)
+            sail = 15.0 * np.sign(angle_of_attack)
 
-        offset = self.sensors.yaw - intended_angle
+        offset = intended_angle - self.sensors.yaw 
         # map to range of servos
-        tail = round(offset)  #+ 30.0
+        if(abs(angle_of_attack) < 15):
+            tail = -30
+        else:
+            tail = round(offset)  #+ 30.0
         #sail = sail + 74.0
 
-        # put in range [0, 360)
         if (tail > 30):
             tail = 30
         if (tail < 30):
@@ -55,13 +57,14 @@ class BoatController:
 
     def setServos(self, intended_angle: float):
         self.sail_angle, self.tail_angle = self.getServoAngles(intended_angle)
-        self.sensors.sailAngleBoat = self.sail_angle
+        
 
         # set the servos
         print("setting sail {} tail {}".format(self.sail_angle,
                                                self.tail_angle))
         self.servos.setTail(self.tail_angle)
         self.servos.setSail(self.sail_angle)
+        self.sensors.sailAngleBoat = self.servos.currentSail
 
     def setAngles(self, mainsail: float, tail: float):
         print("setting sail {} tail {}".format(mainsail, tail))
