@@ -40,18 +40,22 @@ class BoatController:
         else:
             sail = 15.0 * np.sign(angle_of_attack)
 
-        offset = intended_angle - self.sensors.yaw 
-        # map to range of servos
-        if(abs(angle_of_attack) < 15):
-            tail = -30
-        else:
-            tail = round(offset)  #+ 30.0
+        offset = intended_angle - self.sensors.yaw
         #sail = sail + 74.0
 
-        if (tail > 30):
-            tail = 30
-        if (tail < -30):
-            tail = -30
+        if(abs(offset) < 10):
+            tail = 0
+        else:
+            bigGang = 1
+            if(abs(offset) > 180):
+                bigGang = -1
+            
+            if(offset > 0):
+                tail = -30
+            if(offset < 0):
+                tail = 30
+            tail = tail * bigGang
+        
 
         return sail, tail
 

@@ -15,7 +15,7 @@ def newSailingAngle(boat, target):
 
     """
 
-    beating = 10.0  # TODO
+    beating = 15.0  # TODO
 
     boat_to_target = target.vectorSubtract(boat.getPosition())
 

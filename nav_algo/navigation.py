@@ -34,7 +34,7 @@ class NavigationController:
         if (len(waypoints) < 1):
             raise RuntimeError('At least one waypoint is required.')
 
-        self.DETECTION_RADIUS = 5.0
+        self.DETECTION_RADIUS = 1.0
 
         self.coordinate_system = coord.CoordinateSystem(
             waypoints[0][0], waypoints[0][1])
@@ -156,7 +156,7 @@ class NavigationController:
             all_waypts = [pt for pt in self.waypoints]
             all_waypts.append(self.current_waypoint)
             self.radio.printAllWaypoints(all_waypts)
-            time.sleep(4)  # TODO how often should this run?
+            time.sleep(0.5)  # TODO how often should this run?
 
             self.boat.updateSensors()
             self.boat_position = self.boat.getPosition()

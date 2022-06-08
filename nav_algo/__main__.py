@@ -27,7 +27,7 @@ def main():
     order [north west, north east, south east, south west]
     """
     # waypoints is an array of (lat, long) tuples
-    waypoint_file = 'nav_algo/waypoints/precision.csv'
+    waypoint_file = 'nav_algo/waypoints/search.csv'
     waypoints = readWaypoints(waypoint_file)
 
     nav_controller = nav.NavigationController(waypoints=waypoints,event=None)
