@@ -23,12 +23,13 @@ class BoatController:
     def getServoAngles(self, intended_angle: float):
         # TODO check logic for all of this, I'm 99% sure it's wrong - CM
         angle_of_attack = 15.0
-        
+
         sail = 0
         angle_of_attack = self.sensors.wind_direction - self.sensors.yaw
         if abs(angle_of_attack) > 180.0:
-            angle_of_attack = (abs(angle_of_attack) - 180) * -1 + 180
-            
+            angle_of_attack = ((abs(angle_of_attack) - 180) * -1 +
+                               180) * np.sign(angle_of_attack)
+
         if abs(angle_of_attack) > 160.0:
             sail = 90.0 * np.sign(angle_of_attack)
         elif abs(angle_of_attack) > 110.0:
@@ -43,25 +44,23 @@ class BoatController:
         offset = intended_angle - self.sensors.yaw
         #sail = sail + 74.0
 
-        if(abs(offset) < 10):
+        if (abs(offset) < 10):
             tail = 0
         else:
             bigGang = 1
-            if(abs(offset) > 180):
+            if (abs(offset) > 180):
                 bigGang = -1
-            
-            if(offset > 0):
+
+            if (offset > 0):
                 tail = -30
-            if(offset < 0):
+            if (offset < 0):
                 tail = 30
             tail = tail * bigGang
-        
 
         return sail, tail
 
     def setServos(self, intended_angle: float):
         self.sail_angle, self.tail_angle = self.getServoAngles(intended_angle)
-        
 
         # set the servos
         print("setting sail {} tail {}".format(self.sail_angle,
