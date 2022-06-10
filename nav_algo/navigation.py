@@ -156,8 +156,10 @@ class NavigationController:
                 self.boat.updateSensors()
                 self.radio.printData(self.boat)
 
-            all_waypts = [pt for pt in self.waypoints]
+            all_waypts = []
             all_waypts.append(self.current_waypoint)
+            for pt in self.waypoints:
+                all_waypts.append(pt)
             self.radio.printAllWaypoints(all_waypts)
             time.sleep(0.5)  # TODO how often should this run?
 
