@@ -161,7 +161,7 @@ class NavigationController:
             for pt in self.waypoints:
                 all_waypts.append(pt)
             self.radio.printAllWaypoints(all_waypts)
-            time.sleep(0.5)  # TODO how often should this run?
+            time.sleep(0.35)  # TODO how often should this run?
 
             self.boat.updateSensors()
             self.boat_position = self.boat.getPosition()

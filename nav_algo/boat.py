@@ -44,8 +44,8 @@ class BoatController:
         offset = intended_angle - self.sensors.yaw
         #sail = sail + 74.0
 
-        if (abs(offset) < 10):
-            tail = 0
+        if (abs(offset) < 30):
+            tail = offset
         else:
             bigGang = 1
             if (abs(offset) > 180):
