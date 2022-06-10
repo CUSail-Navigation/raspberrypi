@@ -30,7 +30,7 @@ def main():
     waypoint_file = 'nav_algo/waypoints/search.csv'
     waypoints = readWaypoints(waypoint_file)
 
-    nav_controller = nav.NavigationController(waypoints=waypoints,event=None)
+    nav_controller = nav.NavigationController(waypoints=waypoints,event=1)
 
 
 if __name__ == "__main__":
