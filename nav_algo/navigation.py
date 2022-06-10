@@ -34,7 +34,7 @@ class NavigationController:
         if (len(waypoints) < 1):
             raise RuntimeError('At least one waypoint is required.')
 
-        self.DETECTION_RADIUS = 1.0
+        self.DETECTION_RADIUS = 5.0
 
         self.coordinate_system = coord.CoordinateSystem(
             waypoints[0][0], waypoints[0][1])
