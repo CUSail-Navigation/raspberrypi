@@ -1,10 +1,12 @@
 import nav_algo.servo as servo
 import nav_algo.sensors as sens
 import nav_algo.coordinates as coord
+import nav_algo.navigation_utilities as util
 import numpy as np
 
 
 class BoatController:
+
     def __init__(self, coordinate_system=None):
         self.coordinate_system = coordinate_system
         self.sensors = sens.sensorData(coordinate_system)
@@ -22,42 +24,9 @@ class BoatController:
 
     def getServoAngles(self, intended_angle: float):
         # TODO check logic for all of this, I'm 99% sure it's wrong - CM
-        angle_of_attack = 15.0
-
-        sail = 0
-        angle_of_attack = self.sensors.wind_direction - self.sensors.yaw
-        if abs(angle_of_attack) > 180.0:
-            angle_of_attack = ((abs(angle_of_attack) - 180) * -1 +
-                               180) * np.sign(angle_of_attack)
-
-        if abs(angle_of_attack) > 160.0:
-            sail = 90.0 * np.sign(angle_of_attack)
-        elif abs(angle_of_attack) > 110.0:
-            sail = 60.0 * np.sign(angle_of_attack)
-        elif abs(angle_of_attack) > 75.0:
-            sail = 45.0 * np.sign(angle_of_attack)
-        elif abs(angle_of_attack) > 35.0:
-            sail = 30.0 * np.sign(angle_of_attack)
-        else:
-            sail = 15.0 * np.sign(angle_of_attack)
-
-        offset = intended_angle - self.sensors.yaw
-        #sail = sail + 74.0
-
-        if (abs(offset) < 30):
-            tail = offset
-        else:
-            bigGang = 1
-            if (abs(offset) > 180):
-                bigGang = -1
-
-            if (offset > 0):
-                tail = -30
-            if (offset < 0):
-                tail = 30
-            tail = tail * bigGang
-
-        return sail, tail
+        abs_wind_dir = self.sensors.wind_direction
+        yaw = self.sensors.yaw
+        return util.getServoAnglesImpl(abs_wind_dir, yaw, intended_angle)
 
     def setServos(self, intended_angle: float):
         self.sail_angle, self.tail_angle = self.getServoAngles(intended_angle)
