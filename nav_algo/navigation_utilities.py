@@ -5,6 +5,7 @@ The simulator cannot access the modules of the nav algo, so this
 file should be self contained (i.e. not inherit from any other file).
 Everything nav-algo-related that is needed by the simulator should 
 exist within this file.
+Within this file only, vectors are represented as (x, y) tuples.
 """
 
 
@@ -148,6 +149,79 @@ def getServoAnglesImpl(abs_wind_dir, yaw, intended_angle):
     return sail, tail
 
 
+def precisionNavigationImpl(buoys):
+    """Generates navigation waypoints from the precision nav buoy locations.
+
+        Args:
+            buoys (list of (float, float)): The ordered buoy locations (top_l, top_r, bot_l, bot_r).
+
+        Returns:
+            (list of (float, float): The generated waypoint locations.
+
+    """
+    # buoys:[topleft_buoy, topright_buoy, botleft_buoy, botright_buoy]
+    topleft_buoy = buoys[0]
+    topright_buoy = buoys[1]
+    botleft_buoy = buoys[2]
+    botright_buoy = buoys[3]
+
+    out_waypoints = []
+
+    # start/finish position between top buoys
+    start_pos = midpoint(topleft_buoy, topright_buoy)
+
+    # find inner and outer waypoints on first side of triangle
+    d = dist(start_pos, botleft_buoy) / 3
+    out_waypoints.append(InnerOuterPoints(start_pos, botleft_buoy, d, 1))
+    out_waypoints.append(InnerOuterPoints(start_pos, botleft_buoy, d * 2, -1))
+
+    # first offset from buoy
+    d_buoy = (dist(start_pos, botleft_buoy)) / 10
+    out_waypoints.append(BuoyOffset(start_pos, botleft_buoy, d_buoy))
+
+    # find inner and outer waypoints on second side of triangle (bottom)
+    d = (dist(botleft_buoy, botright_buoy)) / 3
+    out_waypoints.append(InnerOuterPoints(botleft_buoy, botright_buoy, d, -1))
+    out_waypoints.append(
+        InnerOuterPoints(botleft_buoy, botright_buoy, d * 2, -1))
+
+    # second offset from buoy
+    d_buoy = (dist(botleft_buoy, botright_buoy)) / 10
+    out_waypoints.append(BuoyOffset(botleft_buoy, botright_buoy, d_buoy))
+
+    # find inner and outer waypoints on third side of triangle
+    d = (dist(botright_buoy, start_pos)) / 3
+    out_waypoints.append(InnerOuterPoints(botright_buoy, start_pos, d, -1))
+    out_waypoints.append(InnerOuterPoints(botright_buoy, start_pos, d * 2, 1))
+
+    # final waypoint is start_point
+    out_waypoints.append(start_pos)
+
+    return out_waypoints
+
+
+def InnerOuterPoints(start_point, end_point, dist, flag):
+    # flag: 1 is in, -1 is out, 0 is on the line
+    slope_y = start_point[1] - end_point[1]
+    slope_x = start_point[0] - end_point[0]
+    theta_slope = np.arctan2(slope_y, slope_x)
+    x = start_point[0] + dist * np.cos(theta_slope)
+    y = start_point[1] + dist * np.sin(theta_slope)
+    if flag != 0:
+        x += -flag * 0.1 * dist * np.sin(theta_slope)
+        y += flag * 0.1 * dist * np.cos(theta_slope)
+    return x, y
+
+
+def BuoyOffset(start_point, buoy, dist):
+    slope_y = start_point[1] - buoy[1]
+    slope_x = start_point[0] - buoy[0]
+    theta_slope = np.arctan2(slope_y, slope_x)
+    x = buoy.x + dist * np.cos(theta_slope)
+    y = buoy.y + dist * np.sin(theta_slope)
+    return x, y
+
+
 def unitVector(angle):
     x = np.cos(np.deg2rad(angle))
     y = np.sin(np.deg2rad(angle))
@@ -172,3 +246,11 @@ def vectorMagnitude(v):
 
 def rangeAngle(angle):
     return angle % 360
+
+
+def midpoint(u, v):
+    return (u[0] + v[0]) / 2, (u[1] + v[1]) / 2
+
+
+def dist(u, v):
+    return vectorMagnitude(vectorSubtract(u, v))

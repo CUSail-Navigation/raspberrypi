@@ -223,48 +223,9 @@ def buoy_offset(start_point, buoy, dist):
 
 def precisionNavigation(waypoints):
     # waypoints:[topleft_buoy, topright_buoy, botleft_buoy, botright_buoy]
-    topleft_buoy = waypoints[0]
-    topright_buoy = waypoints[1]
-    botleft_buoy = waypoints[2]
-    botright_buoy = waypoints[3]
-
-    out_waypoints = []
-
-    # start/finish position between top buoys
-    start_pos = topleft_buoy.midpoint(topright_buoy)
-
-    # find inner and outer waypoints on first side of triangle
-    dist = start_pos.xyDist(botleft_buoy) / 3
-    out_waypoints.append(
-        find_inner_outer_points(start_pos, botleft_buoy, dist, 1))
-    out_waypoints.append(
-        find_inner_outer_points(start_pos, botleft_buoy, dist * 2, -1))
-
-    # first offset from buoy
-    dist_buoy = (start_pos.xyDist(botleft_buoy)) / 10
-    out_waypoints.append(buoy_offset(start_pos, botleft_buoy, dist_buoy))
-
-    # find inner and outer waypoints on second side of triangle (bottom)
-    dist = (botleft_buoy.xyDist(botright_buoy)) / 3
-    out_waypoints.append(
-        find_inner_outer_points(botleft_buoy, botright_buoy, dist, -1))
-    out_waypoints.append(
-        find_inner_outer_points(botleft_buoy, botright_buoy, dist * 2, -1))
-
-    # second offset from buoy
-    dist_buoy = (botleft_buoy.xyDist(botright_buoy)) / 10
-    out_waypoints.append(buoy_offset(botleft_buoy, botright_buoy, dist_buoy))
-
-    # find inner and outer waypoints on third side of triangle
-    dist = (botright_buoy.xyDist(start_pos)) / 3
-    out_waypoints.append(
-        find_inner_outer_points(botright_buoy, start_pos, dist, -1))
-    out_waypoints.append(
-        find_inner_outer_points(botright_buoy, start_pos, dist * 2, 1))
-
-    # final waypoint is start_point
-    out_waypoints.append(start_pos)
-
+    buoys = [(w.x, w.y) for w in waypoints]
+    out_waypoints = util.precisionNavigationImpl(buoys)
+    out_waypoints = [coord.Vector(x=w[0], y=w[1]) for w in out_waypoints]
     return out_waypoints
 
 
