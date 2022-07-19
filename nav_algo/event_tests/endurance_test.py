@@ -1,4 +1,3 @@
-from turtle import color
 import matplotlib.pyplot as plt
 import sys
 
@@ -8,6 +7,7 @@ import coordinates as coord
 
 
 class EnduranceTest:
+
     def __init__(self):
         print("Starting test for endurance.")
 
@@ -64,6 +64,7 @@ class EnduranceTest:
 
 
 class MockBoat:
+
     def __init__(self, position):
         self.position = position
 

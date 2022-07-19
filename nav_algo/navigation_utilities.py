@@ -176,8 +176,7 @@ def precisionNavigationImpl(buoys):
     out_waypoints.append(InnerOuterPoints(start_pos, botleft_buoy, d * 2, -1))
 
     # first offset from buoy
-    d_buoy = (dist(start_pos, botleft_buoy)) / 10
-    out_waypoints.append(BuoyOffset(start_pos, botleft_buoy, d_buoy))
+    out_waypoints.append(BuoyOffset(start_pos, botleft_buoy, 2))
 
     # find inner and outer waypoints on second side of triangle (bottom)
     d = (dist(botleft_buoy, botright_buoy)) / 3
@@ -186,8 +185,7 @@ def precisionNavigationImpl(buoys):
         InnerOuterPoints(botleft_buoy, botright_buoy, d * 2, -1))
 
     # second offset from buoy
-    d_buoy = (dist(botleft_buoy, botright_buoy)) / 10
-    out_waypoints.append(BuoyOffset(botleft_buoy, botright_buoy, d_buoy))
+    out_waypoints.append(BuoyOffset(botleft_buoy, botright_buoy, 2))
 
     # find inner and outer waypoints on third side of triangle
     d = (dist(botright_buoy, start_pos)) / 3
@@ -217,8 +215,8 @@ def BuoyOffset(start_point, buoy, dist):
     slope_y = start_point[1] - buoy[1]
     slope_x = start_point[0] - buoy[0]
     theta_slope = np.arctan2(slope_y, slope_x)
-    x = buoy.x + dist * np.cos(theta_slope)
-    y = buoy.y + dist * np.sin(theta_slope)
+    x = buoy[0] + dist * np.cos(theta_slope)
+    y = buoy[1] + dist * np.sin(theta_slope)
     return x, y
 
 
