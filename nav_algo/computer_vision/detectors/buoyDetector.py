@@ -29,6 +29,10 @@ class BuoyDetector:
         self.__rgb_threshold_green = [100, 200]
         self.__rgb_threshold_blue = [0, 100]
 
+        self.__hsv_threshhold_hue = [5, 15]
+        self.__hsv_threshhold_saturation = [50, 255]
+        self.__hsv_threshhold_lightness = [50, 255]
+
         self.rgb_threshold_output = None
 
         self.__cv_erode_src = self.rgb_threshold_output
@@ -80,13 +84,17 @@ class BuoyDetector:
         Runs the pipeline and sets all outputs to new values.
         """
         # Step RGB_Threshold0:
-        self.__rgb_threshold_input = source0
-        (self.rgb_threshold_output) = self.__rgb_threshold(
-            self.__rgb_threshold_input, self.__rgb_threshold_red,
-            self.__rgb_threshold_green, self.__rgb_threshold_blue)
+        # self.__rgb_threshold_input = source0
+        # (self.rgb_threshold_output) = self.__rgb_threshold(
+        #     self.__rgb_threshold_input, self.__rgb_threshold_red,
+        #     self.__rgb_threshold_green, self.__rgb_threshold_blue)
+        self.__hsv_threshhold_input = source0
+        (self.hsv_threshold_output) = self.__hsv_threshhold(
+            self.__hsv_threshhold_input, self.__hsv_threshhold_hue,
+            self.__hsv_threshhold_saturation, self.__hsv_threshhold_lightness)
 
         # Step CV_erode0:
-        self.__cv_erode_src = self.rgb_threshold_output
+        self.__cv_erode_src = self.hsv_threshold_output
         (self.cv_erode_output) = self.__cv_erode(self.__cv_erode_src,
                                                  self.__cv_erode_kernel,
                                                  self.__cv_erode_anchor,
@@ -139,6 +147,23 @@ class BuoyDetector:
         out = cv2.cvtColor(input, cv2.COLOR_BGR2RGB)
         return cv2.inRange(out, (red[0], green[0], blue[0]),
                            (red[1], green[1], blue[1]))
+
+    @staticmethod
+    def __hsv_threshhold(input, hue, saturation, lightness):
+        """Segment an image based on hsv ranges.
+
+        Args:
+            input (numpy.ndarray): A BGR numpy.ndarray.
+            hue (list): A list of two numbers the are the min and max hue.
+            saturation (list): A list of two numbers the are the min and max saturation.
+            lightness (list): A list of two numbers the are the min and max lightness.
+
+        Returns:
+            numpy.ndarray: A black and white numpy.ndarray.
+        """
+        out = cv2.cvtColor(input, cv2.COLOR_BGR2HSV)
+        return cv2.inRange(out, (hue[0], saturation[0], lightness[0]),
+                           (hue[1], saturation[1], lightness[1]))
 
     @staticmethod
     def __cv_erode(src, kernel, anchor, iterations, border_type, border_value):
