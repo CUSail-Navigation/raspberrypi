@@ -34,13 +34,16 @@ def find_distance_largest_contour(contours_output, img_height, img_width,
     Returns:
       list: A list where each element represents an obstacle distance in meters.
     """
-    c = max(contours_output, key=cv2.contourArea)
-    center, size, angle = cv2.minAreaRect(c)
-    width, height = size
-    distance = (obstacle_width * FOCAL_LENGTH * img_height /
-                (height * SENSOR_HEIGHT)) / 1000
-    x_displacement = center[0] - img_width / 2
-    return distance, x_displacement
+    try:
+      c = max(contours_output, key=cv2.contourArea)
+      center, size, angle = cv2.minAreaRect(c)
+      width, height = size
+      distance = (obstacle_width * FOCAL_LENGTH * img_height /
+                  (height * SENSOR_HEIGHT)) / 1000
+      x_displacement = center[0] - img_width / 2
+      return distance, x_displacement
+    except:
+      pass
 
 
 def get_coords(distance, x_displacement, direction, curr_x, curr_y):
