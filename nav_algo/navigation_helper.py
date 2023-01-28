@@ -405,6 +405,8 @@ def search(waypoints, boat, scalar=math.pi, constant=100):
     for point in search_waypoints:
         rotatedx = point.x*math.cos(theta) - point.y*math.sin(theta)
         rotatedy = point.x*math.sin(theta) + point.y*math.cos(theta)
+        new_rotated_waypoint = coord.Vector(rotatedx, rotatedy)
+        rotated_waypoints.insert(len(rotated_waypoints), new_rotated_waypoint)
     return rotated_waypoints
 
 def fcn(x, radius):
