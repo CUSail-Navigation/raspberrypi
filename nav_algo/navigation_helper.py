@@ -388,7 +388,7 @@ def collisionAvoidance(buoy_waypoints, boat):
     ]
 
 
-def search(waypoints, boat, scalar=math.pi, constant=100):
+def search(waypoints):
     search_waypoints = []
     rotated_waypoints = []
     center_point = waypoints[0]
