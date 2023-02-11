@@ -401,7 +401,7 @@ def search(waypoints):
         search_waypoints.insert(len(search_waypoints), new_waypoint)
         x += 1
     # Rotating waypoints based on initial wind direction
-    theta = 0
+    theta = sensors.readWindDirection()
     for point in search_waypoints:
         rotatedx = point.x*math.cos(theta) - point.y*math.sin(theta)
         rotatedy = point.x*math.sin(theta) + point.y*math.cos(theta)
