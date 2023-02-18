@@ -323,7 +323,7 @@ class BuoyDetector:
             float: the obstacle distance
             float: the x-offset in the image
         """
-        return find_distance_largest_contour(self.filter_contours_output,
+        return find_distance_largest_contourd(self.filter_contours_output,
                                              self.img_height, self.img_width,
                                              BuoyDetector.BUOY_SIZE)
 

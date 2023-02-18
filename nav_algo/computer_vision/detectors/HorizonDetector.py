@@ -23,7 +23,7 @@ class HorizonDetector:
 
         self.__filter_lines_lines = self.find_lines_output
         self.__filter_lines_min_length = 175.0
-        self.__filter_lines_angle = [0, 199.572192513369]
+        self.__filter_lines_angle = [-25, 25]
 
         self.filter_lines_output = None
 
@@ -120,8 +120,8 @@ class HorizonDetector:
         outputs = []
         for line in inputs:
             if (line.length() > min_length):
-                if ((line.angle() >= angle[0] and line.angle() <= angle[1])
-                        or (line.angle() + 180.0 >= angle[0]
-                            and line.angle() + 180.0 <= angle[1])):
+                if (line.angle() >= angle[0] and line.angle() <= angle[1]):
+                        # or (line.angle() + 180.0 >= angle[0]
+                        #     and line.angle() + 180.0 <= angle[1])):
                     outputs.append(line)
         return outputs
