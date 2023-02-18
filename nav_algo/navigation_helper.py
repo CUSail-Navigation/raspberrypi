@@ -388,7 +388,7 @@ def collisionAvoidance(buoy_waypoints, boat):
     ]
 
 
-def search(waypoints, boat, scalar=math.pi, constant=100):
+def search(waypoints):
     search_waypoints = []
     rotated_waypoints = []
     center_point = waypoints[0]
@@ -401,10 +401,12 @@ def search(waypoints, boat, scalar=math.pi, constant=100):
         search_waypoints.insert(len(search_waypoints), new_waypoint)
         x += 1
     # Rotating waypoints based on initial wind direction
-    theta = 0
+    theta = sensors.readWindDirection()
     for point in search_waypoints:
         rotatedx = point.x*math.cos(theta) - point.y*math.sin(theta)
         rotatedy = point.x*math.sin(theta) + point.y*math.cos(theta)
+        new_rotated_waypoint = coord.Vector(rotatedx, rotatedy)
+        rotated_waypoints.insert(len(rotated_waypoints), new_rotated_waypoint)
     return rotated_waypoints
 
 def fcn(x, radius):
