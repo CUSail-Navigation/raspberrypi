@@ -411,7 +411,8 @@ def search(waypoints):
 
 def fcn(x, radius):
     """
-    Creates path for sailboat and then rotates this path based on the wind angle before the boat enters the circle
+    Creates path for sailboat and then rotates this path based on the wind 
+    angle before the boat enters the circle
     """
     period = 1
     return math.sqrt((radius**2)-(x**2))*math.sin(period*x*(math.pi))
