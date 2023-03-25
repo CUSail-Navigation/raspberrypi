@@ -1,9 +1,9 @@
+from navigation_utilities import *
+from navigation_helper import *
 import matplotlib.pyplot as plt
 import sys
 
 sys.path.append("..")
-from navigation_helper import *
-from navigation_utilities import *
 
 
 class SearchTest:
@@ -16,20 +16,16 @@ class SearchTest:
         plt.figure()
         xs = [w[0] for w in self.waypoints]
         ys = [w[1] for w in self.waypoints]
-        plt.plot(xs, ys, 'o', color="orange")
+        plt.plot(xs, ys, 'o', color="red")
 
         gen_waypoints = search(self.waypoints)
         xs = [w[0] for w in gen_waypoints]
         ys = [w[1] for w in gen_waypoints]
-        colors = [
-            'lime', 'g', 'aqua', 'deepskyblue', 'indigo', 'darkviolet',
-            'magenta', 'r', 'darkorange'
-        ]
-        labels = [
-            'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh',
-            'eighth', 'ninth'
-        ]
+        xss = np.array(xs)
+        yss = np.array(ys)
         for i in range(len(xs)):
-            plt.plot(xs[i], ys[i], 'x', color=colors[i], label=labels[i])
+            plt.plot(xs[i], ys[i], '-x', color='black', linewidth=2)
+            plt.quiver(xss[:-1], yss[:-1], xss[1:]-xss[:-1], yss[1:]-yss[:-1],
+                       scale_units='xy', angles='xy', scale=1, color='black', width=0.005)
 
         plt.show()
