@@ -5,11 +5,19 @@ from math import pi
 import serial
 import struct
 import time
+import numpy as np
 
 
 class sensorData:
-    def __init__(self, coordinate_system=None):
+    def __init__(self, 
+                coordinate_system=None, 
+                mock_gps=False,
+                mock_imu=False,
+                mock_anemometer=False):
         self.coordinate_system = coordinate_system
+        self.mock_gps = mock_gps
+        self.mock_imu = mock_imu
+        self.mock_anemometer = mock_anemometer
 
         # IMU
         self.pitch = 0
@@ -108,9 +116,6 @@ class sensorData:
                     
         self.gps_serial_port.close()
 
-
-
-
     def _addAverage(self, newValue):
         """Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the
         average of the list of ints. This function assumes that anemometer readings are taken semi-frequently
@@ -126,7 +131,36 @@ class sensorData:
             sum = sum + n
         return sum
 
+    def mockIMU(self):
+        self.pitch = 0.0
+        self.roll = 0.0
+        self.yaw = 360 * np.random.rand()
+        self.boat_direction = self.yaw
+    
+    def mockGPS(self):
+        x = np.random.rand() * 200 - 100
+        y = np.random.rand() * 200 - 100
+        self.position = coord.Vector(x=x, y=y)
+
+        vx = np.random.rand() - 0.5
+        vy = np.random.rand() - 0.5
+        self.velocity = coord.Vector(x=vx, y=vy)
+
+    def mockAnemometer(self):
+        self.wind_direction = 360 * np.random.rand()
+
     def readAll(self):
-        self.readIMU()
-        self.readWindDirection()
-        self.readGPS()
+        if self.mock_imu:
+            self.mockIMU()
+        else:
+            self.readIMU()
+
+        if self.mock_anemometer:
+            self.mockAnemometer()
+        else:
+            self.readWindDirection()
+
+        if self.mock_gps:
+            self.mockGPS()
+        else:
+            self.readGPS()

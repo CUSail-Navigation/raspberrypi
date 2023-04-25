@@ -1,4 +1,8 @@
 import time
+import numpy as np
+import torch
+from torch import nn
+
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 import nav_algo.radio as radio
@@ -9,10 +13,8 @@ from nav_algo.navigation_helper import *
 
 class NavigationController:
     """A controller class for the navigation algorithm.
-
     Args:
         waypoints (list of (float, float)): A list of (latitude, longitude) tuples of waypoints.
-
     Attributes:
         DETECTION_RADIUS (float): How close we need to get to a waypoint.
         coordinate_system (CoordinateSystem): The global coordinate system.
@@ -23,12 +25,10 @@ class NavigationController:
         boat_position (Vector): The current position of the boat.
         boat_to_target (Vector): The vector from the boat to the target position.
         simulation (bool): If we are running a simulation
-
     """
     def __init__(self,
                  event=Events.FLEET_RACE,
-                 waypoints=[],
-                 simulation=False):
+                 waypoints=[]):
 
         # Make sure we have at least one waypoint
         if (len(waypoints) < 1):
@@ -51,10 +51,13 @@ class NavigationController:
             .format(waypoints[0][0], waypoints[0][1]))
         self.radio.transmitString("Waiting for GPS fix...\n")
         self.radio.boatController = self.boat
-
+        print("here")
         # wait until we know where we are
+        
         while self.boat.sensors.velocity is None:
-            self.boat.sensors.readGPS()  # ok if this is blocking
+            self.boat.sensors.readGPS_fake()                          
+            #self.boat.sensors.readGPS()  # ok if this is blocking
+        
 
         self.radio.transmitString(
             "Established GPS fix. Beginning navigation...\n")
@@ -136,9 +139,7 @@ class NavigationController:
 
     def navigate(self):
         """ Execute the navigation algorithm.
-
         This is a blocking call that runs until all waypoints have been hit.
-
         """
         while self.current_waypoint is not None:
             # read for a quit signal ('q') or manual override ('o')
@@ -162,7 +163,7 @@ class NavigationController:
                 all_waypts.append(pt)
             self.radio.printAllWaypoints(all_waypts)
             time.sleep(0.35)  # TODO how often should this run?
-
+            
             self.boat.updateSensors()
             self.boat_position = self.boat.getPosition()
             self.radio.printData(self.boat)
@@ -177,9 +178,60 @@ class NavigationController:
                 else:
                     self.current_waypoint = None
                     break
+                    
+            try:
+                print("hello")
+                
+                actor = Actor()
+                actor.load_state_dict(torch.load('./nav_algo/best_actor_sailboat.pickle', map_location=torch.device('cpu')))
+                actor = actor.to(torch.double)
+                actor.eval()                
+                '''
+                '''
+                # order of things 
+                # 1. x velocity 
+                vel_x = self.boat.sensors.velocity.x
+                # 2. y velocity
+                vel_y = self.boat.sensors.velocity.y
+                # 3. angular velocity 
+                vel_angular = self.boat.sensors.angular_velocity
+                # 4. sail angle
+                sail_angle = self.boat.servos.currentSail
+                # 5. rudder angle 
+                rudder_angle = self.boat.servos.currentTail
+                # 6. relative wind x
+                rel_wind_x = np.cos(self.boat.sensors.rawWind*np.pi/180)
+                # 7. relative wind y 
+                rel_wind_y = np.sin(self.boat.sensors.rawWind*np.pi/180)
+                # 8. distance from goal x component 
+                dist_goal_x = np.absolute(self.boat_position.x - self.current_waypoint.x)
+                # 9. distance from goal y component
+                dist_goal_y = np.absolute(self.boat_position.y - self.current_waypoint.y)
 
-            sailing_angle = newSailingAngle(self.boat, self.current_waypoint)
-            self.boat.setServos(sailing_angle)
+
+                state_vector = np.array([vel_x, vel_y, vel_angular, sail_angle, rudder_angle, rel_wind_x,
+                rel_wind_y, dist_goal_x, dist_goal_y])
+                
+                
+                tensor = torch.from_numpy(state_vector)
+                print(tensor.double())
+                sailing_angle = actor.get_action(tensor)
+                print(sailing_angle) # np array mult by 90 for sail 30 for rudder 
+                final_output = np.array([sailing_angle[0]*90, sailing_angle[1]*30])
+                
+                print("rel_wind_x and y : {}, {}".format(rel_wind_x, rel_wind_y))
+                print("servo_angles : {}, {}".format(final_output[0], final_output[1]))
+                self.boat.servos.setTail(final_output[1])
+                self.boat.servos.setSail(final_output[0])
+                
+            except:
+                raise Exception("Somethign went wrong")
+            ### ========================================= ###
+            # OLD ALGO CODE 
+                final_output = newSailingAngle(self.boat, self.current_waypoint)
+            ### ========================================= ###
+
+                self.boat.setServos(final_output)
 
     def navigateDetection(self, event=Events.COLLISION_AVOIDANCE):
         # TODO: modify to implement collision avoidance

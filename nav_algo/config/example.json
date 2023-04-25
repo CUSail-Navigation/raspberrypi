@@ -1,0 +1,14 @@
+{
+    "peripherals":{
+        "gps": "fake",
+        "imu": "fake",
+        "anemometer": "fake",
+        "servos": "fake"
+    },
+    "algo":{
+        "event": "none",
+        "type": "rl",
+        "model_path": "../best_actor.pickle"
+    },
+    "output": "radio"
+}

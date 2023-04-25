@@ -7,14 +7,20 @@ import numpy as np
 
 class BoatController:
 
-    def __init__(self, coordinate_system=None):
+    def __init__(self, 
+                 coordinate_system=None, 
+                 sensor_data=None, 
+                 mock_servos=False):
         self.coordinate_system = coordinate_system
-        self.sensors = sens.sensorData(coordinate_system)
+        self.mock_servos = mock_servos
+
+        if sensor_data is None:
+            self.sensors = sens.sensorData(coordinate_system)
+        else:
+            self.sensors = sensor_data
 
         # servo angles
-        self.servos = servo.Servo()
-        self.sail_angle = 0
-        self.tail_angle = 0
+        self.servos = servo.Servo(mock_servos)
 
     def getPosition(self):
         return self.sensors.position
@@ -29,14 +35,16 @@ class BoatController:
         return util.getServoAnglesImpl(abs_wind_dir, yaw, intended_angle)
 
     def setServos(self, intended_angle: float):
-        self.sail_angle, self.tail_angle = self.getServoAngles(intended_angle)
+        sail_angle, tail_angle = self.getServoAngles(intended_angle)
 
         # set the servos
-        print("setting sail {} tail {}".format(self.sail_angle,
-                                               self.tail_angle))
-        self.servos.setTail(self.tail_angle)
-        self.servos.setSail(self.sail_angle)
-        self.sensors.sailAngleBoat = self.servos.currentSail
+        print("setting sail {} tail {}".format(sail_angle,
+                                               tail_angle))
+        self.servos.setTail(tail_angle)
+        self.servos.setSail(sail_angle)
+
+        #TODO get rid of this, and update anemometer
+        self.sensors.sailAngleBoat = self.servos.currentSail - 90
 
     def setAngles(self, mainsail: float, tail: float):
         print("setting sail {} tail {}".format(mainsail, tail))
