@@ -79,7 +79,7 @@ class Radio(UARTDevice):
     Sends all of the boat data to the basestation. All arguments are taken in as floats
     """
 
-    def printData(self, boatController):
+    def printData(self, boatController = None):
         """Data should be of the form:.
 
         "----------NAVIGATION----------" +
@@ -100,6 +100,9 @@ class Radio(UARTDevice):
         character at the end of the string.
 
         """
+        if boatController is None:
+            boatController = self.boatController
+            
         origLat = boatController.coordinate_system.LAT_OFFSET
         origLong = boatController.coordinate_system.LONG_OFFSET
         currentPositionX = boatController.sensors.position.x

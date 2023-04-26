@@ -1,8 +1,7 @@
 import time
 import numpy as np
-import torch
-from torch import nn
 
+import nav_algo.configuration as conf
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 import nav_algo.radio as radio
@@ -14,7 +13,7 @@ from nav_algo.navigation_helper import *
 class NavigationController:
     """A controller class for the navigation algorithm.
     Args:
-        waypoints (list of (float, float)): A list of (latitude, longitude) tuples of waypoints.
+        configuration (NavigationConfiguration: The configuration of the current execution.
     Attributes:
         DETECTION_RADIUS (float): How close we need to get to a waypoint.
         coordinate_system (CoordinateSystem): The global coordinate system.
@@ -24,42 +23,21 @@ class NavigationController:
         current_waypoint (Vector): The current target waypoint.
         boat_position (Vector): The current position of the boat.
         boat_to_target (Vector): The vector from the boat to the target position.
-        simulation (bool): If we are running a simulation
     """
-    def __init__(self,
-                 event=Events.FLEET_RACE,
-                 waypoints=[]):
-
-        # Make sure we have at least one waypoint
-        if (len(waypoints) < 1):
-            raise RuntimeError('At least one waypoint is required.')
-
+    def __init__(self, configuration : conf.NavigationConfiguration):
+        self.configuration = configuration
         self.DETECTION_RADIUS = 5.0
 
-        self.coordinate_system = coord.CoordinateSystem(
-            waypoints[0][0], waypoints[0][1])
-        self.waypoints = [
-            coord.Vector(self.coordinate_system, w[0], w[1]) for w in waypoints
-        ]
-
-        self.boat = boat.BoatController(
-            coordinate_system=self.coordinate_system)
-
-        self.radio = radio.Radio(9600)
-        self.radio.transmitString(
+        self.configuration.write_output(
             "Using lat/long point ({}, {}) as the center of the coordinate system.\n"
-            .format(waypoints[0][0], waypoints[0][1]))
-        self.radio.transmitString("Waiting for GPS fix...\n")
-        self.radio.boatController = self.boat
-        print("here")
-        # wait until we know where we are
-        
-        while self.boat.sensors.velocity is None:
-            self.boat.sensors.readGPS_fake()                          
-            #self.boat.sensors.readGPS()  # ok if this is blocking
-        
+            .format(self.waypoints[0].latitude, self.waypoints[0].longitude))
+        self.configuration.write_output("Waiting for GPS fix...\n")
 
-        self.radio.transmitString(
+        # wait until we know where we are
+        while self.boat.sensors.velocity is None:
+            self.boat.sensors.readAll() # ok if this is blocking
+        
+        self.configuration.write_output(
             "Established GPS fix. Beginning navigation...\n")
         # self.current_waypoint = self.waypoints.pop(0)
         # self.current_waypoint = self.waypoints[desired_fst_waypoint]
@@ -67,33 +45,13 @@ class NavigationController:
 
         # If the event is fleet race, we don't care about the algo, just set angles
         # NOTE commands should end with \n, send 'q' to quit, angles are space delineated 'main tail'
-        if event == Events.FLEET_RACE:
-            self.radio.fleetRace = True
-            self.radio.transmitString(
-                "Starting Fleet Race\nSend angles of the form 'sail_angle rudder_angle'"
-            )
-            while True:
-                try:
-                    self.radio.receiveString()  # timeout is 1 sec
-                except:
-                    pass
-                self.boat.updateSensors()
-                self.radio.printData(self.boat)
+        if self.configuration.event == Events.FLEET_RACE:
+            self.fleetRace()
 
-        elif event == Events.ENDURANCE:
-            # 7 hrs = 25200 sec
-            exit_before = 25200
-            start_time = time.time()
-            loop_waypoints = counterClockwiseRect(self.waypoints,
-                                                  self.boat,
-                                                  buoy_offset=5)
+        elif self.configuration.event == Events.ENDURANCE:
+            self.endurance()
 
-            while (time.time() - start_time < exit_before):
-                self.waypoints = loop_waypoints
-                self.current_waypoint = self.waypoints.pop(0)
-                self.navigate()
-
-        elif event == Events.STATION_KEEPING:
+        elif self.configuration.event == Events.STATION_KEEPING:
             # TODO find an optimal radius, 10m for now
             buoy_waypoints = self.waypoints
             exit_before = 300
@@ -120,13 +78,13 @@ class NavigationController:
                                             "EXIT",
                                             boat=self.boat)
 
-        elif event == Events.PRECISION_NAVIGATION:
+        elif self.configuration.event == Events.PRECISION_NAVIGATION:
             self.waypoints = precisionNavigation(self.waypoints)
-        elif event == Events.COLLISION_AVOIDANCE:
+        elif self.configuration.event == Events.COLLISION_AVOIDANCE:
             self.waypoints = collisionAvoidance(self.waypoints)
             self.current_waypoint = self.waypoints[0]
             self.navigateDetection()
-        elif event == Events.SEARCH:
+        elif self.configuration.event == Events.SEARCH:
             self.waypoints = search(self.waypoints, boat=self.boat)
             self.current_waypoint = self.waypoints[0]
             self.navigateDetection(event=Events.SEARCH)
@@ -233,6 +191,31 @@ class NavigationController:
 
                 self.boat.setServos(final_output)
 
+    def fleetRace(self):
+        self.configuration.write_output(
+            "Starting Fleet Race\nSend angles of the form 'sail_angle rudder_angle'\n"
+        )
+        while True:
+            try:
+                self.configuration.radio.receiveString()  # timeout is 1 sec
+            except:
+                pass
+            self.configuration.boat.updateSensors()
+            self.configuration.radio.printData()
+    
+    def endurance(self):
+        # 7 hrs = 25200 sec
+        exit_before = 25200
+        start_time = time.time()
+        loop_waypoints = counterClockwiseRect(self.configuration.waypoints,
+                                              self.configuration.boat,
+                                              buoy_offset=5)
+
+        while (time.time() - start_time < exit_before):
+            self.configuration.waypoints = loop_waypoints
+            self.current_waypoint = self.configuration.waypoints.pop(0)
+            self.navigate()
+    
     def navigateDetection(self, event=Events.COLLISION_AVOIDANCE):
         # TODO: modify to implement collision avoidance
         while self.current_waypoint is not None:
