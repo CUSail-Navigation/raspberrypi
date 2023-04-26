@@ -74,6 +74,50 @@ class NavigationConfiguration:
         else:
             self.radio.transmitString(message)
 
+    def write_data(self):
+        """Data should be of the form:.
+
+        "----------NAVIGATION----------" +
+        ",Origin Latitude: " + origLat +
+        ",Origin Longitude: " + origLong +
+        ",X position: " + currentPosition.x +
+        ",Y position: " + currentPosition.y +
+        ",Wind Direction: " + windDir +
+        ",Pitch: " + pitch +
+        ",Roll: " + roll +
+        ",Yaw: " + yaw +
+        ",Sail Angle: " + sailAngle +
+        ",Tail Angle: " + tailAngle +
+        ",Heading: " + heading +
+        ",----------END----------" + new line character
+
+        Note that fields are comma delineated and there is only a new line
+        character at the end of the string.
+
+        """ 
+        origLat = self.boat.coordinate_system.LAT_OFFSET
+        origLong = self.boat.coordinate_system.LONG_OFFSET
+        currentPositionX = self.boat.sensors.position.x
+        currentPositionY = self.boat.sensors.position.y
+        windDir = self.boat.sensors.wind_direction
+        pitch = self.boat.sensors.pitch
+        roll = self.boat.sensors.roll
+        yaw = self.boat.sensors.yaw
+        sailAngle = self.boat.servos.currentSail
+        tailAngle = self.boat.servos.currentTail
+        heading = self.boat.sensors.velocity.angle()
+
+        msg = ("----------NAVIGATION----------" + ",Origin Latitude: " +
+               str(origLat) + ",Origin Longitude: " + str(origLong) +
+               ",X position: " + str(currentPositionX) + ",Y position: " +
+               str(currentPositionY) + ",Wind Direction: " + str(windDir) +
+               ",Pitch: " + str(pitch) + ",Roll: " + str(roll) + ",Yaw: " +
+               str(yaw) + ",Sail Angle: " + str(sailAngle) + ",Tail Angle: " +
+               str(tailAngle) + ",Heading: " + str(heading) +
+               ",----------END----------" + '\n')
+        
+        self.write_output(msg)
+
     def readWaypoints(self, filename):
         waypoints = []
         with open(filename, 'r') as f:
@@ -83,4 +127,9 @@ class NavigationConfiguration:
                 l = line.split(",")
                 waypoints.append((float(l[0]), float(l[1])))
         return waypoints
+
+    def cleanup(self):
+        # TODO should anything else go here?
+        if self.radio is not None:
+            self.radio.serialStream.close()
 

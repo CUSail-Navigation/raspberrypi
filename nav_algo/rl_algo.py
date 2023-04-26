@@ -81,4 +81,4 @@ class RL:
         tensor = torch.from_numpy(state_vector)
         output = self.actor.get_action(tensor)
 
-        return output[0], output[1]
+        return output[0]*90, output[1]*30

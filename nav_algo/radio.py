@@ -76,61 +76,9 @@ class Radio(UARTDevice):
         self.boatController.setAngles(sail, tail)
 
     """
-    Sends all of the boat data to the basestation. All arguments are taken in as floats
+    Takes a list of tuple waypoints and sends them to the basestation.
+    -currentWaypointsArray: must be an array of tuples in the format (waypoint x component float, waypoint y component float)
     """
-
-    def printData(self, boatController = None):
-        """Data should be of the form:.
-
-        "----------NAVIGATION----------" +
-        ",Origin Latitude: " + origLat +
-        ",Origin Longitude: " + origLong +
-        ",X position: " + currentPosition.x +
-        ",Y position: " + currentPosition.y +
-        ",Wind Direction: " + windDir +
-        ",Pitch: " + pitch +
-        ",Roll: " + roll +
-        ",Yaw: " + yaw +
-        ",Sail Angle: " + sailAngle +
-        ",Tail Angle: " + tailAngle +
-        ",Heading: " + heading +
-        ",----------END----------" + new line character
-
-        Note that fields are comma delineated and there is only a new line
-        character at the end of the string.
-
-        """
-        if boatController is None:
-            boatController = self.boatController
-            
-        origLat = boatController.coordinate_system.LAT_OFFSET
-        origLong = boatController.coordinate_system.LONG_OFFSET
-        currentPositionX = boatController.sensors.position.x
-        currentPositionY = boatController.sensors.position.y
-        windDir = boatController.sensors.wind_direction
-        pitch = boatController.sensors.pitch
-        roll = boatController.sensors.roll
-        yaw = boatController.sensors.yaw
-        sailAngle = boatController.sail_angle
-        tailAngle = boatController.tail_angle
-        heading = boatController.sensors.velocity.angle()
-
-        msg = ("----------NAVIGATION----------" + ",Origin Latitude: " +
-               str(origLat) + ",Origin Longitude: " + str(origLong) +
-               ",X position: " + str(currentPositionX) + ",Y position: " +
-               str(currentPositionY) + ",Wind Direction: " + str(windDir) +
-               ",Pitch: " + str(pitch) + ",Roll: " + str(roll) + ",Yaw: " +
-               str(yaw) + ",Sail Angle: " + str(sailAngle) + ",Tail Angle: " +
-               str(tailAngle) + ",Heading: " + str(heading) +
-               ",----------END----------" + '\n')
-        print(msg)
-        msg = msg.encode()
-        self.sendUart(msg)
-        return
-        """
-        Takes a list of tuple waypoints and sends them to the basestation.
-        -currentWaypointsArray: must be an array of tuples in the format (waypoint x component float, waypoint y component float)
-        """
 
     def printAllWaypoints(self, currentWaypointsArray):
         """Data should be of the form:.

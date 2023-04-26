@@ -28,25 +28,7 @@ class BoatController:
     def updateSensors(self):
         self.sensors.readAll()
 
-    def getServoAngles(self, intended_angle: float):
-        # TODO check logic for all of this, I'm 99% sure it's wrong - CM
-        abs_wind_dir = self.sensors.wind_direction
-        yaw = self.sensors.yaw
-        return util.getServoAnglesImpl(abs_wind_dir, yaw, intended_angle)
-
-    def setServos(self, intended_angle: float):
-        sail_angle, tail_angle = self.getServoAngles(intended_angle)
-
-        # set the servos
-        print("setting sail {} tail {}".format(sail_angle,
-                                               tail_angle))
-        self.servos.setTail(tail_angle)
-        self.servos.setSail(sail_angle)
-
-        #TODO get rid of this, and update anemometer
-        self.sensors.sailAngleBoat = self.servos.currentSail - 90
-
-    def setAngles(self, mainsail: float, tail: float):
+    def setServos(self, mainsail: float, tail: float):
         print("setting sail {} tail {}".format(mainsail, tail))
         self.servos.setSail(mainsail)
         self.servos.setTail(tail)
