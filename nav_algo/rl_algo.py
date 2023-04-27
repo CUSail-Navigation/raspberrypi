@@ -56,7 +56,7 @@ class Actor(nn.Module):
 class RL:
     def __init__(self, actor_filename):
         self.actor = Actor()
-        self.actor.load_state_dict(torch.load(actor_filename))
+        self.actor.load_state_dict(torch.load(actor_filename, map_location=torch.device('cpu')))
         self.actor = self.actor.to(torch.double)
         self.actor.eval()
     
@@ -65,7 +65,7 @@ class RL:
         vel_x = boat.sensors.velocity.x
         # 2. y velocity
         vel_y = boat.sensors.velocity.y
-        # TODO 3. angular velocity 
+        # 3. angular velocity 
         vel_angular = boat.sensors.angular_velocity
         # 4. sail angle
         sail_angle = boat.servos.currentSail
