@@ -29,7 +29,7 @@ class NavigationController:
 
         self.configuration.write_output(
             "Using lat/long point ({}, {}) as the center of the coordinate system.\n"
-            .format(self.waypoints[0].latitude, self.waypoints[0].longitude))
+            .format(self.configuration.waypoints[0].latitude, self.configuration.waypoints[0].longitude))
         self.configuration.write_output("Waiting for GPS fix...\n")
 
         # wait until we know where we are
