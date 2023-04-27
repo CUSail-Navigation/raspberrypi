@@ -33,8 +33,8 @@ class NavigationController:
         self.configuration.write_output("Waiting for GPS fix...\n")
 
         # wait until we know where we are
-        while self.boat.sensors.velocity is None:
-            self.boat.sensors.readAll() # ok if this is blocking
+        while self.configuration.boat.sensors.velocity is None:
+            self.configuration.boat.sensors.readAll() # ok if this is blocking
         
         self.configuration.write_output(
             "Established GPS fix. Beginning navigation...\n")
