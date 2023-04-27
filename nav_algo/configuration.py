@@ -75,6 +75,8 @@ class NavigationConfiguration:
             self.radio = radio.Radio(9600, 
                                      boatController=self.boat, 
                                      fleetRace=(self.event == Events.FLEET_RACE))
+        else:
+            self.radio = None
     
     def write_output(self, message):
         if self.radio is None:
