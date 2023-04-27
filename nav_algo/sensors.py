@@ -23,6 +23,8 @@ class sensorData:
         self.pitch = 0
         self.roll = 0
         self.yaw = 0  # we read as wrt N, convert to wrt x-axis (E) (make sure 90 degrees is north)
+        self.angular_velocity = 0
+        self.prev_time_imu = None
 
         # anemometer
         self.wind_direction = 0  # wrt x-axis and noise removed
@@ -36,23 +38,25 @@ class sensorData:
         self.longitude = 0.0
         self.velocity = None
         self.position = None
-        self.prev_time = None
+        self.prev_time_gps = None
 
-        #Sensor objects
-        self.IMU = SailSensors.SailIMU()
-        self.anemometer = SailSensors.SailAnemometer(0)
-        # do not open gps port yet (don't give a port in the initialization)
-        self.gps_serial_port = serial.Serial(port=None,
-                                             baudrate=9600,
-                                             timeout=1)
-        self.gps_serial_port.port = '/dev/ttyAMA3'  #ttyAMA3 needs to bes
-
-        # additional sensor data
+        # Sensor objects
+        if not self.mock_imu:
+            self.IMU = SailSensors.SailIMU()
         
+        if not self.mock_anemometer:
+            self.anemometer = SailSensors.SailAnemometer(0)
+        
+        if not self.mock_gps:
+            self.gps_serial_port = serial.Serial(port='/dev/ttyAMA3',
+                                                 baudrate=9600,
+                                                 timeout=1)
 
     def readIMU(self):
         rawData = self.IMU.i2c_read_imu()
         eulerAngles = [0, 0, 0]
+        prev_yaw = self.yaw 
+
         #iterates through the list of raw data and converts int into a list of three floats
         for n in range(3):
             byteFloatList = rawData[4 * n:4 + 4 * n]
@@ -62,18 +66,21 @@ class sensorData:
         self.pitch = eulerAngles[0]
         self.roll = eulerAngles[2]
         self.yaw = 360 + 90 - eulerAngles[1]
-        if self.yaw < 0:
-            self.yaw += 360
-        elif self.yaw > 360:
-            self.yaw -= 360
+        self.yaw = self.yaw % 360
 
+        cur_time = time.time()
+        if self.prev_time_imu is not None:
+            angle_diff = 180 - abs(abs(prev_yaw - self.yaw) - 180)
+            self.angular_velocity = angle_diff / (cur_time - self.prev_time_imu)
+
+        self.prev_time_imu = cur_time
         return
 
     def readWindDirection(self):
-        # TODO check that this is wrt x-axis (East)
+        # TODO check that wind_direction is wrt x-axis (East)
         rawData = self.anemometer.readAnemometerVoltage()
         rawAngle = (360 - rawData * 360 / 1700) + 180
-        self.relative_wind = rawAngle
+        self.relative_wind = 270 - rawData * 360 / 1700
 
         windWrtN = (rawAngle + self.yaw + 270) % 360
         self.wind_direction = self._addAverage(windWrtN)
@@ -83,6 +90,8 @@ class sensorData:
     def readGPS(self):
         # use the NMEA parser
         # TODO you may want to just leave this open
+        if(self.gps_serial_port.is_open):
+            self.gps_serial_port.close()
         self.gps_serial_port.open()
         self.gps_serial_port.reset_input_buffer()
         for _ in range(5):
@@ -96,20 +105,18 @@ class sensorData:
                 self.fix = True
                 self.latitude = nmea_data.latitude
                 self.longitude = nmea_data.longitude
-                print("got lat {}, long {}".format(self.latitude,
-                                                   self.longitude))
                 new_position = coord.Vector(self.coordinate_system,
                                             self.latitude, self.longitude)
                 cur_time = time.time()
 
-                if self.prev_time is None:
+                if self.prev_time_gps is None:
                     self.position = new_position
-                    self.prev_time = cur_time
+                    self.prev_time_gps = cur_time
                 else:
                     self.velocity = new_position.vectorSubtract(self.position)
-                    self.velocity.scale(1.0 / (cur_time - self.prev_time))
+                    self.velocity.scale(1.0 / (cur_time - self.prev_time_gps))
                     self.position = new_position
-                    self.prev_time = cur_time
+                    self.prev_time_gps = cur_time
                     
         self.gps_serial_port.close()
 

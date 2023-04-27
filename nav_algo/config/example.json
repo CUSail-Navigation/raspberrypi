@@ -8,7 +8,7 @@
     "algo":{
         "event": "none",
         "type": "rl",
-        "model_path": "../best_actor.pickle"
+        "model_path": "./nav_algo/models/best_actor_sailboat.pickle"
     },
     "output": "radio"
 }

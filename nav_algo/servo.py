@@ -4,13 +4,9 @@ from adafruit_servokit import ServoKit
 class Servo:
     SAIL_MAX_ANGLE = 90
     SAIL_MIN_ANGLE = -90
-    SAIL_MAX = 0
-    SAIL_MIN = 0
 
     TAIL_MAX_ANGLE = 30
     TAIL_MIN_ANGLE = -30
-    TAIL_MAX = 180
-    TAIL_MIN = 0
 
     def __init__(self, mock=False):
         """
@@ -62,7 +58,7 @@ class Servo:
         if self.mock:
             return
     
-        intOnPer = self.mapRange(sail_angle,-90,90,65,135)
+        intOnPer = self.mapRange(sail_angle,-90,90,30,135)
         self.servoDriver.servo[0].angle = intOnPer
         
     def sleepServo(self, sleep):
