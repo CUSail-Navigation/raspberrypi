@@ -4,20 +4,22 @@ from adafruit_servokit import ServoKit
 class Servo:
     SAIL_MAX_ANGLE = 90
     SAIL_MIN_ANGLE = -90
-    SAIL_MAX = 0
-    SAIL_MIN = 0
 
     TAIL_MAX_ANGLE = 30
     TAIL_MIN_ANGLE = -30
-    TAIL_MAX = 180
-    TAIL_MIN = 0
 
-    def __init__(self):
+    def __init__(self, mock=False):
         """
         instantiates the class. tailPin is the otherwise unused GPIO pin on the pi where the
         tail servo is connected, and sailPin is the otherwise unused GPIO pin where the sail
         servo is connected.
         """
+        self.mock = mock
+        if self.mock:
+            self.currentSail = 0
+            self.currentTail = 0
+            return
+        
         self.servoDriver = ServoKit(channels=16)
         self.currentTail = 0
         self.setTail(0)
@@ -34,10 +36,13 @@ class Servo:
             tail_angle = Servo.TAIL_MAX_ANGLE
         elif tail_angle < Servo.TAIL_MIN_ANGLE:
             tail_angle = Servo.TAIL_MIN_ANGLE
+
+        self.currentTail = tail_angle
+        if self.mock:
+            return
     
         intOnPer =  35 - tail_angle
         self.servoDriver.servo[1].angle = intOnPer
-        self.currentTail = tail_angle
 
     def setSail(self, sail_angle):
         """
@@ -48,11 +53,14 @@ class Servo:
             sail_angle = Servo.SAIL_MIN_ANGLE
         elif sail_angle > Servo.SAIL_MAX_ANGLE:
             sail_angle = Servo.SAIL_MAX_ANGLE
-    
-        intOnPer = self.mapRange(sail_angle,-90,90,65,135)
-        self.servoDriver.servo[0].angle = intOnPer
-        self.currentSail = sail_angle - 90
 
+        self.currentSail = sail_angle
+        if self.mock:
+            return
+    
+        intOnPer = self.mapRange(sail_angle,-90,90,30,135)
+        self.servoDriver.servo[0].angle = intOnPer
+        
     def sleepServo(self, sleep):
         """Puts the servo driver to sleep to conserve energy.
 
@@ -66,8 +74,7 @@ class Servo:
         return
 
     def readEncoder(self):
-        print("encoder?")
-        return
+        raise NotImplementedError("Encoder? I hardly know her")
 
     def mapRange(self, val, startmin, startmax, endMin, endMax):
         """

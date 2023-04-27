@@ -1,17 +1,48 @@
-import SailSensors as SailSensors
+import nav_algo.low_level.SailSensors as SailSensors
+import struct
+from math import pi
+import time
 
-sailAngleBoat  = -90
+IMU = SailSensors.SailIMU()
+pitch = 0
+roll = 0
+yaw = 0
+boat_direction = 0
+
+sailAngleBoat  = -180
 boat_direction = 0
 anemomSMA=[]
 anemometer = SailSensors.SailAnemometer(0)
+
+def readIMU():
+    rawData = IMU.i2c_read_imu()
+    eulerAngles = [0, 0, 0]
+    #iterates through the list of raw data and converts int into a list of three floats
+    for n in range(3):
+        byteFloatList = rawData[4 * n:4 + 4 * n]
+        eulerAngles[n] = struct.unpack(">f", bytes(byteFloatList))[0]
+        eulerAngles[n] *= (180 / pi)
+
+    pitch = eulerAngles[0]
+    roll = eulerAngles[2]
+    yaw = 360 + 90 - eulerAngles[1]
+    if yaw < 0:
+        yaw += 360
+    elif yaw > 360:
+        yaw -= 360
+
+    return yaw
+    
+
 def readWindDirection():
+        
         rawData = anemometer.readAnemometerVoltage()
         """print(rawData)"""
         rawWind = rawData
-        rawAngle = 360 - rawData * 360 / 1700
+        rawAngle = (360 - rawData * 360 / 1700) + 180
 
-        windWrtN = (rawAngle + sailAngleBoat) % 360
-        windWrtN = (windWrtN + boat_direction) % 360
+        windWrtN = (rawAngle + sailAngleBoat)
+        windWrtN = (windWrtN + boat_direction + 270) % 360
         wind_direction = _addAverage(windWrtN)
         print(wind_direction)
         return
@@ -33,6 +64,8 @@ def _addAverage(newValue):
         return sum
 
 while (1):
+    yaw = readIMU()
+    boat_direction = yaw
+    print("yaw: " + str(yaw))
     readWindDirection()
-
-
+    time.sleep(1)

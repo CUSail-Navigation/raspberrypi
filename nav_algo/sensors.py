@@ -1,25 +1,36 @@
-import nav_algo.nmea as nmea
+import nav_algo.low_level.nmea as nmea
 import nav_algo.coordinates as coord
-import nav_algo.SailSensors as SailSensors
+import nav_algo.low_level.SailSensors as SailSensors
 from math import pi
 import serial
 import struct
 import time
+import numpy as np
 
 
 class sensorData:
-    def __init__(self, coordinate_system=None):
+    def __init__(self, 
+                coordinate_system=None, 
+                mock_gps=False,
+                mock_imu=False,
+                mock_anemometer=False):
         self.coordinate_system = coordinate_system
+        self.mock_gps = mock_gps
+        self.mock_imu = mock_imu
+        self.mock_anemometer = mock_anemometer
 
         # IMU
         self.pitch = 0
         self.roll = 0
         self.yaw = 0  # we read as wrt N, convert to wrt x-axis (E) (make sure 90 degrees is north)
+        self.angular_velocity = 0
+        self.prev_time_imu = None
 
         # anemometer
         self.wind_direction = 0  # wrt x-axis and noise removed
         self.wind_speed = 0  #don't need this, might add as an extra if there is time left
         self.anemomSMA = []  #helps remove noise from the anemometer reading
+        self.relative_wind = 0 # wrt the boat (raw anemometer reading)
 
         # GPS
         self.fix = False
@@ -27,25 +38,25 @@ class sensorData:
         self.longitude = 0.0
         self.velocity = None
         self.position = None
-        self.prev_time = None
+        self.prev_time_gps = None
 
-        #Sensor objects
-        self.IMU = SailSensors.SailIMU()
-        self.anemometer = SailSensors.SailAnemometer(0)
-        # do not open gps port yet (don't give a port in the initialization)
-        self.gps_serial_port = serial.Serial(port=None,
-                                             baudrate=9600,
-                                             timeout=1)
-        self.gps_serial_port.port = '/dev/ttyAMA3'  #ttyAMA3 needs to bes
-
-        #sensorData
-        self.boat_direction = 0  # angle of the sail wrt north.
-        self.sailAngleBoat = 0  #angle of the sail wrt to the boat.
-        self.rawWind = 0
+        # Sensor objects
+        if not self.mock_imu:
+            self.IMU = SailSensors.SailIMU()
+        
+        if not self.mock_anemometer:
+            self.anemometer = SailSensors.SailAnemometer(0)
+        
+        if not self.mock_gps:
+            self.gps_serial_port = serial.Serial(port='/dev/ttyAMA3',
+                                                 baudrate=9600,
+                                                 timeout=1)
 
     def readIMU(self):
         rawData = self.IMU.i2c_read_imu()
         eulerAngles = [0, 0, 0]
+        prev_yaw = self.yaw 
+
         #iterates through the list of raw data and converts int into a list of three floats
         for n in range(3):
             byteFloatList = rawData[4 * n:4 + 4 * n]
@@ -55,22 +66,23 @@ class sensorData:
         self.pitch = eulerAngles[0]
         self.roll = eulerAngles[2]
         self.yaw = 360 + 90 - eulerAngles[1]
-        if self.yaw < 0:
-            self.yaw += 360
-        elif self.yaw > 360:
-            self.yaw -= 360
-        self.boat_direction = self.yaw
+        self.yaw = self.yaw % 360
 
+        cur_time = time.time()
+        if self.prev_time_imu is not None:
+            angle_diff = 180 - abs(abs(prev_yaw - self.yaw) - 180)
+            self.angular_velocity = angle_diff / (cur_time - self.prev_time_imu)
+
+        self.prev_time_imu = cur_time
         return
 
     def readWindDirection(self):
+        # TODO check that wind_direction is wrt x-axis (East)
         rawData = self.anemometer.readAnemometerVoltage()
-        """print(rawData)"""
-        rawWind = rawData
         rawAngle = (360 - rawData * 360 / 1700) + 180
+        self.relative_wind = 270 - rawData * 360 / 1700
 
-        windWrtN = (rawAngle + self.sailAngleBoat)
-        windWrtN = (windWrtN + self.boat_direction + 270) % 360
+        windWrtN = (rawAngle + self.yaw + 270) % 360
         self.wind_direction = self._addAverage(windWrtN)
         return
 
@@ -78,6 +90,8 @@ class sensorData:
     def readGPS(self):
         # use the NMEA parser
         # TODO you may want to just leave this open
+        if(self.gps_serial_port.is_open):
+            self.gps_serial_port.close()
         self.gps_serial_port.open()
         self.gps_serial_port.reset_input_buffer()
         for _ in range(5):
@@ -91,25 +105,20 @@ class sensorData:
                 self.fix = True
                 self.latitude = nmea_data.latitude
                 self.longitude = nmea_data.longitude
-                print("got lat {}, long {}".format(self.latitude,
-                                                   self.longitude))
                 new_position = coord.Vector(self.coordinate_system,
                                             self.latitude, self.longitude)
                 cur_time = time.time()
 
-                if self.prev_time is None:
+                if self.prev_time_gps is None:
                     self.position = new_position
-                    self.prev_time = cur_time
+                    self.prev_time_gps = cur_time
                 else:
                     self.velocity = new_position.vectorSubtract(self.position)
-                    self.velocity.scale(1.0 / (cur_time - self.prev_time))
+                    self.velocity.scale(1.0 / (cur_time - self.prev_time_gps))
                     self.position = new_position
-                    self.prev_time = cur_time
+                    self.prev_time_gps = cur_time
                     
         self.gps_serial_port.close()
-
-
-
 
     def _addAverage(self, newValue):
         """Helper function that manages the SMA of the anemometer, this keeps the list at size =11 and returns the
@@ -126,7 +135,35 @@ class sensorData:
             sum = sum + n
         return sum
 
+    def mockIMU(self):
+        self.pitch = 0.0
+        self.roll = 0.0
+        self.yaw = 360 * np.random.rand()
+    
+    def mockGPS(self):
+        x = np.random.rand() * 200 - 100
+        y = np.random.rand() * 200 - 100
+        self.position = coord.Vector(x=x, y=y)
+
+        vx = np.random.rand() - 0.5
+        vy = np.random.rand() - 0.5
+        self.velocity = coord.Vector(x=vx, y=vy)
+
+    def mockAnemometer(self):
+        self.wind_direction = 360 * np.random.rand()
+
     def readAll(self):
-        self.readIMU()
-        self.readWindDirection()
-        self.readGPS()
+        if self.mock_imu:
+            self.mockIMU()
+        else:
+            self.readIMU()
+
+        if self.mock_anemometer:
+            self.mockAnemometer()
+        else:
+            self.readWindDirection()
+
+        if self.mock_gps:
+            self.mockGPS()
+        else:
+            self.readGPS()

@@ -1,5 +1,5 @@
 import unittest
-import nav_algo.nmea as nmea
+import nav_algo.low_level.nmea as nmea
 
 
 class TestNmeaMethods(unittest.TestCase):

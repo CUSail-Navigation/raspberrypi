@@ -1,20 +1,23 @@
 import nav_algo.servo as servo
 import nav_algo.sensors as sens
 import nav_algo.coordinates as coord
-import nav_algo.navigation_utilities as util
-import numpy as np
 
 
 class BoatController:
 
-    def __init__(self, coordinate_system=None):
-        self.coordinate_system = coordinate_system
-        self.sensors = sens.sensorData(coordinate_system)
+    def __init__(self, 
+                 coordinate_system=None, 
+                 sensor_data=None, 
+                 mock_servos=False):
 
-        # servo angles
-        self.servos = servo.Servo()
-        self.sail_angle = 0
-        self.tail_angle = 0
+        # Set the sensor object if given or make a new one
+        if sensor_data is None:
+            self.sensors = sens.sensorData(coordinate_system)
+        else:
+            self.sensors = sensor_data
+
+        # Set the servo object with indicator to fake the servos or not
+        self.servos = servo.Servo(mock_servos)
 
     def getPosition(self):
         return self.sensors.position
@@ -22,23 +25,6 @@ class BoatController:
     def updateSensors(self):
         self.sensors.readAll()
 
-    def getServoAngles(self, intended_angle: float):
-        # TODO check logic for all of this, I'm 99% sure it's wrong - CM
-        abs_wind_dir = self.sensors.wind_direction
-        yaw = self.sensors.yaw
-        return util.getServoAnglesImpl(abs_wind_dir, yaw, intended_angle)
-
-    def setServos(self, intended_angle: float):
-        self.sail_angle, self.tail_angle = self.getServoAngles(intended_angle)
-
-        # set the servos
-        print("setting sail {} tail {}".format(self.sail_angle,
-                                               self.tail_angle))
-        self.servos.setTail(self.tail_angle)
-        self.servos.setSail(self.sail_angle)
-        self.sensors.sailAngleBoat = self.servos.currentSail
-
-    def setAngles(self, mainsail: float, tail: float):
-        print("setting sail {} tail {}".format(mainsail, tail))
+    def setServos(self, mainsail: float, tail: float):
         self.servos.setSail(mainsail)
         self.servos.setTail(tail)
