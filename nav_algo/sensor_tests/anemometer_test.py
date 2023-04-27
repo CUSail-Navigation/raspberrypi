@@ -1,4 +1,4 @@
-import SailSensors as SailSensors
+import nav_algo.low_level.SailSensors as SailSensors
 
 sailAngleBoat  = -90
 boat_direction = 0

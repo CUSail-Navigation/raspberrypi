@@ -1,4 +1,4 @@
-from nav_algo.SailSensors import UARTDevice
+from nav_algo.low_level.SailSensors import UARTDevice
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 from time import time

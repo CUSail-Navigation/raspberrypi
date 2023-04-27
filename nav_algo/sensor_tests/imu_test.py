@@ -1,4 +1,4 @@
-import SailSensors
+import nav_algo.low_level.SailSensors as SailSensors
 import struct
 from math import pi
 import time

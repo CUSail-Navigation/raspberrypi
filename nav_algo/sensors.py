@@ -1,6 +1,6 @@
-import nav_algo.nmea as nmea
+import nav_algo.low_level.nmea as nmea
 import nav_algo.coordinates as coord
-import nav_algo.SailSensors as SailSensors
+import nav_algo.low_level.SailSensors as SailSensors
 from math import pi
 import serial
 import struct
