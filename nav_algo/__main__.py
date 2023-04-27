@@ -19,7 +19,7 @@ def main():
     order [north west, north east, south east, south west]
     """
     waypoint_file = 'nav_algo/waypoints/test.csv'
-    configuration_file = 'nav_algo/config/example.json'
+    configuration_file = 'nav_algo/config/real_sensors_no_event.json'
 
     # Read the configuration and waypoint files and setup the current context
     configuration = config.NavigationConfiguration(config_filename=configuration_file, 

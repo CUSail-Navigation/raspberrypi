@@ -1,0 +1,14 @@
+{
+    "peripherals":{
+        "gps": "real",
+        "imu": "real",
+        "anemometer": "real",
+        "servos": "real"
+    },
+    "algo":{
+        "event": "none",
+        "type": "rl",
+        "model_path": "./nav_algo/models/best_actor_sailboat.pickle"
+    },
+    "output": "radio"
+}
