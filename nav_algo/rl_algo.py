@@ -65,16 +65,16 @@ class RL:
         vel_x = boat.sensors.velocity.x
         # 2. y velocity
         vel_y = boat.sensors.velocity.y
-        # 3. angular velocity 
-        vel_angular = boat.sensors.angular_velocity
+        # 3. angular velocity (rad/s)
+        vel_angular = np.deg2rad(boat.sensors.angular_velocity)
         # 4. sail angle
         sail_angle = boat.servos.currentSail
         # 5. rudder angle 
         rudder_angle = boat.servos.currentTail
         # 6. relative wind x
-        rel_wind_x = np.cos(boat.sensors.rawWind*np.pi/180)
+        rel_wind_x = np.cos(boat.sensors.relative_wind*np.pi/180)
         # 7. relative wind y 
-        rel_wind_y = np.sin(boat.sensors.rawWind*np.pi/180)
+        rel_wind_y = np.sin(boat.sensors.relative_wind*np.pi/180)
         # 8. distance from goal x component
         boat_position = boat.getPosition()
         dist_goal_x = np.absolute(boat_position.x - waypoint.x)
