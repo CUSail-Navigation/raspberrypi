@@ -1,6 +1,6 @@
 import nav_algo.boat as b
 from nav_algo.navigation_helper import *
-from navigation_utilities import getServoAnglesImpl
+from nav_algo.navigation_utilities import getServoAnglesImpl
     
 class BasicAlgo:
     """
