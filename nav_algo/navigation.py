@@ -52,7 +52,7 @@ class NavigationController:
 
         elif self.configuration.event == Events.PRECISION_NAVIGATION:
             self.configuration.waypoints = precisionNavigation(self.configuration.waypoints)
-            self.current_waypoint = self.waypoints.pop(0)
+            self.current_waypoint = self.configuration.waypoints.pop(0)
             self.navigate()
 
         # TODO actually implement collision avoidance
@@ -70,7 +70,7 @@ class NavigationController:
 
         else:
             # No event provided, just follow waypoints directly
-            self.current_waypoint = self.waypoints.pop(0)
+            self.current_waypoint = self.configuration.waypoints.pop(0)
             self.navigate()
 
         # Clean up ports
@@ -159,7 +159,7 @@ class NavigationController:
                                                       circle_radius,
                                                       "ENTRY",
                                                       boat=self.configuration.boat)
-        self.current_waypoint = self.waypoints.pop(0)
+        self.current_waypoint = self.configuration.waypoints.pop(0)
         self.navigate()
 
         # Set timer
