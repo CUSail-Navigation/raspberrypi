@@ -89,7 +89,7 @@ class NavigationController:
                 pass
 
             # Check if manual override has been engaged
-            if self.configuration.radio.fleetRace:
+            if self.radio is not None and self.configuration.radio.fleetRace:
                 self.fleetRace()
 
             # Print all waypoints (in order from first to last)
