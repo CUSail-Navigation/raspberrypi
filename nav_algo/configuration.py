@@ -17,7 +17,7 @@ class NavigationConfiguration:
     object will then decide whether to output to the terminal or to the radio.
     """
 
-    def __init__(self, config_filename, waypoint_filename):
+    def __init__(self, config_filename, waypoint_filename, event=None):
         obj = None
         with open(config_filename) as f:
             obj = json.load(f)
@@ -55,20 +55,9 @@ class NavigationConfiguration:
             self.algo = BasicAlgo()
         
         # Figure out which event is being run
-        self.event = None
-        if obj["algo"]["event"] == "endurance":
-            self.event = Events.ENDURANCE
-        elif obj["algo"]["event"] == "station keeping":
-            self.event = Events.STATION_KEEPING
-        elif obj["algo"]["event"] == "precision navigation":
-            self.event = Events.PRECISION_NAVIGATION
-        elif obj["algo"]["event"] == "collision avoidance":
-            self.event = Events.COLLISION_AVOIDANCE
-        elif obj["algo"]["event"] == "search":
-            self.event = Events.SEARCH
-        elif obj["algo"]["event"] == "fleet race":
+        self.event = event
+        if self.event == Events.FLEET_RACE:
             obj["output"] = "radio" # must get input from radio
-            self.event = Events.FLEET_RACE
 
         # Figure out if the radio is being used or just print statements
         if obj["output"] == "radio":

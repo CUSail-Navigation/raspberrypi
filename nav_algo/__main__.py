@@ -1,5 +1,6 @@
 import nav_algo.navigation as nav
 import nav_algo.configuration as config
+from nav_algo.events import Events
 
 def main():
     """Create and run and instance of the navigation algorithm.
@@ -19,11 +20,16 @@ def main():
     order [north west, north east, south east, south west]
     """
     waypoint_file = 'nav_algo/waypoints/test.csv'
-    configuration_file = 'nav_algo/config/real_sensors_no_event.json'
+    configuration_file = 'nav_algo/config/real_sensors.json'
+
+    # event = Events.PRECISION_NAVIGATION
+    # event = Events.ENDURANCE
+    event = None
 
     # Read the configuration and waypoint files and setup the current context
     configuration = config.NavigationConfiguration(config_filename=configuration_file, 
-                                                   waypoint_filename=waypoint_file)
+                                                   waypoint_filename=waypoint_file,
+                                                   event=event)
 
     # Start the navigation algorithm given the current configuration
     nav_controller = nav.NavigationController(configuration=configuration)
