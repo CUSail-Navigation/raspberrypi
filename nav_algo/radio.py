@@ -2,10 +2,8 @@ from nav_algo.SailSensors import UARTDevice
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 from time import time
-import sys
 
 
-# TODO document this class
 class Radio(UARTDevice):
     """
     Constructor for the radio.
@@ -74,58 +72,3 @@ class Radio(UARTDevice):
         sail = float(spl[0])
         tail = float(spl[1])
         self.boatController.setAngles(sail, tail)
-
-    """
-    Takes a list of tuple waypoints and sends them to the basestation.
-    -currentWaypointsArray: must be an array of tuples in the format (waypoint x component float, waypoint y component float)
-    """
-
-    def printAllWaypoints(self, currentWaypointsArray):
-        """Data should be of the form:.
-
-        "----------WAYPOINTS----------" +
-        ",X:" + current_waypoint.x + " Y:" + current_waypoint.y +
-        ",X:" + next_waypoint.x + " Y:" + next_waypoint.y +
-        ...
-        ",X:" + last_waypoint.x + " Y:" + last_waypoint.y +
-        ",----------END----------" + new line character
-
-        Note that waypoints are comma delineated while x and y coordinates of
-        the same point are space delineated. The waypoints should be printed in
-        order from first to last (do not include waypoints that have already
-        been hit).
-        """
-        msg = "----------WAYPOINTS----------"
-        for j in currentWaypointsArray:
-            msg = msg + ",X:" + str(j.x) + " Y:" + str(j.y)
-        pass
-        msg = msg + ",----------END----------" + '\n'
-        print(msg)
-        msg = msg.encode()
-        self.sendUart(msg)
-        return
-
-    """
-    Sends a single waypoint(meant to be the waypoint the boat just hit) to the basestation.
-    -hitWaypoint: a tuple in the format (waypoint x component float, waypoint y component float)
-    """
-
-    def printHitWaypoint(self, hitWaypoint):
-        """Data should be of the form:.
-
-        "----------HIT----------" +
-        ",X:" + waypoint.x + " Y:" + waypoint.y +
-        ",----------END----------" + new line character
-
-        Note that fields are comma delineated while x and y coordinates of
-        the same point are space delineated.
-
-        Note 'printAllWaypoints' should be called immediately after this.
-
-        """
-        msg = ("----------HIT----------" + ",X:" + str(hitWaypoint.x) + " Y:" +
-               str(hitWaypoint.y) + ",----------END----------" + '\n')
-        print(msg)
-        msg = msg.encode()
-        self.sendUart(msg)
-        return

@@ -28,6 +28,7 @@ class sensorData:
         self.wind_direction = 0  # wrt x-axis and noise removed
         self.wind_speed = 0  #don't need this, might add as an extra if there is time left
         self.anemomSMA = []  #helps remove noise from the anemometer reading
+        self.relative_wind = 0 # wrt the boat (raw anemometer reading)
 
         # GPS
         self.fix = False
@@ -46,10 +47,8 @@ class sensorData:
                                              timeout=1)
         self.gps_serial_port.port = '/dev/ttyAMA3'  #ttyAMA3 needs to bes
 
-        #sensorData
-        self.boat_direction = 0  # angle of the sail wrt north.
-        self.sailAngleBoat = 0  #angle of the sail wrt to the boat.
-        self.rawWind = 0
+        # additional sensor data
+        
 
     def readIMU(self):
         rawData = self.IMU.i2c_read_imu()
@@ -67,18 +66,16 @@ class sensorData:
             self.yaw += 360
         elif self.yaw > 360:
             self.yaw -= 360
-        self.boat_direction = self.yaw
 
         return
 
     def readWindDirection(self):
+        # TODO check that this is wrt x-axis (East)
         rawData = self.anemometer.readAnemometerVoltage()
-        """print(rawData)"""
-        rawWind = rawData
         rawAngle = (360 - rawData * 360 / 1700) + 180
+        self.relative_wind = rawAngle
 
-        windWrtN = (rawAngle + self.sailAngleBoat)
-        windWrtN = (windWrtN + self.boat_direction + 270) % 360
+        windWrtN = (rawAngle + self.yaw + 270) % 360
         self.wind_direction = self._addAverage(windWrtN)
         return
 
@@ -135,7 +132,6 @@ class sensorData:
         self.pitch = 0.0
         self.roll = 0.0
         self.yaw = 360 * np.random.rand()
-        self.boat_direction = self.yaw
     
     def mockGPS(self):
         x = np.random.rand() * 200 - 100

@@ -5,6 +5,13 @@ import numpy as np
 import nav_algo.boat as b
 
 class Actor(nn.Module):
+    """ The actor from the Deep Deterministic Policy Gradient (DDPG)
+    reinforcement learning algorithm. Given a state, it chooses the best action
+    to take (the sail and rudder angles). 
+    
+    NOTE: The output of the actor is in the range -1 to 1 and must be scaled by 
+    the maximum angle ranges for the sail and rudder (90 and 30).
+    """
 
     def __init__(self,
                  state_dim=9,

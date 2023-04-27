@@ -1,5 +1,4 @@
 import time
-import numpy as np
 
 import nav_algo.configuration as conf
 import nav_algo.boat as boat
@@ -56,11 +55,13 @@ class NavigationController:
             self.current_waypoint = self.waypoints.pop(0)
             self.navigate()
 
+        # TODO actually implement collision avoidance
         elif self.configuration.event == Events.COLLISION_AVOIDANCE:
             self.configuration.waypoints = collisionAvoidance(self.configuration.waypoints)
             self.current_waypoint = self.configuration.waypoints[0]
             self.navigateDetection()
 
+        # TODO actually implement search
         elif self.configuration.event == Events.SEARCH:
             self.configuration.waypoints = search(self.configuration.waypoints, 
                                                   boat=self.configuration.boat)
@@ -91,13 +92,17 @@ class NavigationController:
             if self.configuration.radio.fleetRace:
                 self.fleetRace()
 
+            # Print all waypoints (in order from first to last)
             all_waypts = []
             all_waypts.append(self.current_waypoint)
             for pt in self.configuration.waypoints:
                 all_waypts.append(pt)
-            self.radio.printAllWaypoints(all_waypts) # TODO
+            self.configuration.write_waypoints(all_waypts)
+
+            # Sleep for a small amount of time to let the boat move
             time.sleep(1)  # TODO how often should this run?
             
+            # Get the updated sensor readings and print them
             self.configuration.boat.updateSensors()
             boat_position = self.configuration.boat.getPosition()
             self.configuration.write_data()
@@ -105,7 +110,7 @@ class NavigationController:
             # Check if we've reached the current waypoint and get the next one
             if boat_position.xyDist(self.current_waypoint) < self.DETECTION_RADIUS:
                 # hit waypoint -- send data back to basestation
-                self.radio.printHitWaypoint(self.current_waypoint) # TODO
+                self.configuration.write_hit_waypoint(self.current_waypoint)
 
                 if len(self.configuration.waypoints) > 0:
                     self.current_waypoint = self.configuration.waypoints.pop(0)
@@ -113,10 +118,13 @@ class NavigationController:
                     self.current_waypoint = None
                     break
 
+            # Run the algorithm to get the desired sail and rudder angles
             sail, rudder = self.configuration.algo.step()
             self.configuration.boat.setServos(sail, rudder)
 
     def fleetRace(self):
+        # While the configuration is in fleet race mode, read servo angles
+        # over the radio
         self.configuration.write_output(
             "Starting Fleet Race\nSend angles of the form 'sail_angle rudder_angle'\n"
         )
@@ -126,9 +134,10 @@ class NavigationController:
             except:
                 pass
             self.configuration.boat.updateSensors()
-            self.configuration.radio.printData()
+            self.configuration.write_data()
     
     def endurance(self):
+        # Loop around the same waypoints for 7 hours.
         # 7 hrs = 25200 sec
         exit_before = 25200
         start_time = time.time()
@@ -172,4 +181,4 @@ class NavigationController:
     def navigateDetection(self, event=Events.COLLISION_AVOIDANCE):
         # TODO does this need to be different than navigate()?
         # vision needs a complete refactor either way
-        pass
+        raise NotImplementedError("CV needs a complete refactor")

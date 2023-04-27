@@ -8,6 +8,14 @@ from nav_algo.rl_algo import RL
 from nav_algo.basic_algo import BasicAlgo
 
 class NavigationConfiguration:
+    """ This object represents the configuration of the current instance of the
+    navigation algorithm. It tracks the waypoints as well as the boat controller
+    and the algorithm being used, etc.
+
+    It also provides a wrapper interface for printing output. It provides a 
+    high level function that other classes can call to write output. This 
+    object will then decide whether to output to the terminal or to the radio.
+    """
 
     def __init__(self, config_filename, waypoint_filename):
         obj = None
@@ -44,7 +52,7 @@ class NavigationConfiguration:
         if obj["algo"]["type"] == "rl":
             self.algo = RL(obj["algo"]["model_path"])
         else:
-            self.algo = BasicAlgo() # TODO
+            self.algo = BasicAlgo()
         
         # Figure out which event is being run
         self.event = None
@@ -93,8 +101,8 @@ class NavigationConfiguration:
 
         Note that fields are comma delineated and there is only a new line
         character at the end of the string.
-
         """ 
+
         origLat = self.boat.coordinate_system.LAT_OFFSET
         origLong = self.boat.coordinate_system.LONG_OFFSET
         currentPositionX = self.boat.sensors.position.x
@@ -116,6 +124,45 @@ class NavigationConfiguration:
                str(tailAngle) + ",Heading: " + str(heading) +
                ",----------END----------" + '\n')
         
+        self.write_output(msg)
+
+    def write_waypoints(self, currentWaypointsArray):
+        """Data should be of the form: list of vectors.
+
+        "----------WAYPOINTS----------" +
+        ",X:" + current_waypoint.x + " Y:" + current_waypoint.y +
+        ",X:" + next_waypoint.x + " Y:" + next_waypoint.y +
+        ...
+        ",X:" + last_waypoint.x + " Y:" + last_waypoint.y +
+        ",----------END----------" + new line character
+
+        Note that waypoints are comma delineated while x and y coordinates of
+        the same point are space delineated. The waypoints should be printed in
+        order from first to last (do not include waypoints that have already
+        been hit).
+        """
+        
+        msg = "----------WAYPOINTS----------"
+        for j in currentWaypointsArray:
+            msg = msg + ",X:" + str(j.x) + " Y:" + str(j.y)
+        msg = msg + ",----------END----------" + '\n'
+        self.write_output(msg)
+
+    def write_hit_waypoint(self, hitWaypoint):
+        """Data should be of the form: vector.
+
+        "----------HIT----------" +
+        ",X:" + waypoint.x + " Y:" + waypoint.y +
+        ",----------END----------" + new line character
+
+        Note that fields are comma delineated while x and y coordinates of
+        the same point are space delineated.
+
+        Note 'printAllWaypoints' should be called immediately after this.
+
+        """
+        msg = ("----------HIT----------" + ",X:" + str(hitWaypoint.x) + " Y:" +
+               str(hitWaypoint.y) + ",----------END----------" + '\n')
         self.write_output(msg)
 
     def readWaypoints(self, filename):

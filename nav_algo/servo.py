@@ -78,8 +78,7 @@ class Servo:
         return
 
     def readEncoder(self):
-        print("encoder?")
-        return
+        raise NotImplementedError("Encoder? I hardly know her")
 
     def mapRange(self, val, startmin, startmax, endMin, endMax):
         """
