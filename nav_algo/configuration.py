@@ -105,8 +105,8 @@ class NavigationConfiguration:
         character at the end of the string.
         """ 
 
-        origLat = self.boat.coordinate_system.LAT_OFFSET
-        origLong = self.boat.coordinate_system.LONG_OFFSET
+        origLat = self.boat.sensors.coordinate_system.LAT_OFFSET
+        origLong = self.boat.sensors.coordinate_system.LONG_OFFSET
         currentPositionX = self.boat.sensors.position.x
         currentPositionY = self.boat.sensors.position.y
         windDir = self.boat.sensors.wind_direction
