@@ -119,7 +119,8 @@ class NavigationController:
                     break
 
             # Run the algorithm to get the desired sail and rudder angles
-            sail, rudder = self.configuration.algo.step()
+            sail, rudder = self.configuration.algo.step(self.configuration.boat, 
+                                                        self.current_waypoint)
             self.configuration.boat.setServos(sail, rudder)
 
     def fleetRace(self):
