@@ -165,35 +165,57 @@ def precisionNavigationImpl(buoys):
     botleft_buoy = buoys[2]
     botright_buoy = buoys[3]
 
-    out_waypoints = []
+    # The number of waypoints to generate along the teardrop curve
+    num_waypoints = 14
+    
+    # Scale the teardrop curve to the correct size
+    height = np.sqrt((topleft_buoy[0] - botleft_buoy[0]) ** 2 + 
+                     (topleft_buoy[1] - botleft_buoy[1]) **2) / 1.8
+    
+    width = np.sqrt((botleft_buoy[0] - botright_buoy[0]) ** 2 + 
+                    (botleft_buoy[1] - botright_buoy[1]) **2) + 5.0
+
+    t_values = np.linspace(0, 2.0 * np.pi, num_waypoints).tolist()
 
     # start/finish position between top buoys
     start_pos = midpoint(topleft_buoy, topright_buoy)
 
-    # find inner and outer waypoints on first side of triangle
-    d = dist(start_pos, botleft_buoy) / 3
-    out_waypoints.append(InnerOuterPoints(start_pos, botleft_buoy, d, 1))
-    out_waypoints.append(InnerOuterPoints(start_pos, botleft_buoy, d * 2, -1))
+    # Find the orientation of the buoys
+    def findAngle(bouys):
+        topMid = [((bouys[0][0]+bouys[1][0])/2), ((bouys[0][1] + bouys[1][1])/2)]
+        bottomMid = [((bouys[2][0]+bouys[3][0])/2), ((bouys[2][1] + bouys[3][1])/2)]
+        slopeY = topMid[1] - bottomMid[1]
+        slopeX = topMid[0]-bottomMid[0]
 
-    # first offset from buoy
-    out_waypoints.append(BuoyOffset(start_pos, botleft_buoy, 2))
+        angle = np.arctan2(slopeY,slopeX)
+        angle -= np.pi / 2.0 # in the buoy frame, 0 is up, not x-axis
+        return angle
 
-    # find inner and outer waypoints on second side of triangle (bottom)
-    d = (dist(botleft_buoy, botright_buoy)) / 3
-    out_waypoints.append(InnerOuterPoints(botleft_buoy, botright_buoy, d, -1))
-    out_waypoints.append(
-        InnerOuterPoints(botleft_buoy, botright_buoy, d * 2, -1))
+    # Get waypoints along the teardrop curve
+    def teardrop_shaped_curve(start_pos, tval, height, width, angle=0):
+        m = 3
+        y = height * np.cos(tval)
+        x = width * np.sin(tval) * (np.sin(0.5 * tval) ** m)
 
-    # second offset from buoy
-    out_waypoints.append(BuoyOffset(botleft_buoy, botright_buoy, 2))
+        return rotateAndTranslate(x, y, angle, start_pos, height, width)
 
-    # find inner and outer waypoints on third side of triangle
-    d = (dist(botright_buoy, start_pos)) / 3
-    out_waypoints.append(InnerOuterPoints(botright_buoy, start_pos, d, -1))
-    out_waypoints.append(InnerOuterPoints(botright_buoy, start_pos, d * 2, 1))
+    # Rotate and translate the positions on the curve to fit the buoys
+    def rotateAndTranslate(x, y, angle, start_pos, height, width):
+        # get the rotated start position on the parametric curve so we know how to shift
+        orig_x = 0
+        orig_y = height
+        rot_x = orig_x * np.cos(angle) - orig_y * np.sin(angle) 
+        rot_y = orig_x * np.sin(angle) + orig_y * np.cos(angle)
 
-    # final waypoint is start_point
-    out_waypoints.append(start_pos)
+        newX = x * np.cos(angle) - y * np.sin(angle) + (start_pos[0] - rot_x)
+        newY = x * np.sin(angle) + y * np.cos(angle) + (start_pos[1] - rot_y)
+        return (newX, newY)
+
+    out_waypoints = []
+    for i in range(len(t_values)):
+        out_waypoints.append(teardrop_shaped_curve(start_pos, t_values[i], 
+                                                   height, width, 
+                                                   findAngle(buoys)))
 
     return out_waypoints
 

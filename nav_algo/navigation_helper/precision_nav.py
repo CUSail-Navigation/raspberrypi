@@ -2,7 +2,7 @@ import numpy as np
 import math
 import random
 
-def findAngle(bouys):
+def findAnglePrecisionNav(bouys):
     """Finds the angle of the orientation of the bouys.
 
         Args:
@@ -11,19 +11,18 @@ def findAngle(bouys):
         Returns:
             (float): The angle of inclination of the bouys from the x-axis.
 
-    """
-    
+    """ 
     topMid = [((bouys[0][0]+bouys[1][0])/2), ((bouys[0][1] + bouys[1][1])/2)]
     bottomMid = [((bouys[2][0]+bouys[3][0])/2), ((bouys[2][1] + bouys[3][1])/2)]
     slopeY = topMid[1] - bottomMid[1]
     slopeX = topMid[0]-bottomMid[0]
 
-    #if slopeX == 0 or slopeY == 0:
-    #    return 0
-    return 2 * np.arctan2(slopeY,slopeX)
+    angle = np.arctan2(slopeY,slopeX)
+    angle -= np.pi / 2.0 # in the buoy frame, 0 is up, not x-axis
+    return angle
 
-def heart_shaped_curve(start_pos, tval, angle):
-    """Outputs a waypoint location according to the heart shaped function.
+def teardrop_shaped_curve(start_pos, tval, height, width, angle=0):
+    """Outputs a waypoint location according to the teardrop shaped function.
 
         Args:
             start_pos (float): coordinate of starting bouy position
@@ -33,15 +32,14 @@ def heart_shaped_curve(start_pos, tval, angle):
         Returns:
             (float,float): x and y coordinates of a waypoint
     """
-   
-    x = ((-2)*(16*math.sin(tval)*math.sin(tval)*math.sin(tval))) + start_pos[0]
-    y = ((-2)*(13*math.cos(tval)-5*math.cos(2*tval)-2*math.cos(3*tval)-math.cos(4*tval))) + start_pos[1] - 33
-    
-    #16,13
 
-    return rotateHeart(x, y)
+    m = 3
+    y = height * np.cos(tval)
+    x = width * np.sin(tval) * (np.sin(0.5 * tval) ** m)
 
-def rotateHeart(x, y, angle=0):
+    return rotateAndTranslatePrecisionNav(x, y, angle, start_pos, height, width)
+
+def rotateAndTranslatePrecisionNav(x, y, angle, start_pos, height, width):
     """Outputs the rotated x and y coordinates
 
         Args:
@@ -52,9 +50,14 @@ def rotateHeart(x, y, angle=0):
         Returns:
             (float,float): x and y coordinates of rotated waypoint
     """
+    # get the rotated start position on the parametric curve so we know how to shift
+    orig_x = 0
+    orig_y = height
+    rot_x = orig_x*math.cos(angle)-orig_y*math.sin(angle) 
+    rot_y = orig_x*math.sin(angle)+orig_y*math.cos(angle)
 
-    newX = x*math.cos(angle)-y*math.sin(angle)
-    newY = x*math.sin(angle)+y*math.cos(angle)
+    newX = x*math.cos(angle)-y*math.sin(angle) + (start_pos[0] - rot_x)
+    newY = x*math.sin(angle)+y*math.cos(angle) + (start_pos[1] - rot_y)
     return (newX, newY)
 
 def generate_t_vals(num_waypoints):
@@ -67,16 +70,9 @@ def generate_t_vals(num_waypoints):
         Returns:
             [(float)]: list of floats representing the t values
     """
-    sum = math.pi
-    step = math.pi/(0.5 * num_waypoints)
-    tvals = []
-    tvals.append(math.pi)
-    for i in range(num_waypoints):
-        sum -= step
-        tvals.append(sum)
-    return tvals
+    return np.linspace(0, 2.0 * np.pi, num_waypoints).tolist()
 
-def PrecisionNavigationalgo(bouys, num_waypoints):
+def PrecisionNavigationAlgo(bouys, num_waypoints):
     """Generates navigation waypoints from the precision nav buoy locations.
 
         Args:
@@ -91,21 +87,24 @@ def PrecisionNavigationalgo(bouys, num_waypoints):
     topright_buoy = bouys[1]
     botleft_buoy = bouys[2]
     botright_buoy = bouys[3]
-
-    out_waypoints = []
+    
+    # Scale the teardrop curve to the correct size
+    height = np.sqrt((topleft_buoy[0] - botleft_buoy[0]) ** 2 + 
+                     (topleft_buoy[1] - botleft_buoy[1]) **2) / 1.8
+    
+    width = np.sqrt((botleft_buoy[0] - botright_buoy[0]) ** 2 + 
+                    (botleft_buoy[1] - botright_buoy[1]) **2) + 5.0
 
     t_values = generate_t_vals(num_waypoints)
 
     # start/finish position between top buoys
     start_pos = midpoint(topleft_buoy, topright_buoy)
 
-    #out_waypoints.append(start_pos)
-
-
+    out_waypoints = []
     for i in range(len(t_values)):
-        out_waypoints.append(heart_shaped_curve(start_pos,t_values[i], findAngle(bouys)))
-
-    #out_waypoints.append(start_pos)
+        out_waypoints.append(teardrop_shaped_curve(start_pos, t_values[i], height,
+                                                   width, 
+                                                   findAnglePrecisionNav(bouys)))
 
     return out_waypoints
 
@@ -120,7 +119,8 @@ def generateBuoys():
     Function created to generate buoys that follow the spacing requirements of the event
     Used for testing the algorithm not waypoint calculation
     """
-    angle = random.random()*(2*math.pi)*math.pi/180
+    # angle = random.random()*(2*math.pi)*math.pi/180
+    angle = 0
     absSin = abs(np.sin(angle))
     absCos = abs(np.cos(angle))
     absSin2 = abs(np.sin(angle+2.06))

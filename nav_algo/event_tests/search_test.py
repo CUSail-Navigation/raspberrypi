@@ -1,9 +1,9 @@
-from navigation_utilities import *
-from navigation_helper import *
 import matplotlib.pyplot as plt
 import sys
 
 sys.path.append("..")
+from navigation_utilities import *
+from navigation_helper import *
 
 
 class SearchTest:
