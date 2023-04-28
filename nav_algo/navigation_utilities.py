@@ -193,7 +193,7 @@ def precisionNavigationImpl(buoys):
 
     # Get waypoints along the teardrop curve
     def teardrop_shaped_curve(start_pos, tval, height, width, angle=0):
-        m = 3
+        m = 2.2
         y = height * np.cos(tval)
         x = width * np.sin(tval) * (np.sin(0.5 * tval) ** m)
 
