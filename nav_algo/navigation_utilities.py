@@ -166,7 +166,7 @@ def precisionNavigationImpl(buoys):
     botright_buoy = buoys[3]
 
     # The number of waypoints to generate along the teardrop curve
-    num_waypoints = 14
+    num_waypoints = 10
     
     # Scale the teardrop curve to the correct size
     height = np.sqrt((topleft_buoy[0] - botleft_buoy[0]) ** 2 + 
@@ -193,7 +193,7 @@ def precisionNavigationImpl(buoys):
 
     # Get waypoints along the teardrop curve
     def teardrop_shaped_curve(start_pos, tval, height, width, angle=0):
-        m = 2.2
+        m = 2
         y = height * np.cos(tval)
         x = width * np.sin(tval) * (np.sin(0.5 * tval) ** m)
 
