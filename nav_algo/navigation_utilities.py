@@ -173,7 +173,7 @@ def precisionNavigationImpl(buoys):
                      (topleft_buoy[1] - botleft_buoy[1]) **2) / 1.8
     
     width = np.sqrt((botleft_buoy[0] - botright_buoy[0]) ** 2 + 
-                    (botleft_buoy[1] - botright_buoy[1]) **2) + 5.0
+                    (botleft_buoy[1] - botright_buoy[1]) **2) + 15.0
 
     t_values = np.linspace(0, 2.0 * np.pi, num_waypoints).tolist()
 
