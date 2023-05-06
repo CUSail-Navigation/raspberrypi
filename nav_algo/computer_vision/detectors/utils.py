@@ -43,7 +43,7 @@ def find_distance_largest_contour(contours_output, img_height, img_width,
       x_displacement = center[0] - img_width / 2
       return distance, x_displacement
     except:
-      pass
+      return None
 
 
 def get_coords(distance, x_displacement, direction, curr_x, curr_y):

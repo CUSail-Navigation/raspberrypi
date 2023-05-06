@@ -229,6 +229,14 @@ def precisionNavigation(waypoints):
     return out_waypoints
 
 
+def collisionAvoidance(waypoints):
+    # waypoints:[top two buoys, other buoy]
+    buoys = [(w.x, w.y) for w in waypoints]
+    out_waypoints = util.collisionAvoidanceImpl(buoys)
+    out_waypoints = [coord.Vector(x=w[0], y=w[1]) for w in out_waypoints]
+    return out_waypoints
+
+
 def getRectangleBox(center, theta):
     """
     Returns rectangular box given center point and direction

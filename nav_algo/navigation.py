@@ -6,7 +6,7 @@ import nav_algo.coordinates as coord
 import nav_algo.radio as radio
 from nav_algo.events import Events
 from nav_algo.navigation_helper import *
-# from nav_algo.camera import Camera
+from nav_algo.camera import Camera
 
 
 class NavigationController:
@@ -56,18 +56,11 @@ class NavigationController:
             self.current_waypoint = self.configuration.waypoints.pop(0)
             self.navigate()
 
-        # TODO actually implement collision avoidance
         elif self.configuration.event == Events.COLLISION_AVOIDANCE:
-            self.configuration.waypoints = collisionAvoidance(self.configuration.waypoints)
-            self.current_waypoint = self.configuration.waypoints[0]
-            self.navigateDetection()
+            self.collision_avoidance()
 
-        # TODO actually implement search
         elif self.configuration.event == Events.SEARCH:
-            self.configuration.waypoints = search(self.configuration.waypoints, 
-                                                  boat=self.configuration.boat)
-            self.current_waypoint = self.configuration.waypoints[0]
-            self.navigateDetection(event=Events.SEARCH)
+            self.search()
 
         else:
             # No event provided, just follow waypoints directly
@@ -77,9 +70,11 @@ class NavigationController:
         # Clean up ports
         self.configuration.cleanup()
 
-    def navigate(self):
+    def navigate(self, use_camera=False):
         """ Execute the navigation algorithm.
         This is a blocking call that runs until all waypoints have been hit.
+        If the camera is used, the call will terminate when anything is detected
+        and return the coordinates of the thing detected.
         """
         while self.current_waypoint is not None:
             # read for a quit signal ('q') or manual override ('o')
@@ -118,6 +113,24 @@ class NavigationController:
                 else:
                     self.current_waypoint = None
                     break
+
+            # If we're using the camera, get an image and check for buoy or boat
+            if use_camera:
+                yaw = self.configuration.boat.sensors.yaw
+                x = boat_position.x
+                y = boat_position.y
+                
+                # Check for buoy if we're doing search
+                if self.configuration.event == Events.SEARCH:
+                    buoy_loc = self.camera.read_buoy(yaw, x, y)
+                    if buoy_loc is not None:
+                        return buoy_loc
+                
+                # Check for boat if we're doing collision avoidance
+                if self.configuration.event == Events.COLLISION_AVOIDANCE:
+                    boat_loc = self.camera.read_boat(yaw, x, y)
+                    if boat_loc is not None:
+                        return boat_loc
 
             # Run the algorithm to get the desired sail and rudder angles
             sail, rudder = self.configuration.algo.step(self.configuration.boat, 
@@ -180,7 +193,64 @@ class NavigationController:
                                                       "EXIT",
                                                       boat=self.configuration.boat)
     
-    def navigateDetection(self, event=Events.COLLISION_AVOIDANCE):
-        # TODO does this need to be different than navigate()?
-        # vision needs a complete refactor either way
-        raise NotImplementedError("CV needs a complete refactor")
+    def search(self):
+        self.camera = Camera()
+        search_radius = 80
+        num_seeds = 15
+
+        # Assuming the input waypoint (origin) is the middle of the search field
+        # Seed a bunch of random waypoints throughtout the environment
+        buoy_loc = None
+        while buoy_loc is None:
+            waypoints = []
+            for _ in range(num_seeds):
+                angle = 2 * np.pi * np.random.rand()
+                radius = np.random.rand() * search_radius
+                x = radius * np.cos(angle)
+                y = radius * np.sin(angle)
+                w = coord.Vector(x=x, y=y)
+                waypoints.append(w)
+            self.configuration.waypoints = waypoints
+            self.current_waypoint = self.configuration.waypoints.pop(0)
+
+            # Navigate between the seed waypoints until we see the buoy
+            buoy_loc = self.navigate(use_camera=True)
+
+        # Go to the buoy location
+        coord_sys = self.configuration.boat.sensors.coordinate_system
+        buoy_loc = coord.Vector.convertXYToLatLong(coord_sys, buoy_loc.x, 
+                                                   buoy_loc.y)
+        self.current_waypoint = buoy_loc
+        self.configuration.waypoints = []
+        self.DETECTION_RADIUS = 1.0
+        self.navigate(use_camera=False)
+
+        # Signal that we've found the buoy
+        # TODO do something more interesting
+        self.configuration.write_output("FOUND_BUOY")
+        self.configuration.write_output("BUOY LAT: {} LONG: {}".format(
+            buoy_loc.latitude, buoy_loc.longitude))
+
+        # Station Keeping Mode
+        while True:
+            self.current_waypoint = buoy_loc
+            self.navigate(use_camera=False)
+
+    def collision_avoidance(self):
+        self.camera = Camera()
+
+        # Get waypoints between the input buoys
+        self.configuration.waypoints = collisionAvoidance(
+            self.configuration.waypoints)
+        self.current_waypoint = self.configuration.waypoints.pop(0)
+        
+        # Navigate until we see a boat
+        boat_loc = self.navigate(use_camera=True)
+        while boat_loc is not None:
+            # See the boat, push the rudder to one side to spin away for a while
+            # TODO what should we really do here?
+            self.configuration.write_output("SEE BOAT AT ({}, {})".format(
+                boat_loc.x, boat_loc.y))
+            self.configuration.boat.setServos(60.0, 20.0)
+            time.sleep(10.0) # Give time to move away
+            boat_loc = self.navigate(use_camera=True)

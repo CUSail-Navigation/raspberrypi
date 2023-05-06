@@ -220,6 +220,24 @@ def precisionNavigationImpl(buoys):
     return out_waypoints
 
 
+def collisionAvoidanceImpl(buoys):
+    """Generates navigation waypoints from the collision avoidance buoy locations.
+
+        Args:
+            buoys (list of (float, float)): The ordered buoy locations (start 2 buoys, then other).
+
+        Returns:
+            (list of (float, float): The generated waypoint locations.
+
+    """
+    # The first and last waypoints are between the start buoys
+    mid = midpoint(buoys[0], buoys[1])
+    waypoints = [mid]
+    waypoints.append(buoys[2])
+    waypoints.append(mid)
+    return waypoints
+
+
 def InnerOuterPoints(start_point, end_point, dist, flag):
     # flag: 1 is in, -1 is out, 0 is on the line
     slope_y = start_point[1] - end_point[1]

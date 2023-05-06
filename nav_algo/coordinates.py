@@ -194,6 +194,19 @@ class Vector:
         
         """
         return Vector(x=0.0, y=0.0)
+    
+
+    @staticmethod
+    def convertXYToLatLong(coord_sys, x, y):
+        radEarth = coord_sys.EARTH_RADIUS
+        latOff = coord_sys.LAT_OFFSET
+        longOff = coord_sys.LONG_OFF
+        radDeg = 180.0 / np.pi
+
+        long = (x * radDeg) / (radEarth * np.cos(np.deg2rad(latOff))) + longOff
+        lat = (y * radDeg) / radEarth + latOff
+
+        return Vector(coord_sys=coord_sys, latitude=lat, longitude=long)
 
 
 def degToRad(angle):

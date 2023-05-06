@@ -1,6 +1,6 @@
 import cv2
 from enum import Enum
-from utils import find_distances, get_coords, find_distance_largest_contour
+from nav_algo.computer_vision.detectors.utils import *
 
 
 class BuoyDetector:
@@ -320,7 +320,7 @@ class BuoyDetector:
         """Calculates the distance of the largest contour.
 
         Returns:
-            float: the obstacle distance
+            float: the obstacle distance (or None)
             float: the x-offset in the image
         """
         return find_distance_largest_contourd(self.filter_contours_output,
@@ -334,5 +334,9 @@ class BuoyDetector:
         Return:
             list: x, y coordinates representing the center of the front projection of another buoy.
         """
-        dist, x_offset = find_distance_largest_contour(self)
+        out = self.find_distance_largest_contour()
+        if out is None:
+            return None
+        
+        dist, x_offset = out
         return get_coords([dist], [x_offset], direction, curr_x, curr_y)[0]
