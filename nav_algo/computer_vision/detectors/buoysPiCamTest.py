@@ -11,7 +11,12 @@ def start():
 
     camera = Picamera2()
     camera.start_preview(Preview.NULL)
-    camera.configure(camera.create_preview_configuration(main={"size": (640, 480)}))
+
+    # This by default swaps blue and red relative to what opencv is expecting,
+    # we have to set the configuration to fix that. If for some reason you see
+    # blue and red swapped, remove the "format" parameter from the line below.
+    config = camera.create_preview_configuration(main={"size": (640, 480), "format": 'XRGB8888'})
+    camera.configure(config)
     camera.start()
 
     print("Press q to quit.")
