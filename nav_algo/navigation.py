@@ -23,19 +23,20 @@ class NavigationController:
         boat_position (Vector): The current position of the boat.
         boat_to_target (Vector): The vector from the boat to the target position.
     """
-    def __init__(self, configuration : conf.NavigationConfiguration):
+    def __init__(self, configuration: conf.NavigationConfiguration):
         self.configuration = configuration
         self.DETECTION_RADIUS = 5.0
 
         self.configuration.write_output(
             "Using lat/long point ({}, {}) as the center of the coordinate system.\n"
-            .format(self.configuration.waypoints[0].latitude, self.configuration.waypoints[0].longitude))
+            .format(self.configuration.waypoints[0].latitude,
+                    self.configuration.waypoints[0].longitude))
         self.configuration.write_output("Waiting for GPS fix...\n")
 
         # wait until we know where we are
         while self.configuration.boat.sensors.velocity is None:
-            self.configuration.boat.sensors.readAll() # ok if this is blocking
-        
+            self.configuration.boat.sensors.readAll()  # ok if this is blocking
+
         self.configuration.write_output(
             "Established GPS fix. Beginning navigation...\n")
 
@@ -51,8 +52,9 @@ class NavigationController:
             self.stationKeeping()
 
         elif self.configuration.event == Events.PRECISION_NAVIGATION:
-            self.DETECTION_RADIUS = 1.5 # Be more precise
-            self.configuration.waypoints = precisionNavigation(self.configuration.waypoints)
+            self.DETECTION_RADIUS = 1.5  # Be more precise
+            self.configuration.waypoints = precisionNavigation(
+                self.configuration.waypoints)
             self.current_waypoint = self.configuration.waypoints.pop(0)
             self.navigate()
 
@@ -68,6 +70,7 @@ class NavigationController:
             self.navigate()
 
         # Clean up ports
+        self.configuration.write_output("HIT ALL WAYPOINTS. EXITING.")
         self.configuration.cleanup()
 
     def navigate(self, use_camera=False):
@@ -97,14 +100,15 @@ class NavigationController:
 
             # Sleep for a small amount of time to let the boat move
             time.sleep(1)  # TODO how often should this run?
-            
+
             # Get the updated sensor readings and print them
             self.configuration.boat.updateSensors()
             boat_position = self.configuration.boat.getPosition()
             self.configuration.write_data()
 
             # Check if we've reached the current waypoint and get the next one
-            if boat_position.xyDist(self.current_waypoint) < self.DETECTION_RADIUS:
+            if boat_position.xyDist(
+                    self.current_waypoint) < self.DETECTION_RADIUS:
                 # hit waypoint -- send data back to basestation
                 self.configuration.write_hit_waypoint(self.current_waypoint)
 
@@ -119,13 +123,13 @@ class NavigationController:
                 yaw = self.configuration.boat.sensors.yaw
                 x = boat_position.x
                 y = boat_position.y
-                
+
                 # Check for buoy if we're doing search
                 if self.configuration.event == Events.SEARCH:
                     buoy_loc = self.camera.read_buoy(yaw, x, y)
                     if buoy_loc is not None:
                         return buoy_loc
-                
+
                 # Check for boat if we're doing collision avoidance
                 if self.configuration.event == Events.COLLISION_AVOIDANCE:
                     boat_loc = self.camera.read_boat(yaw, x, y)
@@ -133,8 +137,8 @@ class NavigationController:
                         return boat_loc
 
             # Run the algorithm to get the desired sail and rudder angles
-            sail, rudder = self.configuration.algo.step(self.configuration.boat, 
-                                                        self.current_waypoint)
+            sail, rudder = self.configuration.algo.step(
+                self.configuration.boat, self.current_waypoint)
             self.configuration.boat.setServos(sail, rudder)
 
     def fleetRace(self):
@@ -150,7 +154,7 @@ class NavigationController:
                 pass
             self.configuration.boat.updateSensors()
             self.configuration.write_data()
-    
+
     def endurance(self):
         # Loop around the same waypoints for 7 hours.
         # 7 hrs = 25200 sec
@@ -170,10 +174,11 @@ class NavigationController:
         buoy_waypoints = self.configuration.waypoints
         exit_before = 300
         circle_radius = 10
-        self.configuration.waypoints = stationKeeping(buoy_waypoints,
-                                                      circle_radius,
-                                                      "ENTRY",
-                                                      boat=self.configuration.boat)
+        self.configuration.waypoints = stationKeeping(
+            buoy_waypoints,
+            circle_radius,
+            "ENTRY",
+            boat=self.configuration.boat)
         self.current_waypoint = self.configuration.waypoints.pop(0)
         self.navigate()
 
@@ -188,11 +193,12 @@ class NavigationController:
             self.current_waypoint = self.configuration.waypoints.pop(0)
             self.navigate()
 
-        self.configuration.waypoints = stationKeeping(buoy_waypoints,
-                                                      circle_radius,
-                                                      "EXIT",
-                                                      boat=self.configuration.boat)
-    
+        self.configuration.waypoints = stationKeeping(
+            buoy_waypoints,
+            circle_radius,
+            "EXIT",
+            boat=self.configuration.boat)
+
     def search(self):
         self.camera = Camera()
         search_radius = 80
@@ -218,7 +224,7 @@ class NavigationController:
 
         # Go to the buoy location
         coord_sys = self.configuration.boat.sensors.coordinate_system
-        buoy_loc = coord.Vector.convertXYToLatLong(coord_sys, buoy_loc.x, 
+        buoy_loc = coord.Vector.convertXYToLatLong(coord_sys, buoy_loc.x,
                                                    buoy_loc.y)
         self.current_waypoint = buoy_loc
         self.configuration.waypoints = []
@@ -243,7 +249,7 @@ class NavigationController:
         self.configuration.waypoints = collisionAvoidance(
             self.configuration.waypoints)
         self.current_waypoint = self.configuration.waypoints.pop(0)
-        
+
         # Navigate until we see a boat
         boat_loc = self.navigate(use_camera=True)
         while boat_loc is not None:
@@ -252,5 +258,5 @@ class NavigationController:
             self.configuration.write_output("SEE BOAT AT ({}, {})".format(
                 boat_loc.x, boat_loc.y))
             self.configuration.boat.setServos(60.0, 20.0)
-            time.sleep(10.0) # Give time to move away
+            time.sleep(10.0)  # Give time to move away
             boat_loc = self.navigate(use_camera=True)
