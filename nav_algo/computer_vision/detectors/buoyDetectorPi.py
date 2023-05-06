@@ -239,9 +239,9 @@ class BuoyDetector:
         else:
             mode = cv2.RETR_LIST
         method = cv2.CHAIN_APPROX_SIMPLE
-        _, contours, hierarchy = cv2.findContours(input,
-                                                  mode=mode,
-                                                  method=method)
+        contours, hierarchy = cv2.findContours(input,
+                                               mode=mode,
+                                               method=method)
         return contours
 
     @staticmethod

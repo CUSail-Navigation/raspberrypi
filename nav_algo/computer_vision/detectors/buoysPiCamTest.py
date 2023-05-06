@@ -2,33 +2,27 @@ from buoyDetectorPi import BuoyDetector
 import cv2
 import numpy as np
 import time
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+from picamera2 import *
 
 
 def start():
     """Sets initial values of the camera, then begins loop for running the 
     detector."""
 
-    camera = PiCamera()
-    camera.resolution = (640, 480)
-    camera.framerate = 32
-    rawCapture = PiRGBArray(camera, size=(640, 480))
-
-    time.sleep(2.0)
+    camera = Picamera2()
+    camera.start_preview(Preview.NULL)
+    camera.configure(camera.create_preview_configuration(main={"size": (640, 480)}))
+    camera.start()
 
     print("Press q to quit.")
 
-    for frame in camera.capture_continuous(rawCapture,
-                                           format="bgr",
-                                           use_video_port=True):
-        run(frame,rawCapture)
+    while True:
+        im = camera.capture_array()
+        run(im)
 
 
-def run(frame,rawCapture):
+def run(frame):
     """Creates a detector object that proesses camera feed."""
-    
-    frame = frame.array
 
     max_dimension = max(frame.shape)
     scale = 700 / max_dimension
@@ -48,8 +42,6 @@ def run(frame,rawCapture):
     cv2.drawContours(frame, contours, -1, (0, 255, 0), 3)
 
     cv2.imshow("buoy detection", frame)
-
-    rawCapture.truncate(0)
 
     # press q to quit
     if cv2.waitKey(1) & 0xFF == ord("q"):
