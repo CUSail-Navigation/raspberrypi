@@ -80,7 +80,7 @@ class sensorData:
         rawData = self.anemometer.readAnemometerVoltage()
         #print(rawData)
         self.relative_wind = (270 + 360 - rawData * 360 / 1720) % 360
-        self.wind_direction = self.relative_wind + self.yaw
+        self.wind_direction = ( self.relative_wind + self.yaw ) % 360
 
         return
 
