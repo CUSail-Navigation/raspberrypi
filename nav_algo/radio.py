@@ -19,6 +19,7 @@ class Radio(UARTDevice):
                  t=1):
         super().__init__(baudrate, serialPort, t, fleetRace)
         self.boatController = boatController
+        self.sendUart("B\n".encode('utf-8'))
 
     """
     Prints the given messge to the basestation. string must be sent with a 'b' before the string
