@@ -15,7 +15,7 @@ class Radio(UARTDevice):
                  baudrate,
                  boatController=None,
                  fleetRace=False,
-                 serialPort='/dev/ttyS0',
+                 serialPort='/dev/ttyAMA1',
                  t=1):
         super().__init__(baudrate, serialPort, t, fleetRace)
         self.boatController = boatController
