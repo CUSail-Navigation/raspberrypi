@@ -77,15 +77,12 @@ class sensorData:
         return
 
     def readWindDirection(self):
-        rawData = anemometer.readAnemometerVoltage()
+        rawData = self.anemometer.readAnemometerVoltage()
         #print(rawData)
         self.relative_wind = (270 + 360 - rawData * 360 / 1720) % 360
-        
-        windWrtN = (windWrtN + boat_direction) % 360
+        self.wind_direction = self.relative_wind + self.yaw
+
         return
-
-
-
 
     def readGPS(self):
         # use the NMEA parser
