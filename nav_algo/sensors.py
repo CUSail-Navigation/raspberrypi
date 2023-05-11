@@ -79,7 +79,7 @@ class sensorData:
     def readWindDirection(self):
         rawData = anemometer.readAnemometerVoltage()
         #print(rawData)
-        self.relative_wind = 360 - rawData * 360 / 1720
+        self.relative_wind = (270 + 360 - rawData * 360 / 1720) % 360
         
         windWrtN = (windWrtN + boat_direction) % 360
         return
