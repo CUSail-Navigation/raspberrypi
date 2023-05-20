@@ -114,7 +114,7 @@ class NavigationConfiguration:
         tailAngle = self.boat.servos.currentTail
         heading = self.boat.sensors.velocity.angle()
         ang_vel = self.boat.sensors.angular_velocity
-        velocity = self.boat.sensors.velocity.x
+        velocity = self.boat.sensors.velocity
         waypointX = current_waypoint.x if current_waypoint is not None else None
         waypointY = current_waypoint.y if current_waypoint is not None else None
 
