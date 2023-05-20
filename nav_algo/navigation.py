@@ -99,12 +99,12 @@ class NavigationController:
             self.configuration.write_waypoints(all_waypts)
 
             # Sleep for a small amount of time to let the boat move
-            time.sleep(1)  # TODO how often should this run?
+            time.sleep(1)  # This should never be more than 1 second
 
             # Get the updated sensor readings and print them
             self.configuration.boat.updateSensors()
             boat_position = self.configuration.boat.getPosition()
-            self.configuration.write_data()
+            self.configuration.write_data(self.current_waypoint)
 
             # Check if we've reached the current waypoint and get the next one
             if boat_position.xyDist(
