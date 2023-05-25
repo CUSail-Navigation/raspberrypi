@@ -39,8 +39,11 @@ class Servo:
             tail_angle = Servo.TAIL_MAX_ANGLE
             
         intOnPer = 30 - tail_angle
-        self.servoDriver.servo[1].angle = intOnPer
         self.currentTail = intOnPer
+        if self.mock:
+            return
+        
+        self.servoDriver.servo[1].angle = intOnPer
     
     def setSail(self, sail_angle):
         """
