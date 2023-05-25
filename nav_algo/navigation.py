@@ -52,7 +52,7 @@ class NavigationController:
             self.stationKeeping()
 
         elif self.configuration.event == Events.PRECISION_NAVIGATION:
-            self.DETECTION_RADIUS = 1.5  # Be more precise
+            self.DETECTION_RADIUS = 4  # Be more precise
             self.configuration.waypoints = precisionNavigation(
                 self.configuration.waypoints)
             self.current_waypoint = self.configuration.waypoints.pop(0)
