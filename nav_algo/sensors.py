@@ -79,11 +79,9 @@ class sensorData:
     def readWindDirection(self):
         # TODO check that wind_direction is wrt x-axis (East)
         rawData = self.anemometer.readAnemometerVoltage()
-        rawAngle = (360 - rawData * 360 / 1700) + 180
-        self.relative_wind = 270 - rawData * 360 / 1700
+        self.relative_wind = (270 + 360 - rawData * 360 / 1720) % 360
+        self.wind_direction = ( self.relative_wind + self.yaw ) % 360
 
-        windWrtN = (rawAngle + self.yaw + 270) % 360
-        self.wind_direction = self._addAverage(windWrtN)
         return
 
 
