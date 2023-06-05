@@ -1,4 +1,8 @@
+
+
+
 from adafruit_servokit import ServoKit
+import time
 
 
 
@@ -37,10 +41,9 @@ class Servo:
             tail_angle = Servo.TAIL_MIN_ANGLE
         elif tail_angle > Servo.TAIL_MAX_ANGLE:
             tail_angle = Servo.TAIL_MAX_ANGLE
-        self.currentTail = tail_angle
-        intOnPer = 30 - tail_angle
+            
+        intOnPer = 40 - tail_angle
         self.servoDriver.servo[1].angle = intOnPer
-        
     
     def setSail(self, sail_angle):
         """
@@ -79,4 +82,11 @@ class Servo:
         Returns value based on a linear map of MIN -> MAX to a value ENDMIN -> ENDMAX
         """
         return (((val - startmin) / (startmax - startmin)) * (endMax - endMin)) + endMin
+
+
+servoController = Servo()
+print("done")
+
+servoController.setSail(90)
+servoController.setTail(0)
 
