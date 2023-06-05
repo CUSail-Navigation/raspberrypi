@@ -1,6 +1,6 @@
 {
     "peripherals":{
-        "gps": "real",
+        "gps": "fake",
         "imu": "real",
         "anemometer": "real",
         "servos": "real"

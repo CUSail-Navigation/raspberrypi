@@ -5,8 +5,8 @@ class Servo:
     SAIL_MAX_ANGLE = 90
     SAIL_MIN_ANGLE = -90
 
-    TAIL_MAX_ANGLE = 30
-    TAIL_MIN_ANGLE = -30
+    TAIL_MAX_ANGLE = 29
+    TAIL_MIN_ANGLE = -29
 
     def __init__(self, mock=False):
         """
