@@ -19,12 +19,12 @@ def main():
     - Station keeping: set the waypoints as the positions of the 4 buoys in the
     order [north west, north east, south east, south west]
     """
-    waypoint_file = 'nav_algo/waypoints/test.csv'
+    waypoint_file = 'nav_algo/waypoints/endurance.csv'
     configuration_file = 'nav_algo/config/real_sensors.json'
 
     # event = Events.PRECISION_NAVIGATION
-    # event = Events.ENDURANCE
-    event = None
+    event = Events.ENDURANCE
+    #event = None
 
     # Read the configuration and waypoint files and setup the current context
     configuration = config.NavigationConfiguration(config_filename=configuration_file, 
