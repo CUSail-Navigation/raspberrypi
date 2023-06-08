@@ -246,7 +246,7 @@ def readIMU():
 
     pitch = eulerAngles[0]
     roll = eulerAngles[2]
-    yaw = 360 - eulerAngles[1]
+    yaw = 360 - 166 - eulerAngles[1]
     if yaw < 0:
         yaw += 360
     elif yaw > 360:
@@ -289,4 +289,4 @@ while (1):
     boat_direction = yaw
     print("yaw: " + str(yaw))
     readWindDirection()
-    time.sleep(1)
+    time.sleep(0.1)

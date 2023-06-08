@@ -65,7 +65,7 @@ class sensorData:
 
         self.pitch = eulerAngles[0]
         self.roll = eulerAngles[2]
-        self.yaw = 360 + 40 - eulerAngles[1]
+        self.yaw = 360 - 166 - eulerAngles[1]
         self.yaw = self.yaw % 360
 
         cur_time = time.time()

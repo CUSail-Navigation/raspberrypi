@@ -99,7 +99,7 @@ class NavigationController:
             self.configuration.write_waypoints(all_waypts)
 
             # Sleep for a small amount of time to let the boat move
-            time.sleep(1)  # TODO how often should this run?
+            time.sleep(0.25)  # TODO how often should this run?
 
             # Get the updated sensor readings and print them
             self.configuration.boat.updateSensors()
