@@ -14,7 +14,7 @@ class Actor(nn.Module):
     """
 
     def __init__(self,
-                 state_dim=9,
+                 state_dim=3,
                  action_dim=2,
                  h1=400,
                  h2=300,
@@ -61,31 +61,20 @@ class RL:
         self.actor.eval()
     
     def step(self, boat : b.BoatController, waypoint):
-        # 1. x velocity 
-        vel_x = boat.sensors.velocity.x
-        # 2. y velocity
-        vel_y = boat.sensors.velocity.y
-        # 3. angular velocity (rad/s)
-        vel_angular = np.deg2rad(boat.sensors.angular_velocity)
-        # 4. sail angle
-        sail_angle = boat.servos.currentSail
-        # 5. rudder angle 
-        rudder_angle = boat.servos.currentTail
-        # 6. relative wind x
-        rel_wind_x = np.cos(boat.sensors.relative_wind*np.pi/180)
-        # 7. relative wind y 
-        rel_wind_y = np.sin(boat.sensors.relative_wind*np.pi/180)
-        # 8. distance from goal x component
+        # 1. relative wind angle
+        rel_wind = np.deg2rad(boat.sensors.relative_wind) % (2 * np.pi)
+        # 2. yaw - eliminated in new version
+        # yaw = np.deg2rad(boat.sensors.yaw) % (2 * np.pi)
+        # 3. distance from goal x component
         boat_position = boat.getPosition()
         dist_goal_x = np.absolute(boat_position.x - waypoint.x)
-        # 9. distance from goal y component
+        # 4. distance from goal y component
         dist_goal_y = np.absolute(boat_position.y - waypoint.y)
 
-        state_vector = np.array([vel_x, vel_y, vel_angular, sail_angle, 
-                                 rudder_angle, rel_wind_x, rel_wind_y, 
-                                 dist_goal_x, dist_goal_y])
+        state_vector = np.array([rel_wind, dist_goal_x, dist_goal_y])
         
         tensor = torch.from_numpy(state_vector)
         output = self.actor.get_action(tensor)
 
         return output[0]*90, output[1]*30
+    
