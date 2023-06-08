@@ -14,7 +14,7 @@ class Actor(nn.Module):
     """
 
     def __init__(self,
-                 state_dim=4,
+                 state_dim=3,
                  action_dim=2,
                  h1=400,
                  h2=300,
@@ -63,15 +63,15 @@ class RL:
     def step(self, boat : b.BoatController, waypoint):
         # 1. relative wind angle
         rel_wind = np.deg2rad(boat.sensors.relative_wind) % (2 * np.pi)
-        # 2. yaw
-        yaw = np.deg2rad(boat.sensors.yaw) % (2 * np.pi)
+        # 2. yaw - eliminated in new version
+        # yaw = np.deg2rad(boat.sensors.yaw) % (2 * np.pi)
         # 3. distance from goal x component
         boat_position = boat.getPosition()
         dist_goal_x = np.absolute(boat_position.x - waypoint.x)
         # 4. distance from goal y component
         dist_goal_y = np.absolute(boat_position.y - waypoint.y)
 
-        state_vector = np.array([rel_wind, yaw, dist_goal_x, dist_goal_y])
+        state_vector = np.array([rel_wind, dist_goal_x, dist_goal_y])
         
         tensor = torch.from_numpy(state_vector)
         output = self.actor.get_action(tensor)
