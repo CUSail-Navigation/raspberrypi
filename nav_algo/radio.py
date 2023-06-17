@@ -68,7 +68,7 @@ class Radio(UARTDevice):
         spl = message.split(" ")
         if not len(spl) == 2:
             self.sendUart(
-                "Angles in incorrect format. Ignoring.".encode('utf-8'))
+                "Angles in incorrect format. Ignoring,".encode('utf-8'))
             return
 
         sail = float(spl[0])
