@@ -1,11 +1,12 @@
 import cv2
 from enum import Enum
-from nav_algo.computer_vision.detectors.utils import *
+# from nav_algo.computer_vision.detectors.utils import *
+from utils import *
 
 
 class BuoyDetector:
     """A detector for buoys. 
-    
+
     This uses a standard webcam to output visual feedback on the camera screen 
     and an outline of the buoys. It returns the coordinates of the largest buoy 
     found.
@@ -29,9 +30,14 @@ class BuoyDetector:
         self.__rgb_threshold_green = [100, 200]
         self.__rgb_threshold_blue = [0, 100]
 
+        # Old hsv
+        # self.__hsv_threshhold_hue = [5, 15]
+        # self.__hsv_threshhold_saturation = [50, 255]
+        # self.__hsv_threshhold_lightness = [50, 255]
+
         self.__hsv_threshhold_hue = [5, 15]
-        self.__hsv_threshhold_saturation = [50, 255]
-        self.__hsv_threshhold_lightness = [50, 255]
+        self.__hsv_threshhold_saturation = [150, 255]
+        self.__hsv_threshhold_lightness = [150, 255]
 
         self.rgb_threshold_output = None
 
@@ -315,7 +321,7 @@ class BuoyDetector:
         """
         return find_distances(self.filter_contours_output, self.img_height,
                               self.img_width, BuoyDetector.BUOY_SIZE)
- 
+
     def find_distance_largest_contour(self):
         """Calculates the distance of the largest contour.
 
@@ -323,7 +329,7 @@ class BuoyDetector:
             float: the obstacle distance (or None)
             float: the x-offset in the image
         """
-        return find_distance_largest_contourd(self.filter_contours_output,
+        return find_distance_largest_contour(self.filter_contours_output,
                                              self.img_height, self.img_width,
                                              BuoyDetector.BUOY_SIZE)
 
@@ -337,6 +343,6 @@ class BuoyDetector:
         out = self.find_distance_largest_contour()
         if out is None:
             return None
-        
+
         dist, x_offset = out
         return get_coords([dist], [x_offset], direction, curr_x, curr_y)[0]

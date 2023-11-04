@@ -23,6 +23,7 @@ class NavigationController:
         boat_position (Vector): The current position of the boat.
         boat_to_target (Vector): The vector from the boat to the target position.
     """
+
     def __init__(self, configuration: conf.NavigationConfiguration):
         self.configuration = configuration
         self.DETECTION_RADIUS = 5.0
@@ -208,15 +209,16 @@ class NavigationController:
         # Seed a bunch of random waypoints throughtout the environment
         buoy_loc = None
         while buoy_loc is None:
-            waypoints = []
-            for _ in range(num_seeds):
-                angle = 2 * np.pi * np.random.rand()
-                radius = np.random.rand() * search_radius
-                x = radius * np.cos(angle)
-                y = radius * np.sin(angle)
-                w = coord.Vector(x=x, y=y)
-                waypoints.append(w)
-            self.configuration.waypoints = waypoints
+            # waypoints = []
+            # for _ in range(num_seeds):
+            #     angle = 2 * np.pi * np.random.rand()
+            #     radius = np.random.rand() * search_radius
+            #     x = radius * np.cos(angle)
+            #     y = radius * np.sin(angle)
+            #     w = coord.Vector(x=x, y=y)
+            #     waypoints.append(w)
+
+            self.configuration.waypoints = search([self.current_waypoint])
             self.current_waypoint = self.configuration.waypoints.pop(0)
 
             # Navigate between the seed waypoints until we see the buoy

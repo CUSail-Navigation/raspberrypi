@@ -5,7 +5,7 @@ from nav_algo.navigation_utilities import getServoAnglesImpl
 class BasicAlgo:
     """
     The old navigation algorithm - this currently sucks and needs a major
-    refactor if it's ever going to be used.
+    refactor if it's ever going to be used. Testing if branch updates.
     """
     def __init__(self):
         pass
