@@ -148,6 +148,38 @@ def getServoAnglesImpl(abs_wind_dir, yaw, intended_angle):
 
     return sail, tail
 
+def lineFollowing(current_position, point_a, point_b, current_heading, true_wind_dir, tacking_variable, threshold):
+    """Calculates the optimal sail and rudder angles based on a line following algorithm.
+    
+        Args:
+            current_position: the current position of the boat
+            point_a: the point we are starting from
+            point_b: the point we are trying to get to
+            current_heading: the current heading of the boat
+            true_wind_dir: the true direction of the wind
+            tacking_variable: a binary variable {-1,1} to indicate the status of tacking
+            threshold: the threshold distance for tacking change
+            
+        Returns:
+            desired_heading: the heading the sailboat should aim for
+            rudder_angle: the new angle for the rudder
+            sail_angle: the new angle of the sail adjusted for wind and desired heading
+    """
+    e = calculate_algebraic_distance(current_position, point_a, point_b) #calculate algebraic distance between sailboat and line to be followed
+    q = update_tacking_variable(e, threshold, tacking_variable)
+    
+    line_angle = calculate_line_angle(point_a, point_b, current_heading)
+    desired_heading = calculate_desired_heading(line_angle, q)
+    
+    if isInNoGoZone(desired_heading, true_wind_dir):
+        desired_heading = adjustForNoGo(desired_heading, true_wind_dir)
+        
+    rudder_angle = update_rudder_angle(desired_heading, current_heading)
+    sail_angle = update_sail_angle(desired_heading, true_wind_dir)
+    
+    return desired_heading, rudder_angle, sail_angle
+        
+
 
 def precisionNavigationImpl(buoys):
     """Generates navigation waypoints from the precision nav buoy locations.
