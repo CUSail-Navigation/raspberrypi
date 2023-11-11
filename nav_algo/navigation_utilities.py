@@ -8,6 +8,28 @@ exist within this file.
 Within this file only, vectors are represented as (x, y) tuples.
 """
 
+# New polar diagram
+Polar_diagram = {
+        0: 0,      # Directly into wind, speed is 0
+        30: 2.5,  # 30 degrees off wind, speed is 2.5
+        45: 4,    # 45 degrees off wind, speed is 4
+        60: 4.5,  # 60 degrees off wind, speed is 4.5
+        75: 4,    # 75 degrees off wind, speed is 4 
+        90: 5,    # 90 degrees off wind, speed is 5
+        110: 4.8, # 110 degrees off the wind, speed is 4.8 
+        135: 4,   # 135 degrees off the wind, speed is 4 
+        150: 3.5, # 150 degrees off the wind, speed is 3.5 
+        180: 3,   # Directly downwind, speed is 3 
+        210: 3.5, # 210 degrees off the wind, speed is 3.5 
+        225: 4,   # 225 degrees off the wind, speed is 4 
+        240: 4.8, # 240 degrees off the wind, speed is 4.8 
+        270: 5,   # 270 degrees of the wind, speed is 5 
+        285: 4,   # 285 degrees off the wind, speed is 4 
+        300: 4.5, # 300 degrees off the wind, speed is 4.5 
+        315: 4,   # 315 degrees off the wind, speed is 4 
+        330: 2.5, # 330 degrees off the wind, speed is 2.5 
+        360: 0    # Back to directly into the wind, speed is 0
+    }
 
 def newSailingAngleImpl(boat_position, target_position, angle_boat_heading,
                         abs_wind_dir):
@@ -169,7 +191,7 @@ def lineFollowing(current_position, point_a, point_b, current_heading, true_wind
     q = update_tacking_variable(e, threshold, tacking_variable)
     
     line_angle = calculate_line_angle(point_a, point_b, current_heading)
-    desired_heading = calculate_desired_heading(line_angle, q)
+    desired_heading = calculate_desired_heading(line_angle, e)
     
     if isInNoGoZone(desired_heading, true_wind_dir):
         desired_heading = adjustForNoGo(desired_heading, true_wind_dir)
@@ -178,8 +200,68 @@ def lineFollowing(current_position, point_a, point_b, current_heading, true_wind
     sail_angle = update_sail_angle(desired_heading, true_wind_dir)
     
     return desired_heading, rudder_angle, sail_angle
-        
 
+def calculate_algebraic_distance(current_position, point_a, point_b):
+    slopeAB = (point_b.y - point_a.y)/(point_b.x - point_a.x)
+    x = (-point_a.y + current_position.y + current_position.x/slopeAB + slopeAB*point_a.x) / (1/slopeAB + slopeAB)
+    y = slopeAB(x - point_a.x)+point_a.y
+    
+    if x < point_a.x & x < point_b.x:
+        if min(point_a.x, point_b.x) == point_a.x:
+            return np.sqrt((current_position.x - point_a.x)^2 + (current_position.y - point_a.y)^2)
+        else:
+            return np.sqrt((current_position.x - point_b.x)^2 + (current_position.y - point_b.y)^2)
+    elif x > point_a.x & x > point_b.x:
+        if max(point_a.x, point_b.x) == point_a.x:
+            return np.sqrt((current_position.x - point_a.x)^2 + (current_position.y - point_a.y)^2)
+        else:
+            return np.sqrt((current_position.x - point_b.x)^2 + (current_position.y - point_b.y)^2)
+    else:
+        return np.sqrt((x - current_position.x)^2 + (y - current_position.y)^2)
+
+def update_tacking_variable(e, threshold, tacking_variable):
+    if abs(e) > threshold:
+        tacking_variable *= -1 # CHANGE?
+        return True
+    else:
+        return False
+    
+def calculate_line_angle(point_a, point_b, current_heading):
+    return np.arctan2((point_b.y-point_a.y)/(point_b.x-point_a.x))
+    
+def calculate_desired_heading(line_angle, e, r):
+    r = 10 #CHANGE THIS LATER
+    return (line_angle - np.atan(e/r))
+
+
+def isInNoGoZone(desired_heading, true_wind_dir):
+    no_go_zone = ?? #do we have this as a variable 
+    if abs(desired_heading - true_wind_dir) < no_go_zone:
+        return True     
+    else:
+        return False
+
+def adjustForNoGo(desired_heading, true_wind_dir):
+    limit = 20 # Replace num with true limit of wind direction
+    if abs(desired_heading - true_wind_dir) < limit:
+        if desired_heading < true_wind_dir:
+            return desired_heading - 15
+        else:
+            return desired_heading + 15
+    else:
+        return desired_heading
+
+def update_rudder_angle(desired_heading, current_heading):
+	## Set the rudder angle based on the desired_heading
+    ## Need the Dict for polar diagram -> rudder angle (11/15)
+
+    temp = desired_heading - current_heading
+    return current_heading + (temp /2) # or is it just return temp?,
+
+def update_sail_angle(desired_heading, true_wind_dir):
+    ## Set the sail angle based on desired heading
+    ## Need the Dict for polar diagram -> sail angle (11/15)
+    return 0
 
 def precisionNavigationImpl(buoys):
     """Generates navigation waypoints from the precision nav buoy locations.
@@ -250,7 +332,6 @@ def precisionNavigationImpl(buoys):
                                                    findAngle(buoys)))
 
     return out_waypoints
-
 
 def collisionAvoidanceImpl(buoys):
     """Generates navigation waypoints from the collision avoidance buoy locations.
