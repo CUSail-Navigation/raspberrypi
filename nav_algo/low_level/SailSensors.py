@@ -219,3 +219,29 @@ class SailAnemometer(ADCDevice):
             gain (int): the multiplication value of the voltage
         """
         return self.readADC(gain)
+
+
+class SailAirMar:
+    """
+    SailAirMar implements a class used to connect the component to it's proper
+    communication protocol. This class also implements functions to return raw 
+    data from the AirMar.
+    """
+    def __init__(self):
+        """Initializes the AirMar"""
+        self.ser = self.Serial('/dev/serial/by-id/usb-Maretron_USB100__NMEA_2000_USB_Gateway__1170079-if00')
+
+    def readAirMarReadings(self):
+        """Returns the raw serial printout of the AirMar"""
+        try:
+            line = self.ser.readline().decode()
+            tag = line.split(',',1)[0]
+            type_code = tag[-3:]
+            args = line.split(',')
+            args[len(args) - 1] = args[len(args) - 1].split('*')[0] #get rid of checksum
+
+            "TODO: translate sentences"
+            
+        except Exception as e:
+            print(e);
+            return({})
