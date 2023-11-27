@@ -233,13 +233,24 @@ class SailAirMar:
 
     def readAirMarReadings(self):
         """Returns the raw serial printout of the AirMar"""
+        res = {}
         try:
             line = self.ser.readline().decode()
-            tag = line.split(',',1)[0]
-            type_code = tag[-3:]
             args = line.split(',')
-            args[len(args) - 1] = args[len(args) - 1].split('*')[0] #get rid of checksum
+            labelStart = args[0].index("$") + 3
 
+            if "HDG" in line[labelStart:]:
+                heading = args[1]
+            elif "ROT" in line[labelStart:]:
+                # Unsure of what this actually means / units of measurement
+                rateOfTurn = args[1]
+            elif "GLL" in line[labelStart:]:
+                lat = args[1]
+                latDirection = args[2]
+                long = args[3]
+                longDirection = args[4]
+            elif "VTG" in line[labelStart:]:
+                speed = args[1]
             "TODO: translate sentences"
             
         except Exception as e:
