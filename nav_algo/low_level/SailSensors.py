@@ -1,6 +1,7 @@
 from smbus2 import SMBus, i2c_msg
 from Adafruit_ADS1x15 import ADS1x15 as ADS
 import serial
+import threading
 
 IMU_ADDRESS = 0x77
 ADC_ADDRESS = 0x48
@@ -223,36 +224,54 @@ class SailAnemometer(ADCDevice):
 
 class SailAirMar:
     """
-    SailAirMar implements a class used to connect the component to it's proper
+    SailAirMar implements a class used to connect the component to its proper
     communication protocol. This class also implements functions to return raw 
     data from the AirMar.
     """
+    
     def __init__(self):
-        """Initializes the AirMar"""
-        self.ser = self.Serial('/dev/serial/by-id/usb-Maretron_USB100__NMEA_2000_USB_Gateway__1170079-if00')
+        """Initializes the AirMar. Creates a seperate thread to continuously 
+        read from the serial output."""
+        self.ser = serial.Serial('/dev/serial/by-id/usb-Maretron_USB100__NMEA_2000_USB_Gateway__1170079-if00')
+        self.readings = {}
+        self.lock = threading.Lock()
+        reader_thread = threading.Thread(target=self.serialDataReader)
+        reader_thread.daemon = True 
+        reader_thread.start()
+
+    def serialDataReader(self):
+        """Reads data from the serial port and stores it in a dictionary."""
+        while True:
+            line = self.ser.readline().decode().strip()
+            if line:
+                with self.lock:
+                    self.parseAirMarData(line)
+
+    def parseAirMarData(self, line):
+        """Parses a line of AirMar data and updates the readings dictionary. Some
+        readings are omitted."""
+        try:
+            args = line.split(',')
+            label = args[0][(args[0].index("$")):] 
+
+            if "HDG" in label:
+                self.readings['heading'] = args[1]
+            elif "ROT" in label:
+                # Wouldn't use yet--not sure about the units of measurement
+                self.readings['rateOfTurn'] = args[1]  
+            elif "GLL" in label:
+                self.readings['lat'] = args[1]
+                self.readings['latDirection'] = args[2]
+                self.readings['long'] = args[3]
+                self.readings['longDirection'] = args[4]
+            elif "VTG" in label:
+                self.readings['speed'] = args[1]
+        except ValueError:
+            print("HERE DUMBASS")
 
     def readAirMarReadings(self):
-        """Returns the raw serial printout of the AirMar"""
-        res = {}
-        try:
-            line = self.ser.readline().decode()
-            args = line.split(',')
-            labelStart = args[0].index("$") + 3
-
-            if "HDG" in line[labelStart:]:
-                heading = args[1]
-            elif "ROT" in line[labelStart:]:
-                # Unsure of what this actually means / units of measurement
-                rateOfTurn = args[1]
-            elif "GLL" in line[labelStart:]:
-                lat = args[1]
-                latDirection = args[2]
-                long = args[3]
-                longDirection = args[4]
-            elif "VTG" in line[labelStart:]:
-                speed = args[1]
-            "TODO: translate sentences"
+        """Returns the raw serial printout of the AirMar. This function needs to be called in a separate thread
+        than the main navigation algorithm."""
+        with self.lock:
+            return self.readings.copy()  
             
-        except Exception as e:
-            print(e);
-            return({})
