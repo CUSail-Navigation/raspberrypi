@@ -51,6 +51,18 @@ class sensorData:
             self.gps_serial_port = serial.Serial(port='/dev/ttyAMA3',
                                                  baudrate=9600,
                                                  timeout=1)
+            
+        self.AirMar = SailSensors.SailAirMar()
+
+    def readAirMar(self):
+        rawData = self.AirMar.readAirMarReadings()
+        self.yaw = rawData["heading"]
+        self.pitch = 0
+        self.roll = 0
+        # self.latitude = rawData["latitude"]
+        # self.longitude = rawData["longtitude"]
+
+
 
     def readIMU(self):
         rawData = self.IMU.i2c_read_imu()
@@ -133,9 +145,10 @@ class sensorData:
         return sum
 
     def mockIMU(self):
-        self.pitch = 0.0
-        self.roll = 0.0
-        self.yaw = 360 * np.random.rand()
+        # self.pitch = 0.0
+        # self.roll = 0.0
+        # self.yaw = 360 * np.random.rand()
+        pass
     
     def mockGPS(self):
         x = np.random.rand() * 200 - 100
@@ -164,3 +177,5 @@ class sensorData:
             self.mockGPS()
         else:
             self.readGPS()
+
+        self.readAirMar()

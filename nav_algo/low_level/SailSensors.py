@@ -232,7 +232,7 @@ class SailAirMar:
     def __init__(self):
         """Initializes the AirMar. Creates a seperate thread to continuously 
         read from the serial output."""
-        self.ser = serial.Serial('/dev/serial/by-id/usb-Maretron_USB100__NMEA_2000_USB_Gateway__1170079-if00')
+        self.ser = serial.Serial("Insert correct port here")
         self.readings = {}
         self.lock = threading.Lock()
         reader_thread = threading.Thread(target=self.serialDataReader)
@@ -267,11 +267,10 @@ class SailAirMar:
             elif "VTG" in label:
                 self.readings['speed'] = args[1]
         except ValueError:
-            print("HERE DUMBASS")
+            print("value error")
 
     def readAirMarReadings(self):
         """Returns the raw serial printout of the AirMar. This function needs to be called in a separate thread
         than the main navigation algorithm."""
         with self.lock:
-            return self.readings.copy()  
-            
+            return self.readings
