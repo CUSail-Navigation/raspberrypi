@@ -26,21 +26,21 @@ def newSailingAngle(boat, target):
                                     angle_boat_heading, abs_wind_dir)
 
 
-def optAngle(boat_to_target, boat, right):
-    """Determines the best angle to sail on either side of the wind.
+# def optAngle(boat_to_target, boat, right):
+#     """Determines the best angle to sail on either side of the wind.
 
-        The "best angle" maximizes the velocity made good toward the target.
+#         The "best angle" maximizes the velocity made good toward the target.
 
-        Args:
-            right (bool): True if evaluating the right side of the wind, False for left.
+#         Args:
+#             right (bool): True if evaluating the right side of the wind, False for left.
 
-        Returns:
-            float: The best angle to sail (in the global coordinate system).
-            float: The velocity made good at the best angle.
+#         Returns:
+#             float: The best angle to sail (in the global coordinate system).
+#             float: The velocity made good at the best angle.
 
-    """
-    return util.optAngleImpl(boat_to_target.angle(),
-                             boat.sensors.wind_direction, right)
+#     """
+#     return util.optAngleImpl(boat_to_target.angle(),
+#                              boat.sensors.wind_direction, right)
 
 
 def polar(angle, boat):
@@ -59,145 +59,145 @@ def polar(angle, boat):
     return coord.Vector(x=x, y=y)
 
 
-def counterClockwiseRect(waypoints, boat, buoy_offset=2):
-    if len(waypoints) > 4:
-        raise RuntimeError('More than four waypoints given for endurance')
+# def counterClockwiseRect(waypoints, boat, buoy_offset=2):
+#     if len(waypoints) > 4:
+#         raise RuntimeError('More than four waypoints given for endurance')
 
-    # classify the waypoints as upper right, upper left, lower left, lower right
-    # in increasing order of angle of the line from the center of the square to
-    # the waypoint
-    center_x = sum([w.x for w in waypoints]) / len(waypoints)
-    center_y = sum([w.y for w in waypoints]) / len(waypoints)
-    center = coord.Vector(x=center_x, y=center_y)
+#     # classify the waypoints as upper right, upper left, lower left, lower right
+#     # in increasing order of angle of the line from the center of the square to
+#     # the waypoint
+#     center_x = sum([w.x for w in waypoints]) / len(waypoints)
+#     center_y = sum([w.y for w in waypoints]) / len(waypoints)
+#     center = coord.Vector(x=center_x, y=center_y)
 
-    disps = [w.vectorSubtract(center) for w in waypoints]
-    angles = [d.angle() for d in disps]
+#     disps = [w.vectorSubtract(center) for w in waypoints]
+#     angles = [d.angle() for d in disps]
 
-    wa = []
-    for i in range(len(angles)):
-        wa.append((waypoints[i], angles[i]))
-    wa.sort(key=lambda x: x[1])
+#     wa = []
+#     for i in range(len(angles)):
+#         wa.append((waypoints[i], angles[i]))
+#     wa.sort(key=lambda x: x[1])
 
-    # get labeled buoys
-    ur = wa[0][0]
-    ul = wa[1][0]
-    ll = wa[2][0]
-    lr = wa[3][0]
+#     # get labeled buoys
+#     ur = wa[0][0]
+#     ul = wa[1][0]
+#     ll = wa[2][0]
+#     lr = wa[3][0]
 
-    # get the angle of the line between ll and ur and the offset waypoints
-    theta = np.arctan2(ur.y - ll.y, ur.x - ll.x)
-    w_ll = coord.Vector(x=ll.x - buoy_offset * np.cos(theta),
-                        y=ll.y - buoy_offset * np.sin(theta))
-    w_ur = coord.Vector(x=ur.x + buoy_offset * np.cos(theta),
-                        y=ur.y + buoy_offset * np.sin(theta))
+#     # get the angle of the line between ll and ur and the offset waypoints
+#     theta = np.arctan2(ur.y - ll.y, ur.x - ll.x)
+#     w_ll = coord.Vector(x=ll.x - buoy_offset * np.cos(theta),
+#                         y=ll.y - buoy_offset * np.sin(theta))
+#     w_ur = coord.Vector(x=ur.x + buoy_offset * np.cos(theta),
+#                         y=ur.y + buoy_offset * np.sin(theta))
 
-    # get the angle of the line between lr and ul and the offset waypoints
-    phi = np.arctan2(ul.y - lr.y, ul.x - ll.x)
-    w_lr = coord.Vector(x=lr.x - buoy_offset * np.cos(phi),
-                        y=lr.y - buoy_offset * np.sin(phi))
-    w_ul = coord.Vector(x=ul.x + buoy_offset * np.cos(phi),
-                        y=ul.y + buoy_offset * np.sin(phi))
+#     # get the angle of the line between lr and ul and the offset waypoints
+#     phi = np.arctan2(ul.y - lr.y, ul.x - ll.x)
+#     w_lr = coord.Vector(x=lr.x - buoy_offset * np.cos(phi),
+#                         y=lr.y - buoy_offset * np.sin(phi))
+#     w_ul = coord.Vector(x=ul.x + buoy_offset * np.cos(phi),
+#                         y=ul.y + buoy_offset * np.sin(phi))
 
-    # put the waypoints into order starting from the closest to the boat in
-    # a counter-clockwise direction
-    boat_pos = boat.getPosition()
-    boat_angle = boat_pos.vectorSubtract(center).angle()
+#     # put the waypoints into order starting from the closest to the boat in
+#     # a counter-clockwise direction
+#     boat_pos = boat.getPosition()
+#     boat_angle = boat_pos.vectorSubtract(center).angle()
 
-    if boat_angle > wa[3][1] or boat_angle < wa[0][1]:
-        return [w_ur, w_ul, w_ll, w_lr]
-    elif boat_angle > wa[2][1]:
-        return [w_lr, w_ur, w_ul, w_ll]
-    elif boat_angle > wa[1][1]:
-        return [w_ll, w_lr, w_ur, w_ul]
-    else:
-        return [w_ul, w_ll, w_lr, w_ur]
+#     if boat_angle > wa[3][1] or boat_angle < wa[0][1]:
+#         return [w_ur, w_ul, w_ll, w_lr]
+#     elif boat_angle > wa[2][1]:
+#         return [w_lr, w_ur, w_ul, w_ll]
+#     elif boat_angle > wa[1][1]:
+#         return [w_ll, w_lr, w_ur, w_ul]
+#     else:
+#         return [w_ul, w_ll, w_lr, w_ur]
 
 
-def stationKeeping(waypoints, circle_radius, state, boat, opt_angle=45):
-    if state == "ENTRY":
-        stationKeepingWaypoints = []  # Necessary waypoints
-        # entry point to the square
-        square_entries = [
-            waypoints[0].midpoint(waypoints[1]),
-            waypoints[1].midpoint(waypoints[2]),
-            waypoints[2].midpoint(waypoints[3]),
-            waypoints[3].midpoint(waypoints[0])
-        ]
-        curr_pos = boat.getPosition()
-        shortest_dist = min(
-            (curr_pos.xyDist(square_entries[0]), square_entries[0]),
-            (curr_pos.xyDist(square_entries[1]), square_entries[1]),
-            (curr_pos.xyDist(square_entries[2]), square_entries[2]),
-            (curr_pos.xyDist(square_entries[3]), square_entries[3]),
-            key=lambda x: x[0])
-        stationKeepingWaypoints.append(shortest_dist[1])
+# def stationKeeping(waypoints, circle_radius, state, boat, opt_angle=45):
+#     if state == "ENTRY":
+#         stationKeepingWaypoints = []  # Necessary waypoints
+#         # entry point to the square
+#         square_entries = [
+#             waypoints[0].midpoint(waypoints[1]),
+#             waypoints[1].midpoint(waypoints[2]),
+#             waypoints[2].midpoint(waypoints[3]),
+#             waypoints[3].midpoint(waypoints[0])
+#         ]
+#         curr_pos = boat.getPosition()
+#         shortest_dist = min(
+#             (curr_pos.xyDist(square_entries[0]), square_entries[0]),
+#             (curr_pos.xyDist(square_entries[1]), square_entries[1]),
+#             (curr_pos.xyDist(square_entries[2]), square_entries[2]),
+#             (curr_pos.xyDist(square_entries[3]), square_entries[3]),
+#             key=lambda x: x[0])
+#         stationKeepingWaypoints.append(shortest_dist[1])
 
-        # center of the square
-        center = waypoints[0].midpoint(waypoints[2])
-        stationKeepingWaypoints.append(center)
-        return stationKeepingWaypoints
+#         # center of the square
+#         center = waypoints[0].midpoint(waypoints[2])
+#         stationKeepingWaypoints.append(center)
+#         return stationKeepingWaypoints
 
-    elif state == "KEEP":
-        # downwind=wind-yaw=0=clockwise,
-        keep_waypoints = []
-        # radian_angle = math.radians(opt_angle)
-        x_coord = boat.getPosition().x
-        y_coord = boat.getPosition().y
-        boat_direction = boat.sensors.yaw
-        # get wind direction relative to boat
-        relative_wind = boat.sensors.wind_direction - boat_direction
-        if relative_wind < 0:
-            relative_wind += 360
-        if relative_wind >= 180:
-            # move ccw
-            loop_direction = 1
-        else:
-            # move cw
-            loop_direction = -1
-        # compute angle of first waypoint
-        first_angle = boat_direction + opt_angle * loop_direction
-        if (first_angle < 0):
-            first_angle += 360
-        # convert to radians for computation of other waypoints using trig
-        first_angle_rad = math.radians(first_angle)
+#     elif state == "KEEP":
+#         # downwind=wind-yaw=0=clockwise,
+#         keep_waypoints = []
+#         # radian_angle = math.radians(opt_angle)
+#         x_coord = boat.getPosition().x
+#         y_coord = boat.getPosition().y
+#         boat_direction = boat.sensors.yaw
+#         # get wind direction relative to boat
+#         relative_wind = boat.sensors.wind_direction - boat_direction
+#         if relative_wind < 0:
+#             relative_wind += 360
+#         if relative_wind >= 180:
+#             # move ccw
+#             loop_direction = 1
+#         else:
+#             # move cw
+#             loop_direction = -1
+#         # compute angle of first waypoint
+#         first_angle = boat_direction + opt_angle * loop_direction
+#         if (first_angle < 0):
+#             first_angle += 360
+#         # convert to radians for computation of other waypoints using trig
+#         first_angle_rad = math.radians(first_angle)
 
-        for i in range(4):
-            # place 4 waypoints each 90 deg apart; when angle>2pi, trig functions know to shift input to be in range
-            input_angle = first_angle_rad + \
-                loop_direction * i * math.radians(90)
-            keep_waypoints.append(
-                (x_coord + circle_radius * math.cos(input_angle)),
-                (y_coord + circle_radius * math.sin(input_angle)))
-        return keep_waypoints
+#         for i in range(4):
+#             # place 4 waypoints each 90 deg apart; when angle>2pi, trig functions know to shift input to be in range
+#             input_angle = first_angle_rad + \
+#                 loop_direction * i * math.radians(90)
+#             keep_waypoints.append(
+#                 (x_coord + circle_radius * math.cos(input_angle)),
+#                 (y_coord + circle_radius * math.sin(input_angle)))
+#         return keep_waypoints
 
-    elif state == "EXIT":
-        # TODO this assumes that the buoys are cardinal aligned, but this is
-        # probably not true. I set the distance to move away from the box to
-        # be large to account for this, but in the future, this should be
-        # rewritten without that assumption.
+#     elif state == "EXIT":
+#         # TODO this assumes that the buoys are cardinal aligned, but this is
+#         # probably not true. I set the distance to move away from the box to
+#         # be large to account for this, but in the future, this should be
+#         # rewritten without that assumption.
 
-        # corner waypoint order: NW, NE, SE, SW
-        units_away = 40
-        # north exit
-        north_exit = waypoints[0].midpoint(waypoints[1])
-        north_exit.y += units_away
-        # east exit
-        east_exit = waypoints[1].midpoint(waypoints[2])
-        east_exit.x += units_away
-        # south exit
-        south_exit = waypoints[2].midpoint(waypoints[3])
-        south_exit.y -= units_away
-        # west exit
-        west_exit = waypoints[0].midpoint(waypoints[3])
-        west_exit.x -= units_away
-        # exit waypoint order in list: N, E, S, W
-        curr_pos = boat.getPosition()
-        shortest_dist = min((curr_pos.xyDist(north_exit), north_exit),
-                            (curr_pos.xyDist(east_exit), east_exit),
-                            (curr_pos.xyDist(south_exit), south_exit),
-                            (curr_pos.xyDist(west_exit), west_exit),
-                            key=lambda x: x[0])
-        return [shortest_dist[1]]
+#         # corner waypoint order: NW, NE, SE, SW
+#         units_away = 40
+#         # north exit
+#         north_exit = waypoints[0].midpoint(waypoints[1])
+#         north_exit.y += units_away
+#         # east exit
+#         east_exit = waypoints[1].midpoint(waypoints[2])
+#         east_exit.x += units_away
+#         # south exit
+#         south_exit = waypoints[2].midpoint(waypoints[3])
+#         south_exit.y -= units_away
+#         # west exit
+#         west_exit = waypoints[0].midpoint(waypoints[3])
+#         west_exit.x -= units_away
+#         # exit waypoint order in list: N, E, S, W
+#         curr_pos = boat.getPosition()
+#         shortest_dist = min((curr_pos.xyDist(north_exit), north_exit),
+#                             (curr_pos.xyDist(east_exit), east_exit),
+#                             (curr_pos.xyDist(south_exit), south_exit),
+#                             (curr_pos.xyDist(west_exit), west_exit),
+#                             key=lambda x: x[0])
+#         return [shortest_dist[1]]
 
 
 def find_inner_outer_points(start_point, end_point, dist, flag):

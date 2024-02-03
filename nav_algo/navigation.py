@@ -142,63 +142,63 @@ class NavigationController:
                 self.configuration.boat, self.current_waypoint)
             self.configuration.boat.setServos(sail, rudder)
 
-    def fleetRace(self):
-        # While the configuration is in fleet race mode, read servo angles
-        # over the radio
-        self.configuration.write_output(
-            "Starting Fleet Race\nSend angles of the form 'sail_angle rudder_angle'\n"
-        )
-        while self.configuration.radio.fleetRace:
-            try:
-                self.configuration.radio.receiveString()  # timeout is 1 sec
-            except:
-                pass
-            self.configuration.boat.updateSensors()
-            self.configuration.write_data()
+    # def fleetRace(self):
+    #     # While the configuration is in fleet race mode, read servo angles
+    #     # over the radio
+    #     self.configuration.write_output(
+    #         "Starting Fleet Race\nSend angles of the form 'sail_angle rudder_angle'\n"
+    #     )
+    #     while self.configuration.radio.fleetRace:
+    #         try:
+    #             self.configuration.radio.receiveString()  # timeout is 1 sec
+    #         except:
+    #             pass
+    #         self.configuration.boat.updateSensors()
+    #         self.configuration.write_data()
 
-    def endurance(self):
-        # Loop around the same waypoints for 7 hours.
-        # 7 hrs = 25200 sec
-        exit_before = 25200
-        start_time = time.time()
-        loop_waypoints = counterClockwiseRect(self.configuration.waypoints,
-                                              self.configuration.boat,
-                                              buoy_offset=5)
+    # def endurance(self):
+    #     # Loop around the same waypoints for 7 hours.
+    #     # 7 hrs = 25200 sec
+    #     exit_before = 25200
+    #     start_time = time.time()
+    #     loop_waypoints = counterClockwiseRect(self.configuration.waypoints,
+    #                                           self.configuration.boat,
+    #                                           buoy_offset=5)
 
-        while (time.time() - start_time < exit_before):
-            self.configuration.waypoints = loop_waypoints
-            self.current_waypoint = self.configuration.waypoints.pop(0)
-            self.navigate()
+    #     while (time.time() - start_time < exit_before):
+    #         self.configuration.waypoints = loop_waypoints
+    #         self.current_waypoint = self.configuration.waypoints.pop(0)
+    #         self.navigate()
 
-    def stationKeeping(self):
-        # TODO find an optimal radius, 10m for now
-        buoy_waypoints = self.configuration.waypoints
-        exit_before = 300
-        circle_radius = 10
-        self.configuration.waypoints = stationKeeping(
-            buoy_waypoints,
-            circle_radius,
-            "ENTRY",
-            boat=self.configuration.boat)
-        self.current_waypoint = self.configuration.waypoints.pop(0)
-        self.navigate()
+    # def stationKeeping(self):
+    #     # TODO find an optimal radius, 10m for now
+    #     buoy_waypoints = self.configuration.waypoints
+    #     exit_before = 300
+    #     circle_radius = 10
+    #     self.configuration.waypoints = stationKeeping(
+    #         buoy_waypoints,
+    #         circle_radius,
+    #         "ENTRY",
+    #         boat=self.configuration.boat)
+    #     self.current_waypoint = self.configuration.waypoints.pop(0)
+    #     self.navigate()
 
-        # Set timer
-        start_time = time.time()
-        loop_waypoints = stationKeeping(buoy_waypoints,
-                                        circle_radius,
-                                        "KEEP",
-                                        boat=self.configuration.boat)
-        while time.time() - start_time < exit_before:
-            self.configuration.waypoints = loop_waypoints
-            self.current_waypoint = self.configuration.waypoints.pop(0)
-            self.navigate()
+    #     # Set timer
+    #     start_time = time.time()
+    #     loop_waypoints = stationKeeping(buoy_waypoints,
+    #                                     circle_radius,
+    #                                     "KEEP",
+    #                                     boat=self.configuration.boat)
+    #     while time.time() - start_time < exit_before:
+    #         self.configuration.waypoints = loop_waypoints
+    #         self.current_waypoint = self.configuration.waypoints.pop(0)
+    #         self.navigate()
 
-        self.configuration.waypoints = stationKeeping(
-            buoy_waypoints,
-            circle_radius,
-            "EXIT",
-            boat=self.configuration.boat)
+    #     self.configuration.waypoints = stationKeeping(
+    #         buoy_waypoints,
+    #         circle_radius,
+    #         "EXIT",
+    #         boat=self.configuration.boat)
 
     def search(self):
         self.camera = Camera()
