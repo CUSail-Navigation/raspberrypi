@@ -95,30 +95,30 @@ def stationKeepingHelper(waypoints, circle_radius, state, boat, opt_angle=45):
 
 def stationKeeping(navigationController):
     # TODO find an optimal radius, 10m for now
-    buoy_waypoints = self.configuration.waypoints
+    buoy_waypoints = navigationController.configuration.waypoints
     exit_before = 300
     circle_radius = 10
-    self.configuration.waypoints = stationKeepingHelper(
+    navigationController.configuration.waypoints = stationKeepingHelper(
         buoy_waypoints,
         circle_radius,
         "ENTRY",
-        boat=self.configuration.boat)
-    self.current_waypoint = self.configuration.waypoints.pop(0)
-    self.navigate()
+        boat=navigationController.configuration.boat)
+    navigationController.current_waypoint = navigationController.configuration.waypoints.pop(0)
+    navigationController.navigate()
 
     # Set timer
     start_time = time.time()
     loop_waypoints = stationKeepingHelper(buoy_waypoints,
                                     circle_radius,
                                     "KEEP",
-                                    boat=self.configuration.boat)
+                                    boat=navigationController.configuration.boat)
     while time.time() - start_time < exit_before:
-        self.configuration.waypoints = loop_waypoints
-        self.current_waypoint = self.configuration.waypoints.pop(0)
-        self.navigate()
+        navigationController.configuration.waypoints = loop_waypoints
+        navigationController.current_waypoint = navigationController.configuration.waypoints.pop(0)
+        navigationController.navigate()
 
-    self.configuration.waypoints = stationKeepingHelper(
+    navigationController.configuration.waypoints = stationKeepingHelper(
         buoy_waypoints,
         circle_radius,
         "EXIT",
-        boat=self.configuration.boat)
+        boat=navigationController.configuration.boat)

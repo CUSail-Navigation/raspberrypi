@@ -7,6 +7,7 @@ import nav_algo.radio as radio
 from nav_algo.events import Events
 from nav_algo.navigation_helper import *
 from nav_algo.camera import Camera
+from station_keeping import stationKeeping
 
 
 class NavigationController:
@@ -50,7 +51,7 @@ class NavigationController:
             self.endurance()
 
         elif self.configuration.event == Events.STATION_KEEPING:
-            self.stationKeeping()
+            stationKeeping(self)
 
         elif self.configuration.event == Events.PRECISION_NAVIGATION:
             self.DETECTION_RADIUS = 4  # Be more precise
