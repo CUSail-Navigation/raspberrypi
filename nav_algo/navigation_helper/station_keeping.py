@@ -93,7 +93,7 @@ def stationKeepingHelper(waypoints, circle_radius, state, boat, opt_angle=45):
     
 
 
-def stationKeeping(self):
+def stationKeeping(navigationController):
     # TODO find an optimal radius, 10m for now
     buoy_waypoints = self.configuration.waypoints
     exit_before = 300
