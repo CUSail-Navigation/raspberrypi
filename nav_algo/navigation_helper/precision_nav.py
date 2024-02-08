@@ -190,3 +190,10 @@ def generateBuoys():
 
     
     return [first, second, third, fourth]
+
+def precisionNavigation(waypoints):
+    # waypoints:[topleft_buoy, topright_buoy, botleft_buoy, botright_buoy]
+    buoys = [(w.x, w.y) for w in waypoints]
+    out_waypoints = util.precisionNavigationImpl(buoys)
+    out_waypoints = [coord.Vector(x=w[0], y=w[1]) for w in out_waypoints]
+    return out_waypoints
