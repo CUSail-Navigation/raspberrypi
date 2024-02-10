@@ -4,6 +4,7 @@ import math
 import numpy as np
 import sensors
 from navigation_helper import *
+from navigation import *
 
 def stationKeepingHelper(waypoints, circle_radius, state, boat, opt_angle=45):
     if state == "ENTRY":

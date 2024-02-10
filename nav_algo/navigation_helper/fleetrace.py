@@ -1,13 +1,17 @@
-def fleetRace(self):
+from navigation_helper import *
+from navigation import *
+# TODO: figure out what else to import
+
+def fleetRace(NavigationController):
     # While the configuration is in fleet race mode, read servo angles
     # over the radio
-    self.configuration.write_output(
+    NavigationController.configuration.write_output(
         "Starting Fleet Race\nSend angles of the form 'sail_angle rudder_angle'\n"
     )
-    while self.configuration.radio.fleetRace:
+    while NavigationController.configuration.radio.fleetRace:
         try:
-            self.configuration.radio.receiveString()  # timeout is 1 sec
+            NavigationController.configuration.radio.receiveString()  # timeout is 1 sec
         except:
             pass
-        self.configuration.boat.updateSensors()
-        self.configuration.write_data()
+        NavigationController.configuration.boat.updateSensors()
+        NavigationController.configuration.write_data()

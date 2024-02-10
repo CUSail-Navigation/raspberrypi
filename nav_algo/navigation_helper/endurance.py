@@ -1,16 +1,18 @@
-def endurance(self):
+from navigation import *
+
+def endurance(NavigationController):
     # Loop around the same waypoints for 7 hours.
     # 7 hrs = 25200 sec
     exit_before = 25200
     start_time = time.time()
-    loop_waypoints = counterClockwiseRect(self.configuration.waypoints,
-                                            self.configuration.boat,
+    loop_waypoints = counterClockwiseRect(NavigationController.configuration.waypoints,
+                                            NavigationController.configuration.boat,
                                             buoy_offset=5)
 
     while (time.time() - start_time < exit_before):
-        self.configuration.waypoints = loop_waypoints
-        self.current_waypoint = self.configuration.waypoints.pop(0)
-        self.navigate()
+        NavigationController.configuration.waypoints = loop_waypoints
+        NavigationController.current_waypoint = NavigationController.configuration.waypoints.pop(0)
+        NavigationController.navigate()
 
 
 def counterClockwiseRect(waypoints, boat, buoy_offset=2):

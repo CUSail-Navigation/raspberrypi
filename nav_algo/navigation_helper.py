@@ -25,21 +25,21 @@ def newSailingAngle(boat, target):
                                     angle_boat_heading, abs_wind_dir)
 
 
-def optAngle(boat_to_target, boat, right):
-    """Determines the best angle to sail on either side of the wind.
+# def optAngle(boat_to_target, boat, right):
+#     """Determines the best angle to sail on either side of the wind.
 
-        The "best angle" maximizes the velocity made good toward the target.
+#         The "best angle" maximizes the velocity made good toward the target.
 
-        Args:
-            right (bool): True if evaluating the right side of the wind, False for left.
+#         Args:
+#             right (bool): True if evaluating the right side of the wind, False for left.
 
-        Returns:
-            float: The best angle to sail (in the global coordinate system).
-            float: The velocity made good at the best angle.
+#         Returns:
+#             float: The best angle to sail (in the global coordinate system).
+#             float: The velocity made good at the best angle.
 
-    """
-    return util.optAngleImpl(boat_to_target.angle(),
-                             boat.sensors.wind_direction, right)
+#     """
+#     return util.optAngleImpl(boat_to_target.angle(),
+#                              boat.sensors.wind_direction, right)
 
 
 def polar(angle, boat):
@@ -198,27 +198,28 @@ def stationKeeping(waypoints, circle_radius, state, boat, opt_angle=45):
                             key=lambda x: x[0])
         return [shortest_dist[1]]
 
+# not using this
+# def find_inner_outer_points(start_point, end_point, dist, flag):
+#     # 1 is in, -1 is out, 0 is on the line
+#     slope_y = start_point.y - end_point.y
+#     slope_x = start_point.x - end_point.x
+#     theta_slope = math.atan2(slope_y, slope_x)
+#     x = start_point.x + dist * math.cos(theta_slope)
+#     y = start_point.y + dist * math.sin(theta_slope)
+#     if flag != 0:
+#         x += -flag * 0.1 * dist * math.sin(theta_slope)
+#         y += flag * 0.1 * dist * math.cos(theta_slope)
+#     return coord.Vector(x=x, y=y)
 
-def find_inner_outer_points(start_point, end_point, dist, flag):
-    # 1 is in, -1 is out, 0 is on the line
-    slope_y = start_point.y - end_point.y
-    slope_x = start_point.x - end_point.x
-    theta_slope = math.atan2(slope_y, slope_x)
-    x = start_point.x + dist * math.cos(theta_slope)
-    y = start_point.y + dist * math.sin(theta_slope)
-    if flag != 0:
-        x += -flag * 0.1 * dist * math.sin(theta_slope)
-        y += flag * 0.1 * dist * math.cos(theta_slope)
-    return coord.Vector(x=x, y=y)
 
-
-def buoy_offset(start_point, buoy, dist):
-    slope_y = start_point.y - buoy.y
-    slope_x = start_point.x - buoy.x
-    theta_slope = math.atan2(slope_y, slope_x)
-    x = buoy.x + dist * math.cos(theta_slope)
-    y = buoy.y + dist * math.sin(theta_slope)
-    return coord.Vector(x=x, y=y)
+# not using this
+# def buoy_offset(start_point, buoy, dist):
+#     slope_y = start_point.y - buoy.y
+#     slope_x = start_point.x - buoy.x
+#     theta_slope = math.atan2(slope_y, slope_x)
+#     x = buoy.x + dist * math.cos(theta_slope)
+#     y = buoy.y + dist * math.sin(theta_slope)
+#     return coord.Vector(x=x, y=y)
 
 
 def precisionNavigation(waypoints):
@@ -237,25 +238,25 @@ def collisionAvoidance(waypoints):
     return out_waypoints
 
 
-def getRectangleBox(center, theta):
-    """
-    Returns rectangular box given center point and direction
-    Corners ordered ccw starting from front left
-    """
-    r = math.sqrt(5) / 2
-    corner_one = (center.x + r * (math.cos(theta + math.atan(0.5))),
-                  center.y + r * (math.sin(theta + math.atan(0.5))))
+# def getRectangleBox(center, theta):
+#     """
+#     Returns rectangular box given center point and direction
+#     Corners ordered ccw starting from front left
+#     """
+#     r = math.sqrt(5) / 2
+#     corner_one = (center.x + r * (math.cos(theta + math.atan(0.5))),
+#                   center.y + r * (math.sin(theta + math.atan(0.5))))
 
-    corner_two = (center.x + r * (math.cos(theta + math.pi - math.atan(0.5))),
-                  center.y + r * (math.sin(theta + math.pi - math.atan(0.5))))
+#     corner_two = (center.x + r * (math.cos(theta + math.pi - math.atan(0.5))),
+#                   center.y + r * (math.sin(theta + math.pi - math.atan(0.5))))
 
-    corner_three = (center.x + r *
-                    (math.cos(theta - math.pi + math.atan(0.5))), center.y +
-                    r * (math.sin(theta - math.pi + math.atan(0.5))))
+#     corner_three = (center.x + r *
+#                     (math.cos(theta - math.pi + math.atan(0.5))), center.y +
+#                     r * (math.sin(theta - math.pi + math.atan(0.5))))
 
-    corner_four = (center.x + r * (math.cos(theta - math.atan(0.5))),
-                   center.y + r * (math.sin(theta - math.atan(0.5))))
-    return [corner_one, corner_two, corner_three, corner_four]
+#     corner_four = (center.x + r * (math.cos(theta - math.atan(0.5))),
+#                    center.y + r * (math.sin(theta - math.atan(0.5))))
+#     return [corner_one, corner_two, corner_three, corner_four]
 
 
 def check_overlap(box_coords, obst_coords, axis):
@@ -300,7 +301,7 @@ def isCollision(boat_coords, obst_coords):
     else:
         return False
 
-
+# helper in assess collision
 def getVelocity(point_before, point_after, t):
     """
     Returns velocity of object during time interval t as [speed, theta]
@@ -331,33 +332,33 @@ def collisionWaypoint(time, boat):
                         boat.getPosition().y + 2 * math.sin(angle_rad))
 
 
-def assessCollision(obst_point, obst_point_2, time, boat):
-    """
-      Checks if collision occurs. Returns new waypoint if collision, else None
+# def assessCollision(obst_point, obst_point_2, time, boat):
+#     """
+#       Checks if collision occurs. Returns new waypoint if collision, else None
 
-      obst_point: position of obstacle at time 0
-      obst_point_2: position of obstacle at time time
-      time: time between detection of obst_point and obst_point_2
-      """
-    if (obst_point is None or obst_point_2 is None):
-        return None
-    [obst_speed, obst_theta] = getVelocity(obst_point, obst_point_2, time)
-    collision_time = 0
-    while (collision_time <= 15):
-        new_obstacle_point = (
-            obst_point.x + collision_time * obst_speed * math.cos(obst_theta),
-            obst_point.y + collision_time * obst_speed * math.sin(obst_theta))
-        new_obstacle_box = getRectangleBox(new_obstacle_point, obst_theta)
-        new_boat_box = (boat.getPosition().x +
-                        collision_time * boat.sensors.velocity.magnitude() *
-                        math.cos(math.radians(boat.sensors.yaw)),
-                        boat.getPosition().y +
-                        collision_time * boat.sensors.velocity.magnitude() *
-                        math.sin(math.radians(boat.sensors.yaw)))
-        if isCollision(new_boat_box, new_obstacle_box):
-            return collisionWaypoint(collision_time)
-        else:
-            collision_time += 1
+#       obst_point: position of obstacle at time 0
+#       obst_point_2: position of obstacle at time time
+#       time: time between detection of obst_point and obst_point_2
+#       """
+#     if (obst_point is None or obst_point_2 is None):
+#         return None
+#     [obst_speed, obst_theta] = getVelocity(obst_point, obst_point_2, time)
+#     collision_time = 0
+#     while (collision_time <= 15):
+#         new_obstacle_point = (
+#             obst_point.x + collision_time * obst_speed * math.cos(obst_theta),
+#             obst_point.y + collision_time * obst_speed * math.sin(obst_theta))
+#         new_obstacle_box = getRectangleBox(new_obstacle_point, obst_theta)
+#         new_boat_box = (boat.getPosition().x +
+#                         collision_time * boat.sensors.velocity.magnitude() *
+#                         math.cos(math.radians(boat.sensors.yaw)),
+#                         boat.getPosition().y +
+#                         collision_time * boat.sensors.velocity.magnitude() *
+#                         math.sin(math.radians(boat.sensors.yaw)))
+#         if isCollision(new_boat_box, new_obstacle_box):
+#             return collisionWaypoint(collision_time)
+#         else:
+#             collision_time += 1
 
 
 def unitVector(coords):

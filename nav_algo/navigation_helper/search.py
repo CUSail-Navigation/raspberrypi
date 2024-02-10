@@ -1,5 +1,9 @@
-def search(self):
-    self.camera = Camera()
+from navigation_helper import *
+from navigation import *
+# TODO: figure out what else to import
+
+def search(NavigationController):
+    NavigationController.camera = Camera()
     search_radius = 80
     num_seeds = 15
 
@@ -16,31 +20,39 @@ def search(self):
         #     w = coord.Vector(x=x, y=y)
         #     waypoints.append(w)
 
-        self.configuration.waypoints = search([self.current_waypoint])
-        self.current_waypoint = self.configuration.waypoints.pop(0)
+        NavigationController.configuration.waypoints = search([NavigationController.current_waypoint])
+        NavigationController.current_waypoint = NavigationController.configuration.waypoints.pop(0)
 
         # Navigate between the seed waypoints until we see the buoy
-        buoy_loc = self.navigate(use_camera=True)
+        buoy_loc = NavigationController.navigate(use_camera=True)
 
     # Go to the buoy location
-    coord_sys = self.configuration.boat.sensors.coordinate_system
+    coord_sys = NavigationController.configuration.boat.sensors.coordinate_system
     buoy_loc = coord.Vector.convertXYToLatLong(coord_sys, buoy_loc.x,
                                                 buoy_loc.y)
-    self.current_waypoint = buoy_loc
-    self.configuration.waypoints = []
-    self.DETECTION_RADIUS = 1.0
-    self.navigate(use_camera=False)
+    NavigationController.current_waypoint = buoy_loc
+    NavigationController.configuration.waypoints = []
+    NavigationController.DETECTION_RADIUS = 1.0
+    NavigationController.navigate(use_camera=False)
 
     # Signal that we've found the buoy
     # TODO do something more interesting
-    self.configuration.write_output("FOUND_BUOY")
-    self.configuration.write_output("BUOY LAT: {} LONG: {}".format(
+    NavigationController.configuration.write_output("FOUND_BUOY")
+    NavigationController.configuration.write_output("BUOY LAT: {} LONG: {}".format(
         buoy_loc.latitude, buoy_loc.longitude))
 
     # Station Keeping Mode
     while True:
-        self.current_waypoint = buoy_loc
-        self.navigate(use_camera=False)
+        NavigationController.current_waypoint = buoy_loc
+        NavigationController.navigate(use_camera=False)
+
+def fcn(x, radius):
+    """
+    Creates path for sailboat and then rotates this path based on the wind 
+    angle before the boat enters the circle
+    """
+    period = 1
+    return math.sqrt((radius**2)-(x**2))*math.sin(period*x*(math.pi))
 
 def search(waypoints):
     """

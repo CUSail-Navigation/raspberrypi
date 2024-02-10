@@ -1,21 +1,23 @@
-def collision_avoidance(self):
-    self.camera = Camera()
+from navigation import *
+
+def collision_avoidance(NavigationController):
+    NavigationController.camera = Camera()
 
     # Get waypoints between the input buoys
-    self.configuration.waypoints = collisionAvoidance(
-        self.configuration.waypoints)
-    self.current_waypoint = self.configuration.waypoints.pop(0)
+    NavigationController.configuration.waypoints = collisionAvoidance(
+        NavigationController.configuration.waypoints)
+    NavigationController.current_waypoint = NavigationController.configuration.waypoints.pop(0)
 
     # Navigate until we see a boat
-    boat_loc = self.navigate(use_camera=True)
+    boat_loc = NavigationController.navigate(use_camera=True)
     while boat_loc is not None:
         # See the boat, push the rudder to one side to spin away for a while
         # TODO what should we really do here?
-        self.configuration.write_output("SEE BOAT AT ({}, {})".format(
+        NavigationController.configuration.write_output("SEE BOAT AT ({}, {})".format(
             boat_loc.x, boat_loc.y))
-        self.configuration.boat.setServos(60.0, 20.0)
+        NavigationController.configuration.boat.setServos(60.0, 20.0)
         time.sleep(10.0)  # Give time to move away
-        boat_loc = self.navigate(use_camera=True)
+        boat_loc = NavigationController.navigate(use_camera=True)
 
 
 def collisionAvoidance(buoy_waypoints, boat):

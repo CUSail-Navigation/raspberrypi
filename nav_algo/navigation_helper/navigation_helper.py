@@ -25,24 +25,25 @@ def newSailingAngle(boat, target):
     return util.newSailingAngleImpl(boat_position, target_position,
                                     angle_boat_heading, abs_wind_dir)
 
+# not using this
+def optAngle(boat_to_target, boat, right):
+    """Determines the best angle to sail on either side of the wind.
 
-# def optAngle(boat_to_target, boat, right):
-#     """Determines the best angle to sail on either side of the wind.
+        The "best angle" maximizes the velocity made good toward the target.
 
-#         The "best angle" maximizes the velocity made good toward the target.
+        Args:
+            right (bool): True if evaluating the right side of the wind, False for left.
 
-#         Args:
-#             right (bool): True if evaluating the right side of the wind, False for left.
+        Returns:
+            float: The best angle to sail (in the global coordinate system).
+            float: The velocity made good at the best angle.
 
-#         Returns:
-#             float: The best angle to sail (in the global coordinate system).
-#             float: The velocity made good at the best angle.
-
-#     """
-#     return util.optAngleImpl(boat_to_target.angle(),
-#                              boat.sensors.wind_direction, right)
+    """
+    return util.optAngleImpl(boat_to_target.angle(),
+                             boat.sensors.wind_direction, right)
 
 
+# not using this
 def polar(angle, boat):
     """Evaluates the polar diagram for a given angle relative to the wind.
 
@@ -58,7 +59,7 @@ def polar(angle, boat):
     x, y = util.polarImpl(angle, boat.sensors.wind_direction)
     return coord.Vector(x=x, y=y)
 
-
+# moved to endurance.py
 # def counterClockwiseRect(waypoints, boat, buoy_offset=2):
 #     if len(waypoints) > 4:
 #         raise RuntimeError('More than four waypoints given for endurance')
@@ -112,7 +113,7 @@ def polar(angle, boat):
 #     else:
 #         return [w_ul, w_ll, w_lr, w_ur]
 
-
+# moved to station_keeping file
 # def stationKeeping(waypoints, circle_radius, state, boat, opt_angle=45):
 #     if state == "ENTRY":
 #         stationKeepingWaypoints = []  # Necessary waypoints
@@ -199,7 +200,7 @@ def polar(angle, boat):
 #                             key=lambda x: x[0])
 #         return [shortest_dist[1]]
 
-
+# not using this
 def find_inner_outer_points(start_point, end_point, dist, flag):
     # 1 is in, -1 is out, 0 is on the line
     slope_y = start_point.y - end_point.y
@@ -213,6 +214,7 @@ def find_inner_outer_points(start_point, end_point, dist, flag):
     return coord.Vector(x=x, y=y)
 
 
+# not using this
 def buoy_offset(start_point, buoy, dist):
     slope_y = start_point.y - buoy.y
     slope_x = start_point.x - buoy.x
@@ -221,7 +223,7 @@ def buoy_offset(start_point, buoy, dist):
     y = buoy.y + dist * math.sin(theta_slope)
     return coord.Vector(x=x, y=y)
 
-
+# moved to separate file (precision_nav.py)
 # def precisionNavigation(waypoints):
 #     # waypoints:[topleft_buoy, topright_buoy, botleft_buoy, botright_buoy]
 #     buoys = [(w.x, w.y) for w in waypoints]
@@ -229,7 +231,7 @@ def buoy_offset(start_point, buoy, dist):
 #     out_waypoints = [coord.Vector(x=w[0], y=w[1]) for w in out_waypoints]
 #     return out_waypoints
 
-
+# used as helper in assessCollision
 def getRectangleBox(center, theta):
     """
     Returns rectangular box given center point and direction
@@ -250,7 +252,7 @@ def getRectangleBox(center, theta):
                    center.y + r * (math.sin(theta - math.atan(0.5))))
     return [corner_one, corner_two, corner_three, corner_four]
 
-
+# helper in isCollision
 def check_overlap(box_coords, obst_coords, axis):
     box_list = []
     obst_list = []
@@ -265,6 +267,7 @@ def check_overlap(box_coords, obst_coords, axis):
         return True
 
 
+# not using this
 def isCollision(boat_coords, obst_coords):
     """
     Returns True if boat_coords and obst_coords overlap, else False
@@ -293,7 +296,7 @@ def isCollision(boat_coords, obst_coords):
     else:
         return False
 
-
+# helper in assess collision
 def getVelocity(point_before, point_after, t):
     """
     Returns velocity of object during time interval t as [speed, theta]
@@ -311,7 +314,7 @@ def getVelocity(point_before, point_after, t):
     theta = math.atan(y_dist / x_dist)
     return [speed, theta]
 
-
+# helper in assessCollision
 def collisionWaypoint(time, boat):
     """
     Returns waypoint 2m away to avoid obstacle detected at time time
@@ -323,7 +326,7 @@ def collisionWaypoint(time, boat):
     return coord.Vector(boat.getPosition().x + 2 * math.cos(angle_rad),
                         boat.getPosition().y + 2 * math.sin(angle_rad))
 
-
+# not used anywhere
 def assessCollision(obst_point, obst_point_2, time, boat):
     """
       Checks if collision occurs. Returns new waypoint if collision, else None
@@ -352,12 +355,12 @@ def assessCollision(obst_point, obst_point_2, time, boat):
         else:
             collision_time += 1
 
-
+# moved to collision_avoidance
 # def unitVector(coords):
 #     magnitude = math.sqrt(coords[0]**2 + coords[1]**2)
 #     return (coords[0] / magnitude, coords[1] / magnitude)
 
-
+# moved to separate file (collision_avoidance)
 # def collisionAvoidance(buoy_waypoints, boat):
 #     """
 #     Returns waypoints list for ideal path (no obstacles)
@@ -388,7 +391,7 @@ def assessCollision(obst_point, obst_point_2, time, boat):
 #         boat.getPosition()
 #     ]
 
-
+# moved to separate file (search)
 # def search(waypoints):
 #     """
 #     Requires: waypoints[0] must be the center point of the circle. Returns 
@@ -414,11 +417,11 @@ def assessCollision(obst_point, obst_point_2, time, boat):
 #         rotated_waypoints.insert(len(rotated_waypoints), new_rotated_waypoint)
 #     return rotated_waypoints
 
-
-def fcn(x, radius):
-    """
-    Creates path for sailboat and then rotates this path based on the wind 
-    angle before the boat enters the circle
-    """
-    period = 1
-    return math.sqrt((radius**2)-(x**2))*math.sin(period*x*(math.pi))
+# moved to search file
+# def fcn(x, radius):
+#     """
+#     Creates path for sailboat and then rotates this path based on the wind 
+#     angle before the boat enters the circle
+#     """
+#     period = 1
+#     return math.sqrt((radius**2)-(x**2))*math.sin(period*x*(math.pi))
