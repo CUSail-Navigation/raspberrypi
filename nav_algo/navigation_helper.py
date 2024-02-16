@@ -230,13 +230,29 @@ def precisionNavigation(waypoints):
     return out_waypoints
 
 
-def collisionAvoidance(waypoints):
-    # waypoints:[top two buoys, other buoy]
-    buoys = [(w.x, w.y) for w in waypoints]
-    out_waypoints = util.collisionAvoidanceImpl(buoys)
-    out_waypoints = [coord.Vector(x=w[0], y=w[1]) for w in out_waypoints]
-    return out_waypoints
+# def collisionAvoidance(waypoints):
+#     # waypoints:[top two buoys, other buoy]
+#     buoys = [(w.x, w.y) for w in waypoints]
+#     out_waypoints = util.collisionAvoidanceImpl(buoys)
+#     out_waypoints = [coord.Vector(x=w[0], y=w[1]) for w in out_waypoints]
+#     return out_waypoints
 
+# def collisionAvoidanceImpl(buoys):
+#     """Generates navigation waypoints from the collision avoidance buoy locations.
+
+#         Args:
+#             buoys (list of (float, float)): The ordered buoy locations (start 2 buoys, then other).
+
+#         Returns:
+#             (list of (float, float): The generated waypoint locations.
+
+#     """
+#     # The first and last waypoints are between the start buoys
+#     mid = util.midpoint(buoys[0], buoys[1])
+#     waypoints = [mid]
+#     waypoints.append(buoys[2])
+#     waypoints.append(mid)
+#     return waypoints
 
 # def getRectangleBox(center, theta):
 #     """
@@ -273,63 +289,63 @@ def check_overlap(box_coords, obst_coords, axis):
         return True
 
 
-def isCollision(boat_coords, obst_coords):
-    """
-    Returns True if boat_coords and obst_coords overlap, else False
-    """
-    boat_vecs = []
-    for boat_coord in boat_coords:
-        vec = np.array([boat_coord[0], boat_coord[1]])
-        boat_vecs.append(vec)
+# def isCollision(boat_coords, obst_coords):
+#     """
+#     Returns True if boat_coords and obst_coords overlap, else False
+#     """
+#     boat_vecs = []
+#     for boat_coord in boat_coords:
+#         vec = np.array([boat_coord[0], boat_coord[1]])
+#         boat_vecs.append(vec)
 
-    obst_vecs = []
-    for obst_coord in obst_coords:
-        vec = np.array([obst_coord[0], obst_coord[1]])
-        obst_vecs.append(vec)
+#     obst_vecs = []
+#     for obst_coord in obst_coords:
+#         vec = np.array([obst_coord[0], obst_coord[1]])
+#         obst_vecs.append(vec)
 
-    boat_front_norm = boat_vecs[0] - boat_vecs[1]
-    boat_side_norm = boat_vecs[0] - boat_vecs[3]
+#     boat_front_norm = boat_vecs[0] - boat_vecs[1]
+#     boat_side_norm = boat_vecs[0] - boat_vecs[3]
 
-    obst_front_norm = obst_vecs[0] - obst_vecs[1]
-    obst_side_norm = obst_vecs[0] - obst_vecs[3]
+#     obst_front_norm = obst_vecs[0] - obst_vecs[1]
+#     obst_side_norm = obst_vecs[0] - obst_vecs[3]
 
-    if (check_overlap(boat_vecs, obst_vecs, boat_front_norm)
-            and check_overlap(boat_vecs, obst_vecs, boat_side_norm)
-            and check_overlap(boat_vecs, obst_vecs, obst_front_norm)
-            and check_overlap(boat_vecs, obst_vecs, obst_side_norm)):
-        return True
-    else:
-        return False
+#     if (check_overlap(boat_vecs, obst_vecs, boat_front_norm)
+#             and check_overlap(boat_vecs, obst_vecs, boat_side_norm)
+#             and check_overlap(boat_vecs, obst_vecs, obst_front_norm)
+#             and check_overlap(boat_vecs, obst_vecs, obst_side_norm)):
+#         return True
+#     else:
+#         return False
 
-# helper in assess collision
-def getVelocity(point_before, point_after, t):
-    """
-    Returns velocity of object during time interval t as [speed, theta]
+# # helper in assess collision
+# def getVelocity(point_before, point_after, t):
+#     """
+#     Returns velocity of object during time interval t as [speed, theta]
 
-    point_before: center of object at time 0
-    point_after: center of object at time t
-    t: time interval
-    """
-    if t <= 0:
-        return [0, 0]
-    x_dist = point_after.x - point_before.x
-    y_dist = point_after.y - point_before.y
-    total_dist = (x_dist**2 + y_dist**2)**0.5
-    speed = total_dist / t
-    theta = math.atan(y_dist / x_dist)
-    return [speed, theta]
+#     point_before: center of object at time 0
+#     point_after: center of object at time t
+#     t: time interval
+#     """
+#     if t <= 0:
+#         return [0, 0]
+#     x_dist = point_after.x - point_before.x
+#     y_dist = point_after.y - point_before.y
+#     total_dist = (x_dist**2 + y_dist**2)**0.5
+#     speed = total_dist / t
+#     theta = math.atan(y_dist / x_dist)
+#     return [speed, theta]
 
 
-def collisionWaypoint(time, boat):
-    """
-    Returns waypoint 2m away to avoid obstacle detected at time time
-    """
-    angle_deg = (boat.sensors.yaw + 90 - time)
-    while (angle_deg >= 360.0):
-        angle_deg -= 360.0
-    angle_rad = math.radians(angle_deg)
-    return coord.Vector(boat.getPosition().x + 2 * math.cos(angle_rad),
-                        boat.getPosition().y + 2 * math.sin(angle_rad))
+# def collisionWaypoint(time, boat):
+#     """
+#     Returns waypoint 2m away to avoid obstacle detected at time time
+#     """
+#     angle_deg = (boat.sensors.yaw + 90 - time)
+#     while (angle_deg >= 360.0):
+#         angle_deg -= 360.0
+#     angle_rad = math.radians(angle_deg)
+#     return coord.Vector(boat.getPosition().x + 2 * math.cos(angle_rad),
+#                         boat.getPosition().y + 2 * math.sin(angle_rad))
 
 
 # def assessCollision(obst_point, obst_point_2, time, boat):
@@ -361,9 +377,9 @@ def collisionWaypoint(time, boat):
 #             collision_time += 1
 
 
-def unitVector(coords):
-    magnitude = math.sqrt(coords[0]**2 + coords[1]**2)
-    return (coords[0] / magnitude, coords[1] / magnitude)
+# def unitVector(coords):
+#     magnitude = math.sqrt(coords[0]**2 + coords[1]**2)
+#     return (coords[0] / magnitude, coords[1] / magnitude)
 
 
 # def collisionAvoidance(buoy_waypoints, boat):

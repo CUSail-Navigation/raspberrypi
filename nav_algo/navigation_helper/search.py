@@ -20,7 +20,7 @@ def search(NavigationController):
         #     w = coord.Vector(x=x, y=y)
         #     waypoints.append(w)
 
-        NavigationController.configuration.waypoints = search([NavigationController.current_waypoint])
+        NavigationController.configuration.waypoints = searchHelper([NavigationController.current_waypoint])
         NavigationController.current_waypoint = NavigationController.configuration.waypoints.pop(0)
 
         # Navigate between the seed waypoints until we see the buoy
@@ -54,7 +54,7 @@ def fcn(x, radius):
     period = 1
     return math.sqrt((radius**2)-(x**2))*math.sin(period*x*(math.pi))
 
-def search(waypoints):
+def searchHelper(waypoints):
     """
     Requires: waypoints[0] must be the center point of the circle. Returns 
     waypoints for the search path depending on the initial wind direction. 

@@ -8,7 +8,11 @@ from nav_algo.events import Events
 from nav_algo.navigation_helper import *
 from nav_algo.camera import Camera
 from station_keeping import stationKeeping
-
+from endurance import endurance
+from fleetrace import fleetRace
+from precision_nav import precisionNavigation
+from search import search
+from collision_avoidance import collision_avoidance
 
 class NavigationController:
     """A controller class for the navigation algorithm.
@@ -45,26 +49,25 @@ class NavigationController:
         # If the event is fleet race, we don't care about the algo, just set angles
         # NOTE commands should end with \n, send 'q' to quit, angles are space delineated 'main tail'
         if self.configuration.event == Events.FLEET_RACE:
-            self.fleetRace()
+            fleetRace(self)
 
         elif self.configuration.event == Events.ENDURANCE:
-            self.endurance()
+            endurance(self)
 
         elif self.configuration.event == Events.STATION_KEEPING:
             stationKeeping(self)
 
         elif self.configuration.event == Events.PRECISION_NAVIGATION:
             self.DETECTION_RADIUS = 4  # Be more precise
-            self.configuration.waypoints = precisionNavigation(
-                self.configuration.waypoints)
+            self.configuration.waypoints = precisionNavigation(self)
             self.current_waypoint = self.configuration.waypoints.pop(0)
-            self.navigate()
+            self.navigate(self)
 
         elif self.configuration.event == Events.COLLISION_AVOIDANCE:
-            self.collision_avoidance()
+            collision_avoidance(self)
 
         elif self.configuration.event == Events.SEARCH:
-            self.search()
+            search(self)
 
         else:
             # No event provided, just follow waypoints directly

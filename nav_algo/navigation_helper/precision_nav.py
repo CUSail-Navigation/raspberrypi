@@ -1,4 +1,5 @@
 import numpy as np
+import nav_algo.coordinates as coord
 import math
 import random
 
@@ -72,7 +73,7 @@ def generate_t_vals(num_waypoints):
     """
     return np.linspace(0, 2.0 * np.pi, num_waypoints).tolist()
 
-def PrecisionNavigationAlgo(bouys, num_waypoints):
+def precisionNavigationAlgo(bouys, num_waypoints):
     """Generates navigation waypoints from the precision nav buoy locations.
 
         Args:
@@ -191,9 +192,9 @@ def generateBuoys():
     
     return [first, second, third, fourth]
 
-def precisionNavigation(waypoints):
+def precisionNavigation(navigationController): #NavigationController
     # waypoints:[topleft_buoy, topright_buoy, botleft_buoy, botright_buoy]
-    buoys = [(w.x, w.y) for w in waypoints]
-    out_waypoints = util.precisionNavigationImpl(buoys)
+    buoys = [(w.x, w.y) for w in navigationController.configuration.waypoints]
+    out_waypoints = precisionNavigationAlgo(buoys)
     out_waypoints = [coord.Vector(x=w[0], y=w[1]) for w in out_waypoints]
     return out_waypoints
