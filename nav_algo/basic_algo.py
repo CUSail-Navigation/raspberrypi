@@ -106,3 +106,6 @@ class BasicAlgo:
     #     yaw = boat.sensors.yaw
     #     sail, rudder = getServoAnglesImpl(abs_wind_dir, yaw, intended_angle)
     #     return sail, rudder
+
+
+
