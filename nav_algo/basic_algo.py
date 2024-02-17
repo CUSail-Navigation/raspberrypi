@@ -61,7 +61,7 @@ class BasicAlgo:
         """
         Calcualte tacking point to begin tacking. uses winddir + dest
         """
-        pass 
+        return 0
 
     def step(self, currentLoc, destination):
         """
