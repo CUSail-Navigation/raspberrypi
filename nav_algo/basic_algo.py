@@ -1,4 +1,5 @@
 import nav_algo.boat as b
+import numpy as np
 from nav_algo.navigation_helper import *
 from nav_algo.navigation_utilities import getServoAnglesImpl
     
@@ -12,7 +13,7 @@ class BasicAlgo:
         # self.sailAngle = 0 covered in servos
         self.headingDir = 0
         self.windDir = 0
-        # self.distToDest = 0 unsure if 
+        self.distToDest = 0
         self.tacking = False
         self.tackingPoint = None
         self.tackingDuration = 0
@@ -60,8 +61,21 @@ class BasicAlgo:
     def calcualteTP(self, currentLocation):
         """
         Calcualte tacking point to begin tacking. uses winddir + dest
+        Assuming that the boat is heading towards the positive x-axis and the destination
         """
-        return 0
+        x = self.currentLoc[0]
+        y = self.currentLoc[1]
+        windDir = self.windDir % 360
+        if windDir >= 0 and windDir <= 30:
+            x_TP = x + self.distToDest*np.cos(np.deg2rad(45-windDir))*np.sin(np.deg2rad(45+windDir))
+            y_TP = y - self.distToDest*np.cos(np.deg2rad(45-windDir))*np.cos(np.deg2rad(45+windDir))
+            self.tackingPoint = (x_TP, y_TP)
+        elif windDir >= 330 and windDir <= 359:
+            windDir = 360 - windDir
+            x_TP = x + self.distToDest*np.cos(np.deg2rad(45-windDir))*np.sin(np.deg2rad(45+windDir))
+            y_TP = y + self.distToDest*np.cos(np.deg2rad(45-windDir))*np.cos(np.deg2rad(45+windDir))
+            self.tackingPoint = (x_TP, y_TP)
+        return self.tackingPoint
 
     def step(self, currentLoc, destination):
         """
@@ -106,6 +120,3 @@ class BasicAlgo:
     #     yaw = boat.sensors.yaw
     #     sail, rudder = getServoAnglesImpl(abs_wind_dir, yaw, intended_angle)
     #     return sail, rudder
-
-
-
