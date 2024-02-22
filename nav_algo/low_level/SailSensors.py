@@ -266,8 +266,8 @@ class SailAirMar:
                 self.readings['longDirection'] = args[4]
             elif "VTG" in label:
                 self.readings['speed'] = args[1]
-        except ValueError:
-            print("value error")
+        except:
+            print("error parsing")
 
     def readAirMarHeading(self):
         """Returns the heading in degrees. 0 degrees is East, 90 degrees is North, 
@@ -279,6 +279,22 @@ class SailAirMar:
         """Returns the rate of turn in degrees per second."""
         with self.lock:
             return self._convertDegreePerSec()
+        
+    def readAirMarLatitude(self):
+        """Retruns the latitude in degrees"""
+        with self.lock:
+            lat = self._defConvertMins(self.readings['lat'])
+            if self.readings['latDirection'] == 'S':
+                return -lat
+            return lat
+
+    def readAirMarLongitude(self):
+        """Retruns the longitude in degrees"""
+        with self.lock:
+            long = self._defConvertMins(self.readings['long'])
+            if self.readings['longDirection'] == 'W':
+                return -long
+            return long
 
     def _convertToPolar(raw_heading):
         """Converts the heading to polar coordinates."""
@@ -290,3 +306,9 @@ class SailAirMar:
     def _convertDegreePerSec(raw_rot):
         """Converts the heading to degrees per second."""
         return raw_rot/60.0
+
+    def _defConvertMins(minutes):
+        """Extract the degrees based on the format (DDMM.mmmm)"""
+        degrees = int(minutes // 100)
+        minutes_only = minutes % 100
+        return degrees + (minutes_only / 60)
