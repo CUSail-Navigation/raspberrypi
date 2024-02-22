@@ -238,7 +238,7 @@ class SailAirMar:
         reader_thread = threading.Thread(target=self.serialDataReader)
         reader_thread.daemon = True 
         reader_thread.start()
-
+    
     def serialDataReader(self):
         """Reads data from the serial port and stores it in a dictionary."""
         while True:
@@ -269,8 +269,24 @@ class SailAirMar:
         except ValueError:
             print("value error")
 
-    def readAirMarReadings(self):
-        """Returns the raw serial printout of the AirMar. This function needs to be called in a separate thread
-        than the main navigation algorithm."""
+    def readAirMarHeading(self):
+        """Returns the heading in degrees. 0 degrees is East, 90 degrees is North, 
+        180 degrees is West, 270 degrees is South."""
         with self.lock:
-            return self.readings
+            return self._convertToPolar(self.readings['heading'])
+        
+    def readAirMarROT(self):
+        """Returns the rate of turn in degrees per second."""
+        with self.lock:
+            return self._convertDegreePerSec()
+
+    def _convertToPolar(raw_heading):
+        """Converts the heading to polar coordinates."""
+        res = raw_heading - 90 
+        if res < 0:
+            return res + 360
+        return res
+    
+    def _convertDegreePerSec(raw_rot):
+        """Converts the heading to degrees per second."""
+        return raw_rot/60.0
