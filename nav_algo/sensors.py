@@ -55,14 +55,19 @@ class sensorData:
         self.AirMar = SailSensors.SailAirMar()
 
     def readAirMar(self):
-        rawData = self.AirMar.readAirMarReadings()
-        self.yaw = rawData["heading"]
-        self.pitch = 0
-        self.roll = 0
-        # self.latitude = rawData["latitude"]
-        # self.longitude = rawData["longtitude"]
+        self.yaw = self.AirMar.readAirMarHeading()
+        self.latitude = self.AirMar.readAirMarLatitude()
+        self.longitude = self.AirMar.readAirMarLongitude()
+        self.angular_velocity = self.AirMar.readAirMarROT()
 
-
+        new_position = coord.Vector(self.coordinate_system, 
+                                     self.latitude, self.longitude)
+        cur_time = time.time()
+        self.velocity = new_position.vectorSubtract(self.position)
+        self.velocity.scale(1.0 / (cur_time - self.prev_time_gps))
+        self.position = new_position
+        self.prev_time_gps = cur_time
+        
 
     def readIMU(self):
         rawData = self.IMU.i2c_read_imu()
@@ -163,19 +168,19 @@ class sensorData:
         self.wind_direction = 360 * np.random.rand()
 
     def readAll(self):
-        if self.mock_imu:
-            self.mockIMU()
-        else:
-            self.readIMU()
+        # if self.mock_imu:
+        #     self.mockIMU()
+        # else:
+        #     self.readIMU()
 
         if self.mock_anemometer:
             self.mockAnemometer()
         else:
             self.readWindDirection()
 
-        if self.mock_gps:
-            self.mockGPS()
-        else:
-            self.readGPS()
+        # if self.mock_gps:
+        #     self.mockGPS()
+        # else:
+        #     self.readGPS()
 
         self.readAirMar()

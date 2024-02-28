@@ -260,9 +260,9 @@ class SailAirMar:
                 # Wouldn't use yet--not sure about the units of measurement
                 self.readings['rateOfTurn'] = args[1]  
             elif "GLL" in label:
-                self.readings['lat'] = args[1]
+                self.readings['latitude'] = args[1]
                 self.readings['latDirection'] = args[2]
-                self.readings['long'] = args[3]
+                self.readings['longitude'] = args[3]
                 self.readings['longDirection'] = args[4]
             elif "VTG" in label:
                 self.readings['speed'] = args[1]
@@ -281,9 +281,9 @@ class SailAirMar:
             return self._convertDegreePerSec()
         
     def readAirMarLatitude(self):
-        """Retruns the latitude in degrees"""
+        """Returns the latitude in degrees"""
         with self.lock:
-            lat = self._defConvertMins(self.readings['lat'])
+            lat = self._defConvertMins(self.readings['latitude'])
             if self.readings['latDirection'] == 'S':
                 return -lat
             return lat
@@ -291,7 +291,7 @@ class SailAirMar:
     def readAirMarLongitude(self):
         """Retruns the longitude in degrees"""
         with self.lock:
-            long = self._defConvertMins(self.readings['long'])
+            long = self._defConvertMins(self.readings['longitude'])
             if self.readings['longDirection'] == 'W':
                 return -long
             return long
