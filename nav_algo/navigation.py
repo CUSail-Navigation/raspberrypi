@@ -1,12 +1,14 @@
 import time
 
 import nav_algo.configuration as conf
+import nav_algo.basic_algo as algo
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 import nav_algo.radio as radio
 from nav_algo.events import Events
 from nav_algo.navigation_helper import *
 from nav_algo.camera import Camera
+
 
 
 class NavigationController:
@@ -137,8 +139,10 @@ class NavigationController:
                         return boat_loc
 
             # Run the algorithm to get the desired sail and rudder angles
-            sail, rudder = self.configuration.algo.step(
-                self.configuration.boat, self.current_waypoint)
+            # Old sensor/algo command:
+            # sail, rudder = self.configuration.algo.step(
+            #     self.configuration.boat, self.current_waypoint)
+            sail, rudder = self.configuration.algo.step(boat_position, self.current_waypoint)
             self.configuration.boat.setServos(sail, rudder)
 
     def fleetRace(self):
