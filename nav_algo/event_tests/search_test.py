@@ -1,9 +1,21 @@
 import matplotlib.pyplot as plt
+#import sys
 import sys
+from pathlib import Path
 
-sys.path.append("..")
-from navigation_utilities import *
-from navigation_helper import *
+# Append the parent directory of `nav_algo` to sys.path
+parent_dir = str(Path(__file__).resolve().parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+print("Parent dir:",parent_dir)
+for path in sys.path:
+    print(path)
+
+#sys.path.append("..")
+from nav_algo.navigation_utilities import *
+#from navigation_helper import *
+from event_helper.search import search_helper
 
 
 class SearchTest:
@@ -18,7 +30,7 @@ class SearchTest:
         ys = [w[1] for w in self.waypoints]
         plt.plot(xs, ys, 'o', color="red")
 
-        gen_waypoints = search(self.waypoints)
+        gen_waypoints = search_helper(self.waypoints)
         xs = [w[0] for w in gen_waypoints]
         ys = [w[1] for w in gen_waypoints]
         xss = np.array(xs)

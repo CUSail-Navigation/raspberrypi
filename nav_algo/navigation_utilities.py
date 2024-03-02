@@ -234,12 +234,12 @@ def calculate_desired_heading(line_angle, e, r):
     return (line_angle - np.atan(e/r))
 
 
-def isInNoGoZone(desired_heading, true_wind_dir):
-    no_go_zone = ?? #do we have this as a variable 
-    if abs(desired_heading - true_wind_dir) < no_go_zone:
-        return True     
-    else:
-        return False
+# def isInNoGoZone(desired_heading, true_wind_dir):
+#     no_go_zone = ?? #do we have this as a variable 
+#     if abs(desired_heading - true_wind_dir) < no_go_zone:
+#         return True     
+#     else:
+#         return False
 
 def adjustForNoGo(desired_heading, true_wind_dir):
     limit = 20 # Replace num with true limit of wind direction
