@@ -1,18 +1,18 @@
 import time
 
-import configuration as conf
+import nav_algo.configuration as conf
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 import nav_algo.radio as radio
 from nav_algo.events import Events
 #from nav_algo.navigation_helper import *
 from nav_algo.camera import Camera
-from nav_algo.event_helper.station_keeping import stationKeeping
-from nav_algo.event_helper.endurance import endurance
-from nav_algo.event_helper.fleetrace import fleetRace
-from nav_algo.event_helper.precision_nav import precisionNavigation
-from nav_algo.event_helper.search import search
-from nav_algo.event_helper.collision_avoidance import collision_avoidance
+from nav_algo.event_helper.station_keeping_event.station_keeping import stationKeeping
+from nav_algo.event_helper.endurance_event.endurance import endurance
+from nav_algo.event_helper.fleetrace_event.fleetrace import fleetRace
+from nav_algo.event_helper.precision_nav_event.precision_nav import precisionNavigation
+from nav_algo.event_helper.search_event.search import search
+from nav_algo.event_helper.collision_event.collision_avoidance import collision_avoidance
 
 class NavigationController:
     """A controller class for the navigation algorithm.

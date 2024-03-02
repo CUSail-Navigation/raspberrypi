@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from nav_algo.navigation_utilities import *
 #from nav_algo.navigation_helper import *
-from nav_algo.event_helper.search import search_helper
+from nav_algo.event_helper.search_event.search import search_helper
 
 
 class SearchTest:
