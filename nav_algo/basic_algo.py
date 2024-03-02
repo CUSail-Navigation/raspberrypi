@@ -34,9 +34,11 @@ class BasicAlgo:
         Calculate and set the new sail angle given ... Figure out what parameters are needed
         """
         if 30 < self.windDir < 180:
-            self.servos.setSail(round((7/15)*self.windDir + 186)*5)
+            # self.servos.setSail(round((7/15)*self.windDir + 186)*5)
+            return round((7/15)*self.windDir + 186)*5
         elif 180 < self.windDir < 330:
-            self.servos.setSail(round((7/15)*self.windDir + 6)*5)
+            # self.servos.setSail(round((7/15)*self.windDir + 6)*5)
+            return round((7/15)*self.windDir + 6)*5
 
     def setRudder(self):
         """
@@ -45,9 +47,11 @@ class BasicAlgo:
         # calculate based on whether we're tacking or not. if yes, calculate 
         # direction to tacking point, if not, calcualte direction to dest. 
         if self.tacking:
-            self.servos.setTail(round(.25 * (self.tackingPoint-self.headingDir))*5)
+            # self.servos.setTail(round(.25 * (self.tackingPoint-self.headingDir))*5)
+            return round(.25 * (self.tackingPoint-self.headingDir))*5
         else:
-            self.servos.setTail(round(.25 * (self.currDest-self.headingDir))*5)
+            # self.servos.setTail(round(.25 * (self.currDest-self.headingDir))*5)
+            return round(.25 * (self.currDest-self.headingDir))*5
 
     def inNoGo(self):
         """
@@ -100,8 +104,7 @@ class BasicAlgo:
                 self.tacking = True
                 self.tackingDuration = 0
                 self.tackingPoint = self.calculateTP(currentLoc)
-        self.setSail()
-        self.setRudder()
+        return self.setSail(), self.setRudder()
             
 
 
