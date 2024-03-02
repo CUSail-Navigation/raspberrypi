@@ -1,21 +1,11 @@
 import matplotlib.pyplot as plt
+
 #import sys
-import sys
-from pathlib import Path
-
-# Append the parent directory of `nav_algo` to sys.path
-parent_dir = str(Path(__file__).resolve().parent.parent)
-if parent_dir not in sys.path:
-    sys.path.append(parent_dir)
-
-print("Parent dir:",parent_dir)
-for path in sys.path:
-    print(path)
-
 #sys.path.append("..")
+
 from nav_algo.navigation_utilities import *
-#from navigation_helper import *
-from event_helper.search import search_helper
+#from nav_algo.navigation_helper import *
+from nav_algo.event_helper.search import search_helper
 
 
 class SearchTest:

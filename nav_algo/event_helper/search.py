@@ -1,5 +1,5 @@
 #from navigation_helper import *
-from navigation import *
+from nav_algo.navigation import *
 # TODO: figure out what else to import
 
 def search(NavigationController):
