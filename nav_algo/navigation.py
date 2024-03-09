@@ -28,6 +28,12 @@ class NavigationController:
     def __init__(self, configuration: conf.NavigationConfiguration):
         self.configuration = configuration
         self.DETECTION_RADIUS = 5.0
+        
+        # New tacking fields
+        self.tacking = False
+        self.tackingPoint = None
+        self.tackingDuration = 0
+        self.distToDest = 0
 
         self.configuration.write_output(
             "Using lat/long point ({}, {}) as the center of the coordinate system.\n"
@@ -142,8 +148,9 @@ class NavigationController:
             # Old sensor/algo command:
             # sail, rudder = self.configuration.algo.step(
             #     self.configuration.boat, self.current_waypoint)
-            sail, rudder = self.configuration.algo.step(boat_position, self.current_waypoint)
+            sail, rudder, tacking, tpoint, tduration = self.configuration.algo.step(boat_position, self.current_waypoint, self.tacking, self.tackingPoint, self.tackingDuration, self.configuration.boat.sensors.yaw, self.configuration.boat.sensors.wind_direction)
             self.configuration.boat.setServos(sail, rudder)
+            self.tacking, self.tackingDuration, self.tackingPoint = tacking, tpoint, tduration
 
     def fleetRace(self):
         # While the configuration is in fleet race mode, read servo angles
