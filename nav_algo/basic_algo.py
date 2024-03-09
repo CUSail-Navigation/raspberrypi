@@ -2,7 +2,8 @@ import nav_algo.boat as b
 import numpy as np
 from nav_algo.navigation_helper import *
 from nav_algo.navigation_utilities import getServoAnglesImpl
-    
+import math
+
 class BasicAlgo:
     """
     The old navigation algorithm - this currently sucks and needs a major
@@ -46,18 +47,56 @@ class BasicAlgo:
             # self.servos.setSail(round((7/15)*self.windDir + 6)*5)
             return round((7/15)*cWindDir + 6)*5
 
-    def setRudder(tacking, tackingPoint, headingDir, currDest):
+    def setRudder(currLoc, tacking, tackingPoint, headingDir, currDest):
         """
-        Calculte and set the new rudder angle given ...
+        Calculate and set the new rudder angle given ...
         """
         # calculate based on whether we're tacking or not. if yes, calculate 
         # direction to tacking point, if not, calcualte direction to dest. 
-        if tacking:
-            # self.servos.setTail(round(.25 * (self.tackingPoint-self.headingDir))*5)
-            return round(.25 * (tackingPoint-headingDir))*5
+        if tacking: 
+            final = tackingPoint
         else:
-            # self.servos.setTail(round(.25 * (self.currDest-self.headingDir))*5)
-            return round(.25 * (currDest-headingDir))*5
+            final = currDest
+        
+        x_distance = final[0] - currLoc[0]
+        y_distance = final[1] - currLoc[1]
+        if x_distance > 0 and y_distance == 0:
+            angle = 0
+        elif x_distance == 0 and y_distance > 0:
+            angle = 90
+        elif x_distance < 0 and y_distance == 0:
+            angle = 180
+        elif x_distance == 0 and y_distance < 0:
+            angle = 270
+        elif x_distance > 0 and y_distance > 0:
+            angle = np.rad2deg(np.arctan(y_distance/x_distance))
+        elif x_distance < 0  and y_distance > 0:
+            angle = 180 + np.rad2deg(np.arctan(y_distance/x_distance))
+        elif x_distance < 0  and y_distance < 0:
+            angle = 180 + np.rad2deg(np.arctan(y_distance/x_distance))
+        elif x_distance > 0  and y_distance < 0:
+            angle = 360 + np.rad2deg(np.arctan(y_distance/x_distance))
+        else:
+            print("already at final destination")
+        
+        final_angle = angle - headingDir
+        if final_angle > 0 and final_angle <= 180:
+            #turn counter-clockwise
+            return -round((.05 * (final_angle)))*5
+        elif final_angle > 0 and final_angle > 180:
+            #turn clockwise
+            final_angle = 360 - final_angle
+            return round(.05 * (final_angle))*5
+        elif final_angle < 0 and final_angle >= -180:
+            #turn clockwise
+            return -round(.05 * (angle))*5
+        elif final_angle < 0 and final_angle >= -360:
+            #turn counter-clockwise
+            final_angle = 360 + final_angle
+            return -round(.05 * (final_angle))*5
+        else:
+            print ("invalid abs(final_angle) > 360")
+
 
     def inNoGo(headingDir, windDir):
         """
