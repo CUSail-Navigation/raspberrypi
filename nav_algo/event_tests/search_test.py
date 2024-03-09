@@ -15,13 +15,13 @@ print("Starting test for search.")
 waypoints = [(0, 0)]
 
 plt.figure()
-xs = [w[0] for w in self.waypoints]
-ys = [w[1] for w in self.waypoints]
+xs = [w[0] for w in waypoints]
+ys = [w[1] for w in waypoints]
 plt.plot(xs, ys, 'o', color="red")
 
-gen_waypoints = search_helper(self.waypoints)
-xs = [w[0] for w in gen_waypoints]
-ys = [w[1] for w in gen_waypoints]
+gen_waypoints = searchHelper(waypoints)
+xs = [w.x for w in gen_waypoints]
+ys = [w.y for w in gen_waypoints]
 xss = np.array(xs)
 yss = np.array(ys)
 for i in range(len(xs)):

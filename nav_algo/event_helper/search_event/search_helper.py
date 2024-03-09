@@ -1,6 +1,7 @@
 #from nav_algo.navigation import *
 #from nav_algo import sensors
 import math
+import random
 from nav_algo.coordinates import Vector
 
 def searchHelper(waypoints):
@@ -13,21 +14,22 @@ def searchHelper(waypoints):
     center_point = waypoints[0]
     radius = 100
     # Generating waypoints
-    x = center_point.x - 100
+    print(center_point)
+    x = center_point[0] - 100
     for i in range(-radius, radius, 1):
-        y = center_point.y + fcn(x, 100)
-        new_waypoint = Vector(x, y)
+        y = center_point[1] + fcn(x, 100)
+        new_waypoint = Vector(x=x, y=y)
         search_waypoints.insert(len(search_waypoints), new_waypoint)
         x += 1
     # Rotating waypoints based on initial wind direction
     #theta = sensors.readWindDirection()
-    theta = math.random() * 360
+    theta = random.randint(1, 360)
     for point in search_waypoints:
         rotatedx = point.x*math.cos(theta) - point.y*math.sin(theta)
         rotatedy = point.x*math.sin(theta) + point.y*math.cos(theta)
-        new_rotated_waypoint = Vector(rotatedx, rotatedy)
+        new_rotated_waypoint = Vector(x=rotatedx, y=rotatedy)
         rotated_waypoints.insert(len(rotated_waypoints), new_rotated_waypoint)
-    print(rotated_waypoints)
+    #print(rotated_waypoints)
     return rotated_waypoints
 
 def fcn(x, radius):
