@@ -60,12 +60,12 @@ class sensorData:
         self.latitude = self.AirMar.readAirMarLatitude()
         self.longitude = self.AirMar.readAirMarLongitude()
         self.angular_velocity = self.AirMar.readAirMarROT()
-
         new_position = coord.Vector(self.coordinate_system, 
                                      self.latitude, self.longitude)
         cur_time = time.time()
-        self.velocity = new_position.vectorSubtract(self.position)
-        self.velocity.scale(1.0 / (cur_time - self.prev_time_gps))
+        if self.prev_time_gps is not None:
+                self.velocity = new_position.vectorSubtract(self.position)
+                self.velocity.scale(1.0 / (cur_time - self.prev_time_gps))
         self.position = new_position
         self.prev_time_gps = cur_time
         
@@ -183,4 +183,5 @@ class sensorData:
         # else:
         #     self.readGPS()
 
-        self.readAirMar()
+        if self.AirMar:
+                self.readAirMar()

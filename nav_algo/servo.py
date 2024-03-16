@@ -82,7 +82,3 @@ class Servo:
         """
         return (((val - startmin) / (startmax - startmin)) * (endMax - endMin)) + endMin
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 211f6b856226d25e5313958a7aab9abd876278b8
