@@ -57,9 +57,10 @@ class BasicAlgo:
             final = tackingPoint
         else:
             final = currDest
+        print(tacking)
         # 'final' and 'currLoc' are sometimes 'Vector' or 'tuple' types. Bracket indexing works when they are tuples but not when they are vectors.
-        x_distance = final[0]- currLoc[0]
-        y_distance = final[1]- currLoc[1]
+        x_distance = final.getX() - currLoc.getX()
+        y_distance = final.getY() - currLoc.getY()
         if x_distance > 0 and y_distance == 0:
             angle = 0
         elif x_distance == 0 and y_distance > 0:
