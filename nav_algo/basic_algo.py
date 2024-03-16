@@ -57,9 +57,9 @@ class BasicAlgo:
             final = tackingPoint
         else:
             final = currDest
-        
-        x_distance = final[0] - currLoc[0]
-        y_distance = final[1] - currLoc[1]
+
+        x_distance = final[0]- currLoc[0]
+        y_distance = final[1]- currLoc[1]
         if x_distance > 0 and y_distance == 0:
             angle = 0
         elif x_distance == 0 and y_distance > 0:
@@ -88,7 +88,7 @@ class BasicAlgo:
             final_angle = 360 - final_angle
             return round(.05 * (final_angle))*5
         elif final_angle < 0 and final_angle >= -180:
-            #turn clockwise
+            #turn clockwisesetRudder
             return -round(.05 * (angle))*5
         elif final_angle < 0 and final_angle >= -360:
             #turn counter-clockwise
@@ -111,19 +111,20 @@ class BasicAlgo:
         """
         Calculates the euclidean distance to the destination
         """
-        cx, cy = currLoc[0], currLoc[1]
-        dx, dy = destLoc[0], destLoc[1]
+        cx, cy = currLoc.getX(), currLoc.getY()
+        dx, dy = destLoc.getX(), destLoc.getY()
         return math.sqrt((cx - dx)**2 + (cy - dy)**2)
     
-    def calcualteTP(currentLocation, destination, windDirection):
+    def calculateTP(currentLocation, destination, windDirection):
         """
         Calcualte tacking point to begin tacking. uses winddir + dest
         Assuming that the boat is heading towards the positive x-axis and the destination
         """
-        x = currentLocation[0]
-        y = currentLocation[1]
+        x = currentLocation.getX()
+        y = currentLocation.getY()
         dist2Dest = BasicAlgo.calculateDistToDest(currentLocation, destination)
         windDir = windDirection % 360
+        print("windDir: " + str(windDir))
         if windDir >= 0 and windDir <= 30:
             x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windDir))*np.sin(np.deg2rad(45+windDir))
             y_TP = y - dist2Dest*np.cos(np.deg2rad(45-windDir))*np.cos(np.deg2rad(45+windDir))
@@ -132,10 +133,13 @@ class BasicAlgo:
             windDir = 360 - windDir
             x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windDir))*np.sin(np.deg2rad(45+windDir))
             y_TP = y + dist2Dest*np.cos(np.deg2rad(45-windDir))*np.cos(np.deg2rad(45+windDir))
-            tackingPoint = (x_TP, y_TP)
+            tackingPoint = (x_TP, y_TP)tpoint
+        # local variable 'tackingPoint' referenced before assignment 
+        # What should be returned if windDir doesn't meet the if/elif conditions?
+        tackingPoint = (0,0)
         return tackingPoint
 
-    def step(currentLoc, destination, tacking, tpoint, tduration, headingDir, windDir):
+    def step(self, currentLoc, destination, tacking, tpoint, tduration, headingDir, windDir):
         """
         Sail. Todo: implement time buffer for tacking. if tacking for > 2 mins?
         If we call this function every 4 seconds --> tackingDur > 30
@@ -150,7 +154,7 @@ class BasicAlgo:
                     # only get out of tacking after 2 mins
                     tacking = False
                     tduration = 0
-                else:
+                else:tpoint
                     tduration += 1
             else:
                 tduration += 1   
@@ -158,8 +162,8 @@ class BasicAlgo:
             if BasicAlgo.inNoGo(headingDir, windDir):
                 tacking = True
                 tduration = 0
-                tpoint = BasicAlgo.calculateTP(currentLoc)
-        return BasicAlgo.setSail(windDir, headingDir), BasicAlgo.setRudder(tacking, tpoint, headingDir, destination), tacking, tpoint, tduration
+                tpoint = BasicAlgo.calculateTP(currentLoc, destination, windDir)
+        return BasicAlgo.setSail(windDir, headingDir), BasicAlgo.setRudder(currentLoc, tacking, tpoint, headingDir, destination), tacking, tpoint, tduration
             
 
 
