@@ -57,7 +57,7 @@ class BasicAlgo:
             final = tackingPoint
         else:
             final = currDest
-
+        # 'final' and 'currLoc' are sometimes 'Vector' or 'tuple' types. Bracket indexing works when they are tuples but not when they are vectors.
         x_distance = final[0]- currLoc[0]
         y_distance = final[1]- currLoc[1]
         if x_distance > 0 and y_distance == 0:
@@ -133,7 +133,7 @@ class BasicAlgo:
             windDir = 360 - windDir
             x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windDir))*np.sin(np.deg2rad(45+windDir))
             y_TP = y + dist2Dest*np.cos(np.deg2rad(45-windDir))*np.cos(np.deg2rad(45+windDir))
-            tackingPoint = (x_TP, y_TP)tpoint
+            tackingPoint = (x_TP, y_TP)
         # local variable 'tackingPoint' referenced before assignment 
         # What should be returned if windDir doesn't meet the if/elif conditions?
         tackingPoint = (0,0)
@@ -154,7 +154,7 @@ class BasicAlgo:
                     # only get out of tacking after 2 mins
                     tacking = False
                     tduration = 0
-                else:tpoint
+                else:
                     tduration += 1
             else:
                 tduration += 1   
