@@ -1,12 +1,14 @@
 import time
 
 import nav_algo.configuration as conf
+import nav_algo.basic_algo as algo
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 import nav_algo.radio as radio
 from nav_algo.events import Events
 from nav_algo.navigation_helper import *
 from nav_algo.camera import Camera
+
 
 
 class NavigationController:
@@ -26,6 +28,12 @@ class NavigationController:
     def __init__(self, configuration: conf.NavigationConfiguration):
         self.configuration = configuration
         self.DETECTION_RADIUS = 5.0
+        
+        # New tacking fields
+        self.tacking = False
+        self.tackingPoint = None
+        self.tackingDuration = 0
+        self.distToDest = 0
 
         self.configuration.write_output(
             "Using lat/long point ({}, {}) as the center of the coordinate system.\n"
@@ -137,9 +145,12 @@ class NavigationController:
                         return boat_loc
 
             # Run the algorithm to get the desired sail and rudder angles
-            sail, rudder = self.configuration.algo.step(
-                self.configuration.boat, self.current_waypoint)
+            # Old sensor/algo command:
+            # sail, rudder = self.configuration.algo.step(
+            #     self.configuration.boat, self.current_waypoint)
+            sail, rudder, tacking, tpoint, tduration = self.configuration.algo.step(boat_position, self.current_waypoint, self.tacking, self.tackingPoint, self.tackingDuration, self.configuration.boat.sensors.yaw, self.configuration.boat.sensors.wind_direction)
             self.configuration.boat.setServos(sail, rudder)
+            self.tacking, self.tackingDuration, self.tackingPoint = tacking, tpoint, tduration
 
     def fleetRace(self):
         # While the configuration is in fleet race mode, read servo angles
