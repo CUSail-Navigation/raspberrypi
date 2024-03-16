@@ -270,7 +270,7 @@ class SailAirMar:
             print("error parsing")
 
     def readAirMarHeading(self):
-        """Returns the heading in degrees. 0 degrees is East, 90 degrees is North, 
+        """Returns the heading in degrees. 0 degrees is East, 90 degrees is North,
         180 degrees is West, 270 degrees is South."""
         with self.lock:
             return self._convertToPolar(self.readings['heading'])
@@ -283,26 +283,28 @@ class SailAirMar:
     def readAirMarLatitude(self):
         """Returns the latitude in degrees"""
         with self.lock:
-            lat = self._defConvertMins(self.readings['latitude'])
-            if self.readings['latDirection'] == 'S':
-                return -lat
-            return lat
+            if self.readings['latitude'] != '':
+                lat = self._defConvertMins(self.readings['latitude'])
+                if self.readings['latDirection'] == 'S':
+                    return -lat
+                return lat
 
     def readAirMarLongitude(self):
         """Retruns the longitude in degrees"""
         with self.lock:
-            long = self._defConvertMins(self.readings['longitude'])
-            if self.readings['longDirection'] == 'W':
-                return -long
-            return long
+            if self.readings['longitude'] != '':
+                long = self._defConvertMins(self.readings['longitude'])
+                if self.readings['longDirection'] == 'W':
+                    return -long
+                return long
 
     def _convertToPolar(raw_heading):
         """Converts the heading to polar coordinates."""
-        res = raw_heading - 90 
+        res = raw_heading - 90
         if res < 0:
             return res + 360
         return res
-    
+
     def _convertDegreePerSec(raw_rot):
         """Converts the heading to degrees per second."""
         return raw_rot/60.0
