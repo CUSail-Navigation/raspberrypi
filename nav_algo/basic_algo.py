@@ -55,11 +55,13 @@ class BasicAlgo:
         # direction to tacking point, if not, calcualte direction to dest. 
         if tacking: 
             final = tackingPoint
+            x_distance = final[0] - currLoc.getX()
+            y_distance = final[1] - currLoc.getY()
         else:
-            final = currDest
+            x_distance = currDest.getX() - currLoc.getX()
+            y_distance = currDest.getY() - currLoc.getY()
         # 'final' and 'currLoc' are sometimes 'Vector' or 'tuple' types. Bracket indexing works when they are tuples but not when they are vectors.
-        x_distance = final[0]- currLoc[0]
-        y_distance = final[1]- currLoc[1]
+               
         if x_distance > 0 and y_distance == 0:
             angle = 0
         elif x_distance == 0 and y_distance > 0:
@@ -88,7 +90,7 @@ class BasicAlgo:
             final_angle = 360 - final_angle
             return round(.05 * (final_angle))*5
         elif final_angle < 0 and final_angle >= -180:
-            #turn clockwisesetRudder
+            #turn clockwise
             return -round(.05 * (angle))*5
         elif final_angle < 0 and final_angle >= -360:
             #turn counter-clockwise
@@ -136,7 +138,7 @@ class BasicAlgo:
             tackingPoint = (x_TP, y_TP)
         # local variable 'tackingPoint' referenced before assignment 
         # What should be returned if windDir doesn't meet the if/elif conditions?
-        tackingPoint = (0,0)
+        # also this shouldn't be a tuple
         return tackingPoint
 
     def step(self, currentLoc, destination, tacking, tpoint, tduration, headingDir, windDir):
