@@ -117,7 +117,7 @@ class BasicAlgo:
         dx, dy = destLoc.getX(), destLoc.getY()
         return math.sqrt((cx - dx)**2 + (cy - dy)**2)
     
-    def calculateTP(currentLocation, destination, windDirection):
+    def calculateTP(currentLocation, destination, windDirection, headingDirection):
         """
         Calcualte tacking point to begin tacking. uses winddir + dest
         Assuming that the boat is heading towards the positive x-axis and the destination
@@ -125,20 +125,17 @@ class BasicAlgo:
         x = currentLocation.getX()
         y = currentLocation.getY()
         dist2Dest = BasicAlgo.calculateDistToDest(currentLocation, destination)
-        windDir = windDirection % 360
-        print("windDir: " + str(windDir))
-        if windDir >= 0 and windDir <= 30:
-            x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windDir))*np.sin(np.deg2rad(45+windDir))
-            y_TP = y - dist2Dest*np.cos(np.deg2rad(45-windDir))*np.cos(np.deg2rad(45+windDir))
+        windWRThead = BasicAlgo.calibrate_wind_direction(windDirection, headingDirection)
+        print("windDir: " + str(windWRThead))
+        if windWRThead >= 0 and windWRThead <= 30:
+            x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.sin(np.deg2rad(45+windWRThead))
+            y_TP = y - dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.cos(np.deg2rad(45+windWRThead))
             tackingPoint = (x_TP, y_TP)
-        elif windDir >= 330 and windDir <= 359:
-            windDir = 360 - windDir
-            x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windDir))*np.sin(np.deg2rad(45+windDir))
-            y_TP = y + dist2Dest*np.cos(np.deg2rad(45-windDir))*np.cos(np.deg2rad(45+windDir))
+        elif windWRThead >= 330 and windWRThead <= 359:
+            windWRThead = 360 - windWRThead
+            x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.sin(np.deg2rad(45+windWRThead))
+            y_TP = y + dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.cos(np.deg2rad(45+windWRThead))
             tackingPoint = (x_TP, y_TP)
-        # local variable 'tackingPoint' referenced before assignment 
-        # What should be returned if windDir doesn't meet the if/elif conditions?
-        # also this shouldn't be a tuple
         return tackingPoint
 
     def step(self, currentLoc, destination, tacking, tpoint, tduration, headingDir, windDir):
@@ -164,7 +161,7 @@ class BasicAlgo:
             if BasicAlgo.inNoGo(headingDir, windDir):
                 tacking = True
                 tduration = 0
-                tpoint = BasicAlgo.calculateTP(currentLoc, destination, windDir)
+                tpoint = BasicAlgo.calculateTP(currentLoc, destination, windDir, headingDir)
         return BasicAlgo.setSail(windDir, headingDir), BasicAlgo.setRudder(currentLoc, tacking, tpoint, headingDir, destination), tacking, tpoint, tduration
             
 
