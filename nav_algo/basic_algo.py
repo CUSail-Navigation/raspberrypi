@@ -46,6 +46,12 @@ class BasicAlgo:
         elif 180 < cWindDir < 330:
             # self.servos.setSail(round((7/15)*self.windDir + 6)*5)
             return round((7/15)*cWindDir + 6)*5
+        elif 0 <= cWindDir <= 30:
+            # check this later
+            return -40
+        else:
+            # check this too
+            return 40
 
     def setRudder(currLoc, tacking, tackingPoint, headingDir, currDest):
         """
