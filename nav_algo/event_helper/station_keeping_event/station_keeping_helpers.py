@@ -1,3 +1,6 @@
+# Entry: Finds the midpoint of the four corners of the square. Gets the current position 
+# of the boat and appends the midpoint that's closest to the boat
+# then appends the center of the square 
 def stationKeepingHelper(waypoints, circle_radius, state, boat, opt_angle=45):
     if state == "ENTRY":
         stationKeepingWaypoints = []  # Necessary waypoints
@@ -18,10 +21,14 @@ def stationKeepingHelper(waypoints, circle_radius, state, boat, opt_angle=45):
         stationKeepingWaypoints.append(shortest_dist[1])
 
         # center of the square
+        # we think that waypoints[2] is diagonal from waypoints[0]
         center = waypoints[0].midpoint(waypoints[2])
         stationKeepingWaypoints.append(center)
         return stationKeepingWaypoints
 
+    # gets the x-coord and y-coord of the boat. Finds the first waypoint by adding
+    # boat direction and opt_angle (which is always 45? - why). Plots waypoints
+    # in a circle 90 degrees apart (all based on where the first waypoint is - why)
     elif state == "KEEP":
         # downwind=wind-yaw=0=clockwise,
         keep_waypoints = []
@@ -82,5 +89,6 @@ def stationKeepingHelper(waypoints, circle_radius, state, boat, opt_angle=45):
                             (curr_pos.xyDist(south_exit), south_exit),
                             (curr_pos.xyDist(west_exit), west_exit),
                             key=lambda x: x[0])
+        # why are we returning shortest_dist[1]? 
         return [shortest_dist[1]]
     
