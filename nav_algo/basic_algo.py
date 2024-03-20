@@ -40,10 +40,10 @@ class BasicAlgo:
         Calculate and set the new sail angle given ... Figure out what parameters are needed
         """
         cWindDir = BasicAlgo.calibrate_wind_direction(windDir, currHead)
-        if 30 < cWindDir < 180:
+        if 210 < cWindDir < 360:
             # self.servos.setSail(round((7/15)*self.windDir + 186)*5)
             return round((7/15)*cWindDir + 186)*5
-        elif 180 < cWindDir < 330:
+        elif 0 < cWindDir < 150:
             # self.servos.setSail(round((7/15)*self.windDir + 6)*5)
             return round((7/15)*cWindDir + 6)*5
         elif 0 <= cWindDir <= 30:
