@@ -131,13 +131,12 @@ class BasicAlgo:
         x = currentLocation.getX()
         y = currentLocation.getY()
         dist2Dest = BasicAlgo.calculateDistToDest(currentLocation, destination)
-        windWRThead = BasicAlgo.calibrate_wind_direction(windDirection, headingDirection)
-        print("windDir: " + str(windWRThead))
-        if windWRThead >= 0 and windWRThead <= 30:
+        windWRThead = BasicAlgo.calibrate_wind_direction(windDirection, headingDirection) # does this line mess with calculations?
+        if windWRThead >= 180 and windWRThead <= 210:
             x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.sin(np.deg2rad(45+windWRThead))
             y_TP = y - dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.cos(np.deg2rad(45+windWRThead))
             tackingPoint = (x_TP, y_TP)
-        elif windWRThead >= 330 and windWRThead <= 359:
+        elif windWRThead >= 150 and windWRThead <= 180:
             windWRThead = 360 - windWRThead
             x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.sin(np.deg2rad(45+windWRThead))
             y_TP = y + dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.cos(np.deg2rad(45+windWRThead))
