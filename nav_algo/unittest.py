@@ -1,9 +1,13 @@
 import unittest
+from nav_algo.coordinates import Vector
+from nav_algo.event_tests.station_keeping_test import StationKeepingTests
 
 class TestEventAlgorithms(unittest.TestCase):
 
     def test_station_keeping(self):
-        self.assertEqual('foo'.upper(), 'FOO')
+        test = StationKeepingTests()
+        self.assertTrue(test.entryStationKeepingTest(Vector(x=0.0, y=50.0), 0, 25))
+        self.assertTrue(test.entryStationKeepingTest(Vector(x=100.0, y=50.0), 80, 20))
 
     def test_endurance(self):
         self.assertTrue('FOO'.isupper())
@@ -26,4 +30,6 @@ class TestEventAlgorithms(unittest.TestCase):
     
 
 if __name__ == '__main__':
-    unittest.main()
+    # unittest.main()
+    test = TestEventAlgorithms()
+    test.test_station_keeping()

@@ -90,5 +90,6 @@ def stationKeepingHelper(waypoints, circle_radius, state, boat, opt_angle=45):
                             (curr_pos.xyDist(west_exit), west_exit),
                             key=lambda x: x[0])
         # why are we returning shortest_dist[1]? 
+        print(shortest_dist[1])
         return [shortest_dist[1]]
     
