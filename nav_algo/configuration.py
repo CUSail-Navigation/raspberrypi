@@ -122,7 +122,7 @@ class NavigationConfiguration:
                str(origLat) + ",Origin Longitude: " + str(origLong) +
                ",X position: " + str(currentPositionX) + ",Y position: " +
                str(currentPositionY) + ",Wind Direction: " + str(windDir) +
-                + ",Pitch: " + str(pitch) +
+                ",Pitch: " + str(pitch) +
                ",Roll: " + str(roll) + ",Yaw: " + str(yaw) + ",Sail Angle: " +
                str(sailAngle) + ",Tail Angle: " + str(tailAngle) +
                ",Heading: " + str(heading) + ",Angular velocity: " +
