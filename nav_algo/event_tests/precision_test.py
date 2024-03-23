@@ -2,8 +2,9 @@ import matplotlib.pyplot as plt
 import sys
 
 sys.path.append("..")
-from navigation_helper import *
-from navigation_utilities import *
+from nav_algo.event_helper.precision_nav_event.precision_nav import *
+# from nav_algo.event_helper.navigation_helper import *
+# from navigation_utilities import *
 
 
 class PrecisionTest:
@@ -20,7 +21,7 @@ class PrecisionTest:
         plt.plot(xs, ys, 'o', color="orange")
 
         # gen_waypoints = precisionNavigationImpl(self.waypoints)
-        gen_waypoints = precisionNavigationImpl(self.waypoints)
+        gen_waypoints = precisionNavigationAlgo(self.waypoints, 50)
         xs = [w[0] for w in gen_waypoints]
         ys = [w[1] for w in gen_waypoints]
         colors = ['r', 'y', 'g', 'b', 'm']
@@ -28,3 +29,6 @@ class PrecisionTest:
             plt.plot(xs[i], ys[i], 'x')
 
         plt.show()
+    
+if __name__ == "__main__":
+    PrecisionTest()
