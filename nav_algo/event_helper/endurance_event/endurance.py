@@ -1,4 +1,6 @@
-from navigation import *
+import time
+import nav_algo.coordinates as coord
+import numpy as np
 
 def endurance(NavigationController):
     # Loop around the same waypoints for 7 hours.

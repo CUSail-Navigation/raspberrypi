@@ -2,9 +2,8 @@ import matplotlib.pyplot as plt
 import sys
 
 sys.path.append("..")
-from navigation_helper import *
-import coordinates as coord
-
+from nav_algo.event_helper.endurance_event.endurance import *
+import nav_algo.coordinates as coord
 
 class EnduranceTest:
 
@@ -59,7 +58,7 @@ class EnduranceTest:
         plt.show()
 
     def getLoopWaypoints(self):
-        lw = counterClockwiseRect(self.waypoints, self.boat, buoy_offset=20)
+        lw = counterClockwiseRect(self.waypoints, self.boat, buoy_offset=2)
         return lw
 
 
@@ -70,3 +69,6 @@ class MockBoat:
 
     def getPosition(self):
         return self.position
+
+if __name__ == "__main__":
+    EnduranceTest()
