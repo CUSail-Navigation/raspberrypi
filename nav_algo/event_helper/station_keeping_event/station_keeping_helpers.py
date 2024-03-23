@@ -1,7 +1,7 @@
-# Entry: Finds the midpoint of the four corners of the square. Gets the current position 
-# of the boat and appends the midpoint that's closest to the boat
-# then appends the center of the square 
 def stationKeepingHelper(waypoints, circle_radius, state, boat, opt_angle=45):
+    # Entry: Finds the midpoint of the four corners of the square. Gets the current position 
+    # of the boat and appends the midpoint that's closest to the boat
+    # then appends the center of the square 
     if state == "ENTRY":
         stationKeepingWaypoints = []  # Necessary waypoints
         # entry point to the square

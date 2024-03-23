@@ -81,8 +81,3 @@ class Servo:
         Returns value based on a linear map of MIN -> MAX to a value ENDMIN -> ENDMAX
         """
         return (((val - startmin) / (startmax - startmin)) * (endMax - endMin)) + endMin
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 211f6b856226d25e5313958a7aab9abd876278b8
