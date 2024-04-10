@@ -110,7 +110,8 @@ class BasicAlgo:
         """
         Checks if the boat is currently in the no go zone (within )
         """
-        if abs(headingDir - windDir) < 30 or abs(headingDir - windDir) > 330:
+        calWind = BasicAlgo.calibrate_wind_direction(windDir, headingDir)
+        if 150 < calWind < 210:
             return True
         else:
             return False
