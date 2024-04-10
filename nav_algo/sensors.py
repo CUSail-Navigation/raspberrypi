@@ -98,7 +98,6 @@ class sensorData:
         # returns the wind in polar coordinates
         rawData = self.anemometer.readAnemometerVoltage()
         self.wind_direction = (-294 + 90 - rawData * 360 / 1720) % 360
-        print("WIND DIRECTION: " + str(self.relative_wind))
         return
 
     def readGPS(self):
