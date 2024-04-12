@@ -1,7 +1,7 @@
 import cv2
 from enum import Enum
-# from nav_algo.computer_vision.detectors.utils import *
-from utils import *
+from nav_algo.computer_vision.detectors.utils import *
+#from utils import *
 
 
 class BuoyDetector:

@@ -1,5 +1,5 @@
 import nav_algo.boat as b
-from nav_algo.navigation_helper import *
+from nav_algo.event_helper.navigation_helper import newSailingAngle 
 from nav_algo.navigation_utilities import getServoAnglesImpl
     
 class BasicAlgo:

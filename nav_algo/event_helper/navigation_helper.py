@@ -2,8 +2,6 @@ import nav_algo.coordinates as coord
 import nav_algo.navigation_utilities as util
 import math
 import numpy as np
-import sensors
-
 
 def newSailingAngle(boat, target):
     """TODO Determines the best angle to sail at.

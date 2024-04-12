@@ -1,4 +1,6 @@
-from navigation import *
+from nav_algo.navigation import Camera, time, coord
+from nav_algo.navigation_utilities import collisionAvoidanceImpl, midpoint
+import math 
 
 def collision_avoidance(NavigationController):
     NavigationController.camera = Camera()
@@ -57,7 +59,7 @@ def unitVector(coords):
 def collisionAvoidance(waypoints):
     # waypoints:[top two buoys, other buoy]
     buoys = [(w.x, w.y) for w in waypoints]
-    out_waypoints = util.collisionAvoidanceImpl(buoys)
+    out_waypoints = collisionAvoidanceImpl(buoys)
     out_waypoints = [coord.Vector(x=w[0], y=w[1]) for w in out_waypoints]
     return out_waypoints
 
@@ -72,7 +74,7 @@ def collisionAvoidanceImpl(buoys):
 
     """
     # The first and last waypoints are between the start buoys
-    mid = util.midpoint(buoys[0], buoys[1])
+    mid = midpoint(buoys[0], buoys[1])
     waypoints = [mid]
     waypoints.append(buoys[2])
     waypoints.append(mid)
