@@ -2,6 +2,7 @@ import numpy as np
 import nav_algo.coordinates as coord
 import math
 import random
+from nav_algo.navigation_utilities import precisionNavigationImpl
 
 def findAnglePrecisionNav(bouys):
     """Finds the angle of the orientation of the bouys.
@@ -73,41 +74,41 @@ def generate_t_vals(num_waypoints):
     """
     return np.linspace(0, 2.0 * np.pi, num_waypoints).tolist()
 
-def precisionNavigationAlgo(bouys, num_waypoints):
-    """Generates navigation waypoints from the precision nav buoy locations.
+# def precisionNavigationAlgo(bouys, num_waypoints):
+    # """Generates navigation waypoints from the precision nav buoy locations.
 
-        Args:
-            buoys (list of (float, float)): The ordered buoy locations (top_l, top_r, bot_l, bot_r).
+        # Args:
+            # buoys (list of (float, float)): The ordered buoy locations (top_l, top_r, bot_l, bot_r).
 
-        Returns:
-            (list of (float, float): The generated waypoint locations.
+        # Returns:
+            # (list of (float, float): The generated waypoint locations.
 
-    """
-    # buoys:[topleft_buoy, topright_buoy, botleft_buoy, botright_buoy]
-    topleft_buoy = bouys[0]
-    topright_buoy = bouys[1]
-    botleft_buoy = bouys[2]
-    botright_buoy = bouys[3]
+    # """
+    # # buoys:[topleft_buoy, topright_buoy, botleft_buoy, botright_buoy]
+    # topleft_buoy = bouys[0]
+    # topright_buoy = bouys[1]
+    # botleft_buoy = bouys[2]
+    # botright_buoy = bouys[3]
     
-    # Scale the teardrop curve to the correct size
-    height = np.sqrt((topleft_buoy[0] - botleft_buoy[0]) ** 2 + 
-                     (topleft_buoy[1] - botleft_buoy[1]) **2) / 1.8
+    # # Scale the teardrop curve to the correct size
+    # height = np.sqrt((topleft_buoy[0] - botleft_buoy[0]) ** 2 + 
+                     # (topleft_buoy[1] - botleft_buoy[1]) **2) / 1.8
     
-    width = np.sqrt((botleft_buoy[0] - botright_buoy[0]) ** 2 + 
-                    (botleft_buoy[1] - botright_buoy[1]) **2) + 5.0
+    # width = np.sqrt((botleft_buoy[0] - botright_buoy[0]) ** 2 + 
+                    # (botleft_buoy[1] - botright_buoy[1]) **2) + 5.0
 
-    t_values = generate_t_vals(num_waypoints)
+    # t_values = generate_t_vals(num_waypoints)
 
-    # start/finish position between top buoys
-    start_pos = midpoint(topleft_buoy, topright_buoy)
+    # # start/finish position between top buoys
+    # start_pos = midpoint(topleft_buoy, topright_buoy)
 
-    out_waypoints = []
-    for i in range(len(t_values)):
-        out_waypoints.append(teardrop_shaped_curve(start_pos, t_values[i], height,
-                                                   width, 
-                                                   findAnglePrecisionNav(bouys)))
+    # out_waypoints = []
+    # for i in range(len(t_values)):
+        # out_waypoints.append(teardrop_shaped_curve(start_pos, t_values[i], height,
+                                                   # width, 
+                                                   # findAnglePrecisionNav(bouys)))
 
-    return out_waypoints
+    # return out_waypoints
 
 def midpoint(u, v):
     """
@@ -195,6 +196,7 @@ def generateBuoys():
 def precisionNavigation(navigationController): #NavigationController
     # waypoints:[topleft_buoy, topright_buoy, botleft_buoy, botright_buoy]
     buoys = [(w.x, w.y) for w in navigationController.configuration.waypoints]
-    out_waypoints = precisionNavigationAlgo(buoys)
+    #out_waypoints = precisionNavigationAlgo(buoys)
+    out_waypoints = precisionNavigationImpl(buoys)
     out_waypoints = [coord.Vector(x=w[0], y=w[1]) for w in out_waypoints]
     return out_waypoints

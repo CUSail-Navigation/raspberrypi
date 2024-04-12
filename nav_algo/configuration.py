@@ -60,13 +60,13 @@ class NavigationConfiguration:
             obj["output"] = "radio"  # must get input from radio
 
         # Figure out if the radio is being used or just print statements
-        if obj["output"] == "radio":
-            self.radio = radio.Radio(
-                9600,
-                boatController=self.boat,
-                fleetRace=(self.event == Events.FLEET_RACE))
-        else:
-            self.radio = None
+        #if obj["output"] == "radio":
+        #    self.radio = radio.Radio(
+        #        9600,
+        #        boatController=self.boat,
+        #        fleetRace=(self.event == Events.FLEET_RACE))
+        #else:
+        self.radio = None
 
     def write_output(self, message):
         if self.radio is None:
