@@ -1,11 +1,11 @@
 {
-    "peripherals":{
+    "peripherals": {
         "gps": "fake",
-        "imu": "real",
-        "anemometer": "real",
-        "servos": "real"
+        "imu": "fake",
+        "anemometer": "fake",
+        "servos": "fake"
     },
-    "algo":{
+    "algo": {
         "type": "rl",
         "model_path": "./nav_algo/models/best_actor_sailboat.pickle"
     },

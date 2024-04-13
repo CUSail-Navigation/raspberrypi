@@ -48,11 +48,11 @@ class NavigationConfiguration:
         self.boat = boat.BoatController(coord_sys, sensor_data, mock_servos)
 
         # Determine whether the reinforcement learning or basic algorithm is used
-        self.algo = None
-        if obj["algo"]["type"] == "rl":
-            self.algo = RL(obj["algo"]["model_path"])
-        else:
-            self.algo = BasicAlgo()
+        self.algo = BasicAlgo()
+        # if obj["algo"]["type"] == "rl":
+        #     self.algo = RL(obj["algo"]["model_path"])
+        # else:
+        #     self.algo = BasicAlgo()
 
         # Figure out which event is being run
         self.event = event
