@@ -24,7 +24,7 @@ def main():
         contours = bd.filter_contours_output
         found = contours != None
 
-        #print(bd.find_distance_largest_contour())
+        print(bd.find_distance_largest_contour())
 
         cv2.drawContours(frame, contours, -1, (0, 255, 0), 3)
 
