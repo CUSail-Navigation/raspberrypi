@@ -106,7 +106,7 @@ class NavigationConfiguration:
         currentPositionX = self.boat.sensors.position.x
         currentPositionY = self.boat.sensors.position.y
         windDir = self.boat.sensors.wind_direction
-        relWind = self.boat.sensors.relative_wind
+        # relWind = self.boat.sensors.relative_wind
         pitch = self.boat.sensors.pitch
         roll = self.boat.sensors.roll
         yaw = self.boat.sensors.yaw
@@ -122,7 +122,7 @@ class NavigationConfiguration:
                str(origLat) + ",Origin Longitude: " + str(origLong) +
                ",X position: " + str(currentPositionX) + ",Y position: " +
                str(currentPositionY) + ",Wind Direction: " + str(windDir) +
-               ",Relative wind: " + str(relWind) + ",Pitch: " + str(pitch) +
+                ",Pitch: " + str(pitch) +
                ",Roll: " + str(roll) + ",Yaw: " + str(yaw) + ",Sail Angle: " +
                str(sailAngle) + ",Tail Angle: " + str(tailAngle) +
                ",Heading: " + str(heading) + ",Angular velocity: " +

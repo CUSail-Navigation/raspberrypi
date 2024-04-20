@@ -155,7 +155,7 @@ class NavigationController:
             #     self.configuration.boat, self.current_waypoint)
             sail, rudder, tacking, tpoint, tduration = self.configuration.algo.step(boat_position, self.current_waypoint, self.tacking, self.tackingPoint, self.tackingDuration, self.configuration.boat.sensors.yaw, self.configuration.boat.sensors.wind_direction)
             self.configuration.boat.setServos(sail, rudder)
-            self.tacking, self.tackingDuration, self.tackingPoint = tacking, tpoint, tduration
+            self.tacking, self.tackingPoint, self.tackingDuration = tacking, tpoint, tduration
 
     # def fleetRace(self):
     #     # While the configuration is in fleet race mode, read servo angles

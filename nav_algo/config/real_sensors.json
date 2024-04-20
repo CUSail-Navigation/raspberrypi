@@ -9,5 +9,5 @@
         "type": "rl",
         "model_path": "./nav_algo/models/best_actor_sailboat.pickle"
     },
-    "output": "radio"
+    "output": "fake"
 }

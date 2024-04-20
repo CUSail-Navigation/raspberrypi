@@ -41,12 +41,29 @@ class BasicAlgo:
         Calculate and set the new sail angle given ... Figure out what parameters are needed
         """
         cWindDir = BasicAlgo.calibrate_wind_direction(windDir, currHead)
-        if 30 < cWindDir < 180:
-            # self.servos.setSail(round((7/15)*self.windDir + 186)*5)
-            return round((7/15)*cWindDir + 186)*5
-        elif 180 < cWindDir < 330:
-            # self.servos.setSail(round((7/15)*self.windDir + 6)*5)
-            return round((7/15)*cWindDir + 6)*5
+        # wind is blowing in the same direction as the sailing direction (run), this range
+        # sets a 20 degree buffer zone so that the sail does not always flip.
+        if 0 <= cWindDir < 10 or 350 < cWindDir < 360:
+            return 90
+        elif 210 < cWindDir <= 350:
+            return round(((7/15)*cWindDir - 80)/5)*5
+        elif 10 <= cWindDir < 150:
+            return round(((7/15)*cWindDir - 88)/5)*5
+        # no go zone (150 <= cWindDir <= 210)
+        else:
+            return 0
+        # if 210 < cWindDir < 360:
+        #     # self.servos.setSail(round((7/15)*self.windDir + 186)*5)
+        #     return round((7/15)*cWindDir + 186)*5
+        # elif 0 < cWindDir < 150:
+        #     # self.servos.setSail(round((7/15)*self.windDir + 6)*5)
+        #     return round((7/15)*cWindDir + 6)*5
+        # elif 0 <= cWindDir <= 30:
+        #     # check this later
+        #     return -40
+        # else:
+        #     # check this too
+        #     return 40
 
     def setRudder(currLoc, tacking, tackingPoint, headingDir, currDest):
         """
@@ -56,11 +73,13 @@ class BasicAlgo:
         # direction to tacking point, if not, calcualte direction to dest. 
         if tacking: 
             final = tackingPoint
+            x_distance = final[0] - currLoc.getX()
+            y_distance = final[1] - currLoc.getY()
         else:
-            final = currDest
-        
-        x_distance = final[0] - currLoc[0]
-        y_distance = final[1] - currLoc[1]
+            x_distance = currDest.getX() - currLoc.getX()
+            y_distance = currDest.getY() - currLoc.getY()
+        # 'final' and 'currLoc' are sometimes 'Vector' or 'tuple' types. Bracket indexing works when they are tuples but not when they are vectors.
+               
         if x_distance > 0 and y_distance == 0:
             angle = 0
         elif x_distance == 0 and y_distance > 0:
@@ -84,14 +103,14 @@ class BasicAlgo:
         if final_angle > 0 and final_angle <= 180:
             #turn counter-clockwise
             return -round((.05 * (final_angle)))*5
-        elif final_angle > 0 and final_angle > 180:
+        elif final_angle < 360 and final_angle > 180:
             #turn clockwise
             final_angle = 360 - final_angle
             return round(.05 * (final_angle))*5
         elif final_angle < 0 and final_angle >= -180:
             #turn clockwise
             return -round(.05 * (angle))*5
-        elif final_angle < 0 and final_angle >= -360:
+        elif final_angle < -180 and final_angle >= -360:
             #turn counter-clockwise
             final_angle = 360 + final_angle
             return -round(.05 * (final_angle))*5
@@ -103,7 +122,8 @@ class BasicAlgo:
         """
         Checks if the boat is currently in the no go zone (within )
         """
-        if abs(headingDir - windDir) < 30 or abs(headingDir - windDir) > 330:
+        calWind = BasicAlgo.calibrate_wind_direction(windDir, headingDir)
+        if 150 < calWind < 210:
             return True
         else:
             return False
@@ -112,31 +132,31 @@ class BasicAlgo:
         """
         Calculates the euclidean distance to the destination
         """
-        cx, cy = currLoc[0], currLoc[1]
-        dx, dy = destLoc[0], destLoc[1]
+        cx, cy = currLoc.getX(), currLoc.getY()
+        dx, dy = destLoc.getX(), destLoc.getY()
         return math.sqrt((cx - dx)**2 + (cy - dy)**2)
     
-    def calcualteTP(currentLocation, destination, windDirection):
+    def calculateTP(currentLocation, destination, windDirection, headingDirection):
         """
         Calcualte tacking point to begin tacking. uses winddir + dest
         Assuming that the boat is heading towards the positive x-axis and the destination
         """
-        x = currentLocation[0]
-        y = currentLocation[1]
+        x = currentLocation.getX()
+        y = currentLocation.getY()
         dist2Dest = BasicAlgo.calculateDistToDest(currentLocation, destination)
-        windDir = windDirection % 360
-        if windDir >= 0 and windDir <= 30:
-            x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windDir))*np.sin(np.deg2rad(45+windDir))
-            y_TP = y - dist2Dest*np.cos(np.deg2rad(45-windDir))*np.cos(np.deg2rad(45+windDir))
+        windWRThead = BasicAlgo.calibrate_wind_direction(windDirection, headingDirection) # does this line mess with calculations?
+        if windWRThead >= 180 and windWRThead <= 210:
+            x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.sin(np.deg2rad(45+windWRThead))
+            y_TP = y - dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.cos(np.deg2rad(45+windWRThead))
             tackingPoint = (x_TP, y_TP)
-        elif windDir >= 330 and windDir <= 359:
-            windDir = 360 - windDir
-            x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windDir))*np.sin(np.deg2rad(45+windDir))
-            y_TP = y + dist2Dest*np.cos(np.deg2rad(45-windDir))*np.cos(np.deg2rad(45+windDir))
+        elif windWRThead >= 150 and windWRThead <= 180:
+            windWRThead = 360 - windWRThead
+            x_TP = x + dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.sin(np.deg2rad(45+windWRThead))
+            y_TP = y + dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.cos(np.deg2rad(45+windWRThead))
             tackingPoint = (x_TP, y_TP)
         return tackingPoint
 
-    def step(currentLoc, destination, tacking, tpoint, tduration, headingDir, windDir):
+    def step(self, currentLoc, destination, tacking, tpoint, tduration, headingDir, windDir):
         """
         Sail. Todo: implement time buffer for tacking. if tacking for > 2 mins?
         If we call this function every 4 seconds --> tackingDur > 30
@@ -159,8 +179,8 @@ class BasicAlgo:
             if BasicAlgo.inNoGo(headingDir, windDir):
                 tacking = True
                 tduration = 0
-                tpoint = BasicAlgo.calculateTP(currentLoc)
-        return BasicAlgo.setSail(windDir, headingDir), BasicAlgo.setRudder(tacking, tpoint, headingDir, destination), tacking, tpoint, tduration
+                tpoint = BasicAlgo.calculateTP(currentLoc, destination, windDir, headingDir)
+        return BasicAlgo.setSail(windDir, headingDir), BasicAlgo.setRudder(currentLoc, tacking, tpoint, headingDir, destination), tacking, tpoint, tduration
             
 
 

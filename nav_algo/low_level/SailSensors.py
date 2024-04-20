@@ -232,8 +232,9 @@ class SailAirMar:
     def __init__(self):
         """Initializes the AirMar. Creates a seperate thread to continuously 
         read from the serial output."""
-        self.ser = serial.Serial("Insert correct port here")
-        self.readings = {}
+        print("INIT REACHED")
+        self.ser = serial.Serial("/dev/ttyACM0", 9600)
+        self.readings = {"heading":0, "rateOfTurn":0, "latitude":0, "longitude":0,"latDirection":"S", "longDirection":"W"}
         self.lock = threading.Lock()
         reader_thread = threading.Thread(target=self.serialDataReader)
         reader_thread.daemon = True 
@@ -273,12 +274,15 @@ class SailAirMar:
         """Returns the heading in degrees. 0 degrees is East, 90 degrees is North,
         180 degrees is West, 270 degrees is South."""
         with self.lock:
-            return self._convertToPolar(self.readings['heading'])
+            if (self.readings['heading'] != ''):
+                return self._convertToPolar(self.readings['heading'])
+            else:
+                return 0
         
     def readAirMarROT(self):
         """Returns the rate of turn in degrees per second."""
         with self.lock:
-            return self._convertDegreePerSec()
+            return self._convertDegreePerSec(self.readings['rateOfTurn'])
         
     def readAirMarLatitude(self):
         """Returns the latitude in degrees"""
@@ -288,6 +292,8 @@ class SailAirMar:
                 if self.readings['latDirection'] == 'S':
                     return -lat
                 return lat
+            else:
+                return 0
 
     def readAirMarLongitude(self):
         """Retruns the longitude in degrees"""
@@ -297,20 +303,22 @@ class SailAirMar:
                 if self.readings['longDirection'] == 'W':
                     return -long
                 return long
+            else:
+                return 0
 
-    def _convertToPolar(raw_heading):
+    def _convertToPolar(self,raw_heading):
         """Converts the heading to polar coordinates."""
-        res = raw_heading - 90
+        res = float(raw_heading) - 90
         if res < 0:
             return res + 360
         return res
 
-    def _convertDegreePerSec(raw_rot):
+    def _convertDegreePerSec(self,raw_rot):
         """Converts the heading to degrees per second."""
-        return raw_rot/60.0
+        return float(raw_rot)/60.0
 
-    def _defConvertMins(minutes):
+    def _defConvertMins(self,minutes):
         """Extract the degrees based on the format (DDMM.mmmm)"""
-        degrees = int(minutes // 100)
-        minutes_only = minutes % 100
+        degrees = int(minutes) // 100
+        minutes_only = float(minutes) % 100
         return degrees + (minutes_only / 60)

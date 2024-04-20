@@ -184,6 +184,12 @@ class Vector:
         top = self.dot(other)
         bot = self.magnitude() * other.magnitude()
         return radToDeg(np.arccos(top / bot))
+        
+    def getX(self):
+        return self.x
+        
+    def getY(self):
+        return self.y
 
     @staticmethod
     def zeroVector():
