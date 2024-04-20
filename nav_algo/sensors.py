@@ -11,9 +11,9 @@ import numpy as np
 class sensorData:
     def __init__(self, 
                 coordinate_system=None, 
-                mock_gps=False,
-                mock_imu=False,
-                mock_anemometer=False):
+                mock_gps=True,
+                mock_imu=True,
+                mock_anemometer=True):
         self.coordinate_system = coordinate_system
         self.mock_gps = mock_gps
         self.mock_imu = mock_imu

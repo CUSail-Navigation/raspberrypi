@@ -20,10 +20,10 @@ def main():
     order [north west, north east, south east, south west]
     """
     waypoint_file = 'nav_algo/waypoints/precision.csv'
-    configuration_file = 'nav_algo/config/real_sensors.json'
+    configuration_file = 'nav_algo/config/example.json'
 
     event = Events.FLEET_RACE
-    # event = Events.ENDURANCE
+    event = Events.PRECISION_NAVIGATION
     #event = None
 
     # Read the configuration and waypoint files and setup the current context
