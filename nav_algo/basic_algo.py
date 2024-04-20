@@ -1,4 +1,5 @@
 import nav_algo.boat as b
+from nav_algo.event_helper.navigation_helper import newSailingAngle 
 import numpy as np
 from nav_algo.navigation_helper import *
 from nav_algo.navigation_utilities import getServoAnglesImpl
@@ -7,7 +8,7 @@ import math
 class BasicAlgo:
     """
     The old navigation algorithm - this currently sucks and needs a major
-    refactor if it's ever going to be used.
+    refactor if it's ever going to be used. Testing if branch updates.
     """
     def __init__(self):
         # self.rudderAngle = 0 covered in servos
