@@ -93,6 +93,7 @@ class NavigationController:
                 if self.configuration.radio is not None:
                     self.configuration.radio.receiveString()
             except:
+                print('fails')
                 pass
 
             # Check if manual override has been engaged
@@ -159,10 +160,12 @@ class NavigationController:
             "Starting Fleet Race\nSend angles of the form 'sail_angle rudder_angle'\n"
         )
         while self.configuration.radio.fleetRace:
-            try:
-                self.configuration.radio.receiveString()  # timeout is 1 sec
-            except:
-                pass
+            #try:
+            self.configuration.radio.receiveString()  # timeout is 1 sec
+            #except:
+            #print("fails in fleet race")
+               
+            time.sleep(1)
             self.configuration.boat.updateSensors()
             self.configuration.write_data()
 

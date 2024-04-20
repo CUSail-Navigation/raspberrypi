@@ -98,15 +98,20 @@ class UARTDevice:
                                           timeout=t)
         self.serialStream.port = self.port
         self.fleetRace = fleetRace
+        
 
         # Leaving this open for manual override/killswitch
         self.serialStream.open()
         return
 
     def sendUart(self, message):
-        # assumes message is in bytes
-        self.serialStream.write(message)
-        self.serialStream.flush()
+        try:
+            # assumes message is in bytes
+            self.serialStream.write(message)
+            self.serialStream.flush()
+        except:
+            print('Failed sendUart')
+
         return
 
     def recieveUartBytes(self, bytes=1):
@@ -114,9 +119,14 @@ class UARTDevice:
         return self.serialStream.read(bytes)
 
     def readline(self):
-        l = self.serialStream.readline().decode('utf-8')
-        if len(l) > 0:
-            print("UART read: {}".format(l))
+        try:
+            l = self.serialStream.readline().decode('utf-8')
+            if len(l) > 0:
+                print("UART read: {}".format(l))
+        except:
+          #  self.serialStream.flush()
+            print("Failed Readline")
+            return ""
         return l
 
 
@@ -143,6 +153,54 @@ class ADCDevice:
             gain (int): The gain of the sensor input.
         """
         return ADCDevice.mainADC.read_adc(self.pinNumber, gain)
+
+# class BeeDevice:
+    # """
+    # Superclass used to create a UARTDevice. Contians various functions for communication
+    # """
+    # def __init__(self,
+                 # baudrate = 9600,
+                 # serialPort='/dev/ttyS0',
+                 # remote='(BS) Base Station',
+                 # t=1,
+                 # fleetRace=False):
+        # self.port = serialPort
+        # # open the port only when necessary
+        # self.serialStream = serial.Serial(port=None,
+                                          # baudrate=baudrate,
+                                          # timeout=t)
+        # self.serialStream.port = self.port
+        # self.fleetRace = fleetRace
+        
+        # self.device = XBeeDevice(self.port, baudrate)
+        # network = self.device.get_network()
+        # self.remote = network.discover_device(remote)
+
+        # return
+        
+    # def sendUart(self, message):
+        # # assumes message is a string
+        # self.device.send_data_async(self.remote, message)
+        # return
+    
+    # def readline(self):
+        # # try:
+            # # device.open()
+            # # device.flush_queues()
+            # # def data_receive_callback(xbee_message):
+                # # print("From "+ xbee_message.remote_device.get_64bit_addr(), xbee_message.data.decode())
+            # # device.add_data_received_callback(data_receive_callback)
+            
+            # # l = self.serialStream.readline().decode('utf-8')
+            # # if len(l) > 0:
+                # # print("UART read: {}".format(l))
+        # # return l
+        # return 'comment'
+
+    
+
+        
+        
 
 
 class SailIMU(I2CDevice):
@@ -251,6 +309,7 @@ class SailAirMar:
     def parseAirMarData(self, line):
         """Parses a line of AirMar data and updates the readings dictionary. Some
         readings are omitted."""
+        print("AIRMAR BEING PARSED")
         try:
             args = line.split(',')
             label = args[0][(args[0].index("$")):] 

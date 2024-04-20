@@ -22,7 +22,7 @@ def main():
     waypoint_file = 'nav_algo/waypoints/precision.csv'
     configuration_file = 'nav_algo/config/real_sensors.json'
 
-    event = Events.PRECISION_NAVIGATION
+    event = Events.FLEET_RACE
     # event = Events.ENDURANCE
     #event = None
 

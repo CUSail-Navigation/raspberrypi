@@ -6,8 +6,8 @@
         "servos": "fake"
     },
     "algo": {
-        "type": "rl",
+        "type": "basic",
         "model_path": "./nav_algo/models/best_actor_sailboat.pickle"
     },
-    "output": "fake"
+    "output": "radio"
 }

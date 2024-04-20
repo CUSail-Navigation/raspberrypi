@@ -18,7 +18,6 @@ class sensorData:
         self.mock_gps = mock_gps
         self.mock_imu = mock_imu
         self.mock_anemometer = mock_anemometer
-
         # IMU
         self.pitch = 0
         self.roll = 0
@@ -52,7 +51,7 @@ class sensorData:
                                                  baudrate=9600,
                                                  timeout=1)
             
-        self.AirMar = SailSensors.SailAirMar()
+        # self.AirMar = SailSensors.SailAirMar()
 
     def readAirMar(self):
         self.yaw = self.AirMar.readAirMarHeading()
@@ -167,20 +166,20 @@ class sensorData:
         self.wind_direction = 360 * np.random.rand()
 
     def readAll(self):
-        # if self.mock_imu:
-        #     self.mockIMU()
-        # else:
-        #     self.readIMU()
+        if self.mock_imu:
+            self.mockIMU()
+        else:
+            self.readIMU()
 
         if self.mock_anemometer:
             self.mockAnemometer()
         else:
             self.readWindDirection()
 
-        # if self.mock_gps:
-        #     self.mockGPS()
-        # else:
-        #     self.readGPS()
+        if self.mock_gps:
+            self.mockGPS()
+        else:
+            self.readGPS()
 
-        if self.AirMar:
-                self.readAirMar()
+        # if self.AirMar:
+               # self.readAirMar()
