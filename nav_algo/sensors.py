@@ -54,7 +54,7 @@ class sensorData:
         self.AirMar = SailSensors.SailAirMar()
 
     def readAirMar(self):
-        self.yaw = self.AirMar.readAirMarHeading()
+        self.yaw = self.AirMar.readAirMarHeading() - 90 # offset 
         self.latitude = self.AirMar.readAirMarLatitude()
         self.longitude = self.AirMar.readAirMarLongitude()
         self.angular_velocity = self.AirMar.readAirMarROT()

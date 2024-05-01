@@ -39,7 +39,6 @@ class Servo:
             tail_angle = Servo.TAIL_MAX_ANGLE
             
         # intOnPer = 30 - tail_angle
-        print(tail_angle)
         intOnPer = tail_angle
         self.currentTail = intOnPer
         
