@@ -42,7 +42,7 @@ class sensorData:
         # Sensor objects
         if not self.mock_imu:
             self.IMU = SailSensors.SailIMU()
-        
+
         if not self.mock_anemometer:
             self.anemometer = SailSensors.SailAnemometer(0)
         
@@ -50,12 +50,11 @@ class sensorData:
             self.gps_serial_port = serial.Serial(port='/dev/ttyAMA3',
                                                  baudrate=9600,
                                                  timeout=1)
-            
-        # self.AirMar = SailSensors.SailAirMar()
+
+        self.AirMar = SailSensors.SailAirMar()
 
     def readAirMar(self):
         self.yaw = self.AirMar.readAirMarHeading()
-        # TODO: Add an indicator in AirMar class for GPS fix
         self.latitude = self.AirMar.readAirMarLatitude()
         self.longitude = self.AirMar.readAirMarLongitude()
         self.angular_velocity = self.AirMar.readAirMarROT()
@@ -96,7 +95,7 @@ class sensorData:
     def readWindDirection(self):
         # returns the wind in polar coordinates
         rawData = self.anemometer.readAnemometerVoltage()
-        self.wind_direction = (-294 + 90 - rawData * 360 / 1720) % 360
+        self.wind_direction = (180 + 360 - rawData * 360 / 1720) % 360
         return
 
     def readGPS(self):
@@ -166,20 +165,17 @@ class sensorData:
         self.wind_direction = 360 * np.random.rand()
 
     def readAll(self):
-        if self.mock_imu:
-            self.mockIMU()
-        else:
-            self.readIMU()
+        # if self.mock_imu:
+            # self.mockIMU()
+        # else:
+            # self.readIMU()
 
-        if self.mock_anemometer:
-            self.mockAnemometer()
-        else:
-            self.readWindDirection()
+        self.readWindDirection()
 
-        if self.mock_gps:
-            self.mockGPS()
-        else:
-            self.readGPS()
+        # if self.mock_gps:
+            # self.mockGPS()
+        # else:
+            # self.readGPS()
 
-        # if self.AirMar:
-               # self.readAirMar()
+        if self.AirMar:
+                self.readAirMar()

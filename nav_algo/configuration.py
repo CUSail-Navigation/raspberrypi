@@ -4,7 +4,6 @@ import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 import nav_algo.radio as radio
 from nav_algo.events import Events
-from nav_algo.rl_algo import RL
 from nav_algo.basic_algo import BasicAlgo
 
 
@@ -47,12 +46,7 @@ class NavigationConfiguration:
         mock_servos = obj["peripherals"]["servos"] == "fake"
         self.boat = boat.BoatController(coord_sys, sensor_data, mock_servos)
 
-        # Determine whether the reinforcement learning or basic algorithm is used
-        self.algo = None
-        if obj["algo"]["type"] == "rl":
-            self.algo = RL(obj["algo"]["model_path"])
-        else:
-            self.algo = BasicAlgo()
+        self.algo = BasicAlgo()
 
         # Figure out which event is being run
         self.event = event

@@ -2,8 +2,8 @@
     "peripherals": {
         "gps": "fake",
         "imu": "fake",
-        "anemometer": "fake",
-        "servos": "fake"
+        "anemometer": "real",
+        "servos": "real"
     },
     "algo": {
         "type": "basic",
