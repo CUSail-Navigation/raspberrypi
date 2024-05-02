@@ -33,7 +33,8 @@ class BasicAlgo:
         return angle % 360
     
     def calibrate_wind_direction(wind_direction, heading_direction):
-        return (wind_direction - heading_direction) % 360
+        return wind_direction % 360
+        # return (wind_direction - heading_direction) % 360
     
     def setSail(windDir, currHead):
         """
@@ -85,8 +86,10 @@ class BasicAlgo:
             angle = 360 + np.rad2deg(np.arctan(y_distance/x_distance))
         else:
             print("already at final destination")
-        
+        print("ANGLE: " + str(angle))
+        print("headingDir: " + str(headingDir))
         final_angle = angle - headingDir
+        print("FINAL ANGLE: " + str(final_angle))
         if final_angle > 0 and final_angle <= 180:
             #turn counter-clockwise
             return -round((.05 * (final_angle)))*5

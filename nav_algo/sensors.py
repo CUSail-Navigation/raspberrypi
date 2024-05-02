@@ -9,11 +9,7 @@ import numpy as np
 
 
 class sensorData:
-    def __init__(self, 
-                coordinate_system=None, 
-                mock_gps=True,
-                mock_imu=True,
-                mock_anemometer=True):
+    def __init__(self, coordinate_system=None, mock_gps=True, mock_imu=True, mock_anemometer=True):
         self.coordinate_system = coordinate_system
         self.mock_gps = mock_gps
         self.mock_imu = mock_imu
@@ -54,7 +50,7 @@ class sensorData:
         self.AirMar = SailSensors.SailAirMar()
 
     def readAirMar(self):
-        self.yaw = self.AirMar.readAirMarHeading() - 90 # offset 
+        self.yaw = 360 - self.AirMar.readAirMarHeading()
         self.latitude = self.AirMar.readAirMarLatitude()
         self.longitude = self.AirMar.readAirMarLongitude()
         self.angular_velocity = self.AirMar.readAirMarROT()

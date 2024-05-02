@@ -283,10 +283,11 @@ class SailAirMar:
         """Returns the heading in degrees. 0 degrees is East, 90 degrees is North,
         180 degrees is West, 270 degrees is South."""
         with self.lock:
-            if (self.readings['heading'] != ''):
-                return self._convertToPolar(self.readings['heading'])
-            else:
-                return 0
+            return float(self.readings['heading'])
+            # ~ if (self.readings['heading'] != ''):
+                # ~ return self._convertToPolar(self.readings['heading'])
+            # ~ else:
+                # ~ return 0
         
     def readAirMarROT(self):
         """Returns the rate of turn in degrees per second."""
