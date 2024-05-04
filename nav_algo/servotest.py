@@ -42,7 +42,7 @@ class Servo:
         elif tail_angle > Servo.TAIL_MAX_ANGLE:
             tail_angle = Servo.TAIL_MAX_ANGLE
             
-        intOnPer = 40 - tail_angle
+        intOnPer = 50 - tail_angle
         self.servoDriver.servo[1].angle = intOnPer
     
     def setSail(self, sail_angle):
@@ -87,6 +87,6 @@ class Servo:
 servoController = Servo()
 print("done")
 
-servoController.setSail(90)
+servoController.setSail(0)
 servoController.setTail(0)
 

@@ -4,7 +4,6 @@ import nav_algo.boat as boat
 import nav_algo.coordinates as coord
 import nav_algo.radio as radio
 from nav_algo.events import Events
-from nav_algo.rl_algo import RL
 from nav_algo.basic_algo import BasicAlgo
 
 
@@ -47,12 +46,7 @@ class NavigationConfiguration:
         mock_servos = obj["peripherals"]["servos"] == "fake"
         self.boat = boat.BoatController(coord_sys, sensor_data, mock_servos)
 
-        # Determine whether the reinforcement learning or basic algorithm is used
         self.algo = BasicAlgo()
-        # if obj["algo"]["type"] == "rl":
-        #     self.algo = RL(obj["algo"]["model_path"])
-        # else:
-        #     self.algo = BasicAlgo()
 
         # Figure out which event is being run
         self.event = event
@@ -60,18 +54,19 @@ class NavigationConfiguration:
             obj["output"] = "radio"  # must get input from radio
 
         # Figure out if the radio is being used or just print statements
-        #if obj["output"] == "radio":
-        #    self.radio = radio.Radio(
-        #        9600,
-        #        boatController=self.boat,
-        #        fleetRace=(self.event == Events.FLEET_RACE))
-        #else:
-        self.radio = None
+        if obj["output"] == "radio":
+            self.radio = radio.Radio(
+                9600,
+                boatController=self.boat,
+                fleetRace=(self.event == Events.FLEET_RACE))
+        else:
+                self.radio = None
 
     def write_output(self, message):
         if self.radio is None:
             print(message, end='')
         else:
+            print("radio msg: " + message)
             self.radio.transmitString(message)
 
     def write_data(self, current_waypoint=None):
@@ -106,7 +101,7 @@ class NavigationConfiguration:
         currentPositionX = self.boat.sensors.position.x
         currentPositionY = self.boat.sensors.position.y
         windDir = self.boat.sensors.wind_direction
-        # relWind = self.boat.sensors.relative_wind
+        relWind = self.boat.sensors.relative_wind
         pitch = self.boat.sensors.pitch
         roll = self.boat.sensors.roll
         yaw = self.boat.sensors.yaw
@@ -122,7 +117,7 @@ class NavigationConfiguration:
                str(origLat) + ",Origin Longitude: " + str(origLong) +
                ",X position: " + str(currentPositionX) + ",Y position: " +
                str(currentPositionY) + ",Wind Direction: " + str(windDir) +
-                ",Pitch: " + str(pitch) +
+               ",Relative wind: " + str(relWind) + ",Pitch: " + str(pitch) +
                ",Roll: " + str(roll) + ",Yaw: " + str(yaw) + ",Sail Angle: " +
                str(sailAngle) + ",Tail Angle: " + str(tailAngle) +
                ",Heading: " + str(heading) + ",Angular velocity: " +
