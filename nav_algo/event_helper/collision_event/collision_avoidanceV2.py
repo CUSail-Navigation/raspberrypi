@@ -11,24 +11,25 @@ def collision_avoidance(NavigationController):
 
     # Navigate until we see a boat
     NavigationController.navigate(use_camera=True)
-    boat_loc = "DETECTION ALGO"
-    while boat_loc is not None:
-        NavigationController.configuration.write_output(f"SEE BOAT FROM {boat_loc}")
-        NavigationController.configuration.waypoints.push(NavigationController.current_waypoint)
-        waypoint_x, waypoint_y = NavigationController.current_waypoint
-        curr_x, curr_y = NavigationController.configuration.boat.getPosition()
-        if boat_loc == "right":
-            # set destination 90 degrees to the right
-            dx = waypoint_x - curr_x
-            dy = waypoint_y - curr_y
-            NavigationController.current_waypoint = coord.Vector(x = curr_x + dy, y = curr_y - dx)
-        else:
-            # set destination 90 degrees to the left
-            dx = waypoint_x - curr_x
-            dy = waypoint_y - curr_y
-            NavigationController.current_waypoint = coord.Vector(x = curr_x - dy, y = curr_y + dx)
-        time.sleep(10.0)
-        NavigationController.navigate(use_camera=True)
+    while True:
+        boat_loc = "DETECTION ALGO" 
+        while boat_loc is not None:
+            NavigationController.configuration.write_output(f"SEE BOAT FROM {boat_loc}")
+            NavigationController.configuration.waypoints.insert(0, NavigationController.current_waypoint)
+            waypoint_x, waypoint_y = NavigationController.current_waypoint
+            curr_x, curr_y = NavigationController.configuration.boat.getPosition()
+            if boat_loc == "right":
+                # set destination 90 degrees to the right
+                dx = waypoint_x - curr_x
+                dy = waypoint_y - curr_y
+                NavigationController.current_waypoint = coord.Vector(x = curr_x + dy, y = curr_y - dx)
+            else:
+                # set destination 90 degrees to the left
+                dx = waypoint_x - curr_x
+                dy = waypoint_y - curr_y
+                NavigationController.current_waypoint = coord.Vector(x = curr_x - dy, y = curr_y + dx)
+            time.sleep(10.0)
+            NavigationController.current_waypoint = NavigationController.configuration.waypoints.pop(0)
 
 
 def collisionAvoidanceWaypoints(buoy_waypoints, boat):
