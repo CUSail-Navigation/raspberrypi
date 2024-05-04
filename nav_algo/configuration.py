@@ -23,8 +23,7 @@ class NavigationConfiguration:
             obj = json.load(f)
 
         # Figure out if sensors are real or fake (mocked)
-        mock_gps = obj["peripherals"]["gps"] == "fake"
-        mock_imu = obj["peripherals"]["imu"] == "fake"
+        mock_airmar = obj["peripherals"]["airmar"] == "fake"
         mock_anemometer = obj["peripherals"]["anemometer"] == "fake"
 
         # Get the coordinate system with the origin at the first waypoint
@@ -39,8 +38,7 @@ class NavigationConfiguration:
 
         # Get the sensor data object with mocked or real sensors
         sensor_data = sens.sensorData(coordinate_system=coord_sys,
-                                      mock_gps=mock_gps,
-                                      mock_imu=mock_imu,
+                                      mock_airmar=mock_airmar,
                                       mock_anemometer=mock_anemometer)
 
         # Figure out if the servos are real or mocked and setup boat object
