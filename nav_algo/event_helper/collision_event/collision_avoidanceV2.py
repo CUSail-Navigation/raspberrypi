@@ -1,5 +1,6 @@
 from nav_algo.navigation import Camera, time, coord
 from nav_algo.navigation_utilities import collisionAvoidanceImpl, midpoint
+from nav_algo.computer_vision.detectors.boatPiCamTest import *
 import math 
 
 def collision_avoidance(NavigationController):
