@@ -1,13 +1,13 @@
 import nav_algo.boat as b
+from nav_algo.event_helper.navigation_helper import newSailingAngle 
 import numpy as np
-from nav_algo.navigation_helper import *
 from nav_algo.navigation_utilities import getServoAnglesImpl
 import math
 
 class BasicAlgo:
     """
     The old navigation algorithm - this currently sucks and needs a major
-    refactor if it's ever going to be used.
+    refactor if it's ever going to be used. Testing if branch updates.
     """
     def __init__(self):
         # self.rudderAngle = 0 covered in servos
@@ -40,18 +40,17 @@ class BasicAlgo:
         Calculate and set the new sail angle given ... Figure out what parameters are needed
         """
         cWindDir = BasicAlgo.calibrate_wind_direction(windDir, currHead)
-        if 210 < cWindDir < 360:
-            # self.servos.setSail(round((7/15)*self.windDir + 186)*5)
-            return round((7/15)*cWindDir + 186)*5
-        elif 0 < cWindDir < 150:
-            # self.servos.setSail(round((7/15)*self.windDir + 6)*5)
-            return round((7/15)*cWindDir + 6)*5
-        elif 0 <= cWindDir <= 30:
-            # check this later
-            return -40
+        # wind is blowing in the same direction as the sailing direction (run), this range
+        # sets a 20 degree buffer zone so that the sail does not always flip.
+        if 0 <= cWindDir < 10 or 350 < cWindDir < 360:
+            return 90
+        elif 210 < cWindDir <= 350:
+            return round(((7/15)*cWindDir - 80)/5)*5
+        elif 10 <= cWindDir < 150:
+            return round(((7/15)*cWindDir - 88)/5)*5
+        # no go zone (150 <= cWindDir <= 210)
         else:
-            # check this too
-            return 40
+            return 0
 
     def setRudder(currLoc, tacking, tackingPoint, headingDir, currDest):
         """
@@ -91,14 +90,14 @@ class BasicAlgo:
         if final_angle > 0 and final_angle <= 180:
             #turn counter-clockwise
             return -round((.05 * (final_angle)))*5
-        elif final_angle > 0 and final_angle > 180:
+        elif final_angle < 360 and final_angle > 180:
             #turn clockwise
             final_angle = 360 - final_angle
             return round(.05 * (final_angle))*5
         elif final_angle < 0 and final_angle >= -180:
             #turn clockwise
             return -round(.05 * (angle))*5
-        elif final_angle < 0 and final_angle >= -360:
+        elif final_angle < -180 and final_angle >= -360:
             #turn counter-clockwise
             final_angle = 360 + final_angle
             return -round(.05 * (final_angle))*5
@@ -110,7 +109,8 @@ class BasicAlgo:
         """
         Checks if the boat is currently in the no go zone (within )
         """
-        if abs(headingDir - windDir) < 30 or abs(headingDir - windDir) > 330:
+        calWind = BasicAlgo.calibrate_wind_direction(windDir, headingDir)
+        if 150 < calWind < 210:
             return True
         else:
             return False
@@ -169,20 +169,3 @@ class BasicAlgo:
                 tpoint = BasicAlgo.calculateTP(currentLoc, destination, windDir, headingDir)
         return BasicAlgo.setSail(windDir, headingDir), BasicAlgo.setRudder(currentLoc, tacking, tpoint, headingDir, destination), tacking, tpoint, tduration
             
-
-
-        
-
-
-
-
-
-
-    # Old step func
-    # def step(self, boat : b.BoatController, waypoint):
-    #     intended_angle = newSailingAngle(boat, waypoint)
-
-    #     abs_wind_dir = boat.sensors.wind_direction # TODO is this right?
-    #     yaw = boat.sensors.yaw
-    #     sail, rudder = getServoAnglesImpl(abs_wind_dir, yaw, intended_angle)
-    #     return sail, rudder

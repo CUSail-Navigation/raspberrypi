@@ -47,8 +47,7 @@ class sensorData:
             self.AirMar = SailSensors.SailAirMar()
 
     def readAirMar(self):
-        self.yaw = self.AirMar.readAirMarHeading()
-        # TODO: Add an indicator in AirMar class for GPS fix
+        self.yaw = self.AirMar.readAirMarHeading() - 90 # offset 
         self.latitude = self.AirMar.readAirMarLatitude()
         self.longitude = self.AirMar.readAirMarLongitude()
         self.angular_velocity = self.AirMar.readAirMarROT()
@@ -63,9 +62,9 @@ class sensorData:
         
     # TODO: make sure this output is in polar coordinates.
     def readWindDirection(self):
+        # returns the wind in polar coordinates
         rawData = self.anemometer.readAnemometerVoltage()
-        # self.relative_wind = (270 + 360 - rawData * 360 / 1720) % 360
-        # self.wind_direction = ( self.relative_wind + self.yaw ) % 360
+        self.wind_direction = (180 + 360 - rawData * 360 / 1720) % 360
         return
 
     def _addAverage(self, newValue):
@@ -99,7 +98,6 @@ class sensorData:
         self.wind_direction = 360 * np.random.rand()
 
     def readAll(self):
-
         if self.mock_anemometer:
             self.mockAnemometer()
         else:
