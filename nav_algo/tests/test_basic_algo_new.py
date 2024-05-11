@@ -17,9 +17,12 @@ class TestBasicAlgo(unittest.TestCase):
 
     def test_setSail(self):
         b_algo = algo.BasicAlgo
-        self.assertAlmostEqual(b_algo.setSail(0, 87), 45)
-        self.assertAlmostEqual(b_algo.setSail(352, 28), 335)
-        self.assertAlmostEqual(b_algo.setSail(2, 5), -40)
+        self.assertAlmostEqual(b_algo.setSail(15, 10), 90)
+        self.assertAlmostEqual(b_algo.setSail(359, 5), 90)
+        self.assertAlmostEqual(b_algo.setSail(350, 20), 75)
+        self.assertAlmostEqual(b_algo.setSail(90, 0), -45)
+        self.assertAlmostEqual(b_algo.setSail(0, 90), 45)
+        self.assertAlmostEqual(b_algo.setSail(180, 0), 0)
 
     def test_setRudder(self):
         b_algo = algo.BasicAlgo
@@ -57,12 +60,13 @@ class TestBasicAlgo(unittest.TestCase):
         headingDir, currDest), 30)
     
     def test_calculateTP(self):
+        b_algo = algo.BasicAlgo
         currentLocation = coord.Vector(x=0, y=0)
         destination = coord.Vector(x=0, y=1)
         windDirection = 210
         headingDirection = 0
-        self.assertAlmostEqual((), b_algo.calculateTP(currentLocation, True, tackingPoint,
-        headingDir, currDest))
+        print(b_algo.calculateTP(currentLocation, destination, windDirection, headingDirection))
+        self.assertAlmostEqual((), b_algo.calculateTP(currentLocation, destination, windDirection, headingDirection))
 
 #create some object
 if __name__ == '__main__':
