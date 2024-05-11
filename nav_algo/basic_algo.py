@@ -66,43 +66,51 @@ class BasicAlgo:
             x_distance = currDest.getX() - currLoc.getX()
             y_distance = currDest.getY() - currLoc.getY()
         # 'final' and 'currLoc' are sometimes 'Vector' or 'tuple' types. Bracket indexing works when they are tuples but not when they are vectors.
-               
-        if x_distance > 0 and y_distance == 0:
-            angle = 0
-        elif x_distance == 0 and y_distance > 0:
-            angle = 90
-        elif x_distance < 0 and y_distance == 0:
-            angle = 180
-        elif x_distance == 0 and y_distance < 0:
-            angle = 270
-        elif x_distance > 0 and y_distance > 0:
-            angle = np.rad2deg(np.arctan(y_distance/x_distance))
-        elif x_distance < 0  and y_distance > 0:
-            angle = 180 + np.rad2deg(np.arctan(y_distance/x_distance))
-        elif x_distance < 0  and y_distance < 0:
-            angle = 180 + np.rad2deg(np.arctan(y_distance/x_distance))
-        elif x_distance > 0  and y_distance < 0:
-            angle = 360 + np.rad2deg(np.arctan(y_distance/x_distance))
-        else:
-            print("already at final destination")
+        targetBearing = np.arctan2(y_distance, x_distance) * 180 / np.pi
+        # print("TB", targetBearing)
+        diff = np.mod((targetBearing) - (headingDir) + 180, 360) - 180
+        # print("diff", diff)
+        rudderAngle = (diff / 180) * -45
+        # print("rudder angle raw", rudderAngle)
+        rudderAngle = np.floor(rudderAngle / 5) * 5
+        return rudderAngle       
+    
+        # if x_distance > 0 and y_distance == 0:
+        #     angle = 0
+        # elif x_distance == 0 and y_distance > 0:
+        #     angle = 90
+        # elif x_distance < 0 and y_distance == 0:
+        #     angle = 180
+        # elif x_distance == 0 and y_distance < 0:
+        #     angle = 270
+        # elif x_distance > 0 and y_distance > 0:
+        #     angle = np.rad2deg(np.arctan(y_distance/x_distance))
+        # elif x_distance < 0  and y_distance > 0:
+        #     angle = 180 + np.rad2deg(np.arctan(y_distance/x_distance))
+        # elif x_distance < 0  and y_distance < 0:
+        #     angle = 180 + np.rad2deg(np.arctan(y_distance/x_distance))
+        # elif x_distance > 0  and y_distance < 0:
+        #     angle = 360 + np.rad2deg(np.arctan(y_distance/x_distance))
+        # else:
+        #     print("already at final destination")
         
-        final_angle = angle - headingDir
-        if final_angle > 0 and final_angle <= 180:
-            #turn counter-clockwise
-            return -round((.05 * (final_angle)))*5
-        elif final_angle < 360 and final_angle > 180:
-            #turn clockwise
-            final_angle = 360 - final_angle
-            return round(.05 * (final_angle))*5
-        elif final_angle < 0 and final_angle >= -180:
-            #turn clockwise
-            return -round(.05 * (angle))*5
-        elif final_angle < -180 and final_angle >= -360:
-            #turn counter-clockwise
-            final_angle = 360 + final_angle
-            return -round(.05 * (final_angle))*5
-        else:
-            print ("invalid abs(final_angle) > 360")
+        # final_angle = angle - headingDir
+        # if final_angle > 0 and final_angle <= 180:
+        #     #turn counter-clockwise
+        #     return -round((.05 * (final_angle)))*5
+        # elif final_angle < 360 and final_angle > 180:
+        #     #turn clockwise
+        #     final_angle = 360 - final_angle
+        #     return round(.05 * (final_angle))*5
+        # elif final_angle < 0 and final_angle >= -180:
+        #     #turn clockwise
+        #     return -round(.05 * (angle))*5
+        # elif final_angle < -180 and final_angle >= -360:
+        #     #turn counter-clockwise
+        #     final_angle = 360 + final_angle
+        #     return -round(.05 * (final_angle))*5
+        # else:
+        #     print ("invalid abs(final_angle) > 360")
 
 
     def inNoGo(headingDir, windDir):
