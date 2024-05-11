@@ -1,7 +1,6 @@
 import nav_algo.boat as b
 from nav_algo.event_helper.navigation_helper import newSailingAngle 
 import numpy as np
-from nav_algo.navigation_helper import *
 from nav_algo.navigation_utilities import getServoAnglesImpl
 import math
 
@@ -34,7 +33,8 @@ class BasicAlgo:
         return angle % 360
     
     def calibrate_wind_direction(wind_direction, heading_direction):
-        return (wind_direction - heading_direction) % 360
+        return wind_direction % 360
+        # return (wind_direction - heading_direction) % 360
     
     def setSail(windDir, currHead):
         """
@@ -52,18 +52,6 @@ class BasicAlgo:
         # no go zone (150 <= cWindDir <= 210)
         else:
             return 0
-        # if 210 < cWindDir < 360:
-        #     # self.servos.setSail(round((7/15)*self.windDir + 186)*5)
-        #     return round((7/15)*cWindDir + 186)*5
-        # elif 0 < cWindDir < 150:
-        #     # self.servos.setSail(round((7/15)*self.windDir + 6)*5)
-        #     return round((7/15)*cWindDir + 6)*5
-        # elif 0 <= cWindDir <= 30:
-        #     # check this later
-        #     return -40
-        # else:
-        #     # check this too
-        #     return 40
 
     def setRudder(currLoc, tacking, tackingPoint, headingDir, currDest):
         """
@@ -98,8 +86,10 @@ class BasicAlgo:
             angle = 360 + np.rad2deg(np.arctan(y_distance/x_distance))
         else:
             print("already at final destination")
-        
+        print("ANGLE: " + str(angle))
+        print("headingDir: " + str(headingDir))
         final_angle = angle - headingDir
+        print("FINAL ANGLE: " + str(final_angle))
         if final_angle > 0 and final_angle <= 180:
             #turn counter-clockwise
             return -round((.05 * (final_angle)))*5
@@ -182,20 +172,3 @@ class BasicAlgo:
                 tpoint = BasicAlgo.calculateTP(currentLoc, destination, windDir, headingDir)
         return BasicAlgo.setSail(windDir, headingDir), BasicAlgo.setRudder(currentLoc, tacking, tpoint, headingDir, destination), tacking, tpoint, tduration
             
-
-
-        
-
-
-
-
-
-
-    # Old step func
-    # def step(self, boat : b.BoatController, waypoint):
-    #     intended_angle = newSailingAngle(boat, waypoint)
-
-    #     abs_wind_dir = boat.sensors.wind_direction # TODO is this right?
-    #     yaw = boat.sensors.yaw
-    #     sail, rudder = getServoAnglesImpl(abs_wind_dir, yaw, intended_angle)
-    #     return sail, rudder

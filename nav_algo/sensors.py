@@ -9,16 +9,11 @@ import numpy as np
 
 
 class sensorData:
-    def __init__(self, 
-                coordinate_system=None, 
-                mock_gps=True,
-                mock_imu=True,
-                mock_anemometer=True):
+    def __init__(self, coordinate_system=None, mock_gps=True, mock_imu=True, mock_anemometer=True):
         self.coordinate_system = coordinate_system
         self.mock_gps = mock_gps
         self.mock_imu = mock_imu
         self.mock_anemometer = mock_anemometer
-
         # IMU
         self.pitch = 0
         self.roll = 0
@@ -43,7 +38,7 @@ class sensorData:
         # Sensor objects
         if not self.mock_imu:
             self.IMU = SailSensors.SailIMU()
-        
+
         if not self.mock_anemometer:
             self.anemometer = SailSensors.SailAnemometer(0)
         
@@ -51,12 +46,11 @@ class sensorData:
             self.gps_serial_port = serial.Serial(port='/dev/ttyAMA3',
                                                  baudrate=9600,
                                                  timeout=1)
-            
+
         self.AirMar = SailSensors.SailAirMar()
 
     def readAirMar(self):
-        self.yaw = self.AirMar.readAirMarHeading()
-        # TODO: Add an indicator in AirMar class for GPS fix
+        self.yaw = 360 - self.AirMar.readAirMarHeading()
         self.latitude = self.AirMar.readAirMarLatitude()
         self.longitude = self.AirMar.readAirMarLongitude()
         self.angular_velocity = self.AirMar.readAirMarROT()
@@ -97,7 +91,7 @@ class sensorData:
     def readWindDirection(self):
         # returns the wind in polar coordinates
         rawData = self.anemometer.readAnemometerVoltage()
-        self.wind_direction = (-294 + 90 - rawData * 360 / 1720) % 360
+        self.wind_direction = (180 + 360 - rawData * 360 / 1720) % 360
         return
 
     def readGPS(self):
@@ -168,19 +162,16 @@ class sensorData:
 
     def readAll(self):
         # if self.mock_imu:
-        #     self.mockIMU()
+            # self.mockIMU()
         # else:
-        #     self.readIMU()
+            # self.readIMU()
 
-        if self.mock_anemometer:
-            self.mockAnemometer()
-        else:
-            self.readWindDirection()
+        self.readWindDirection()
 
         # if self.mock_gps:
-        #     self.mockGPS()
+            # self.mockGPS()
         # else:
-        #     self.readGPS()
+            # self.readGPS()
 
         if self.AirMar:
                 self.readAirMar()

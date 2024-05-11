@@ -1,7 +1,7 @@
 from nav_algo.low_level.SailSensors import UARTDevice
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
-from time import time
+import time
 
 
 class Radio(UARTDevice):
@@ -15,11 +15,14 @@ class Radio(UARTDevice):
                  baudrate,
                  boatController=None,
                  fleetRace=False,
-                 serialPort='/dev/ttyAMA1',
+               #  remote='(BS) Base Station',
+                 serialPort='/dev/ttyUSB0',
                  t=1):
         super().__init__(baudrate, serialPort, t, fleetRace)
         self.boatController = boatController
-        self.sendUart("B\n".encode('utf-8'))
+        for i in range(1,6):
+            time.sleep(0.75)
+            self.sendUart("B\n".encode('utf-8'))
 
 
     """
@@ -27,18 +30,16 @@ class Radio(UARTDevice):
     """
 
     def transmitString(self, message: str):
-        print(message)
+        print("in transmit string")
         self.sendUart(message.encode('utf-8'))
-        pass
-
     """
     Reads in a line from the XBee. NOTE this assumes that the line ends with \n
     If 'q' is received, the nav algo will quit.
     """
-
     def receiveString(self):
         l = self.readline()
         l = l.replace('\n', '')
+        print("Xbee message: " + l)
         if l == 'q':
             print("Quitting...")
             self.sendUart("Quitting...".encode('utf-8'))
@@ -57,6 +58,7 @@ class Radio(UARTDevice):
             self.sendUart("Entering Autopilot Mode...".encode('utf-8'))
             self.fleetRace = False
         elif self.fleetRace:
+            print("In fleet race")
             # assumes the only other possibility is setting sail angles
             self.readAngles(l)
 
@@ -65,7 +67,15 @@ class Radio(UARTDevice):
     """
 
     def readAngles(self, message: str):
-        spl = message.split(" ")
+        print("READ ANGLES: ")
+        try:
+            print("message in readAngle " + message)
+            spl = [message[:message.index(" ")],message[message.index(" "):]]
+            print("spl: " + str(spl))
+        except:
+            spl = []
+            print("exception")
+            pass
         if not len(spl) == 2:
             self.sendUart(
                 "Angles in incorrect format. Ignoring,".encode('utf-8'))
@@ -73,4 +83,4 @@ class Radio(UARTDevice):
 
         sail = float(spl[0])
         tail = float(spl[1])
-        self.boatController.setAngles(sail, tail)
+        self.boatController.setServos(sail, tail)

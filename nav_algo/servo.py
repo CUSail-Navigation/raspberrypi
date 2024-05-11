@@ -38,8 +38,13 @@ class Servo:
         elif tail_angle > Servo.TAIL_MAX_ANGLE:
             tail_angle = Servo.TAIL_MAX_ANGLE
             
-        intOnPer = 30 - tail_angle
+        # intOnPer = 30 - tail_angle
+        intOnPer = tail_angle
         self.currentTail = intOnPer
+        
+        intOnPer = 50 - tail_angle
+        self.servoDriver.servo[1].angle = intOnPer
+        
         if self.mock:
             return
 

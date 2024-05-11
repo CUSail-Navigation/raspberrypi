@@ -2,12 +2,12 @@
     "peripherals": {
         "gps": "fake",
         "imu": "fake",
-        "anemometer": "fake",
-        "servos": "fake"
+        "anemometer": "real",
+        "servos": "real"
     },
     "algo": {
-        "type": "rl",
+        "type": "basic",
         "model_path": "./nav_algo/models/best_actor_sailboat.pickle"
     },
-    "output": "fake"
+    "output": "radio"
 }

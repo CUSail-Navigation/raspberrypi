@@ -98,15 +98,20 @@ class UARTDevice:
                                           timeout=t)
         self.serialStream.port = self.port
         self.fleetRace = fleetRace
+        
 
         # Leaving this open for manual override/killswitch
         self.serialStream.open()
         return
 
     def sendUart(self, message):
-        # assumes message is in bytes
-        self.serialStream.write(message)
-        self.serialStream.flush()
+        try:
+            # assumes message is in bytes
+            self.serialStream.write(message)
+            self.serialStream.flush()
+        except:
+            print('Failed sendUart')
+
         return
 
     def recieveUartBytes(self, bytes=1):
@@ -114,9 +119,14 @@ class UARTDevice:
         return self.serialStream.read(bytes)
 
     def readline(self):
-        l = self.serialStream.readline().decode('utf-8')
-        if len(l) > 0:
-            print("UART read: {}".format(l))
+        try:
+            l = self.serialStream.readline().decode('utf-8')
+            if len(l) > 0:
+                print("UART read: {}".format(l))
+        except:
+          #  self.serialStream.flush()
+            print("Failed Readline")
+            return ""
         return l
 
 
@@ -143,7 +153,6 @@ class ADCDevice:
             gain (int): The gain of the sensor input.
         """
         return ADCDevice.mainADC.read_adc(self.pinNumber, gain)
-
 
 class SailIMU(I2CDevice):
     """
@@ -274,10 +283,11 @@ class SailAirMar:
         """Returns the heading in degrees. 0 degrees is East, 90 degrees is North,
         180 degrees is West, 270 degrees is South."""
         with self.lock:
-            if (self.readings['heading'] != ''):
-                return self._convertToPolar(self.readings['heading'])
-            else:
-                return 0
+            return float(self.readings['heading'])
+            # ~ if (self.readings['heading'] != ''):
+                # ~ return self._convertToPolar(self.readings['heading'])
+            # ~ else:
+                # ~ return 0
         
     def readAirMarROT(self):
         """Returns the rate of turn in degrees per second."""
@@ -319,6 +329,6 @@ class SailAirMar:
 
     def _defConvertMins(self,minutes):
         """Extract the degrees based on the format (DDMM.mmmm)"""
-        degrees = int(minutes) // 100
+        degrees = float(minutes) // 100
         minutes_only = float(minutes) % 100
         return degrees + (minutes_only / 60)
