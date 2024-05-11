@@ -88,5 +88,5 @@ servoController = Servo()
 print("done")
 
 servoController.setSail(0)
-servoController.setTail(0)
+servoController.setTail(-25)
 

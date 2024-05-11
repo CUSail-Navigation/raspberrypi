@@ -265,6 +265,7 @@ class SailAirMar:
             label = args[0][(args[0].index("$")):] 
 
             if "HDG" in label:
+                print(args[1])
                 self.readings['heading'] = args[1]
             elif "ROT" in label:
                 # Wouldn't use yet--not sure about the units of measurement
@@ -282,8 +283,7 @@ class SailAirMar:
     def readAirMarHeading(self):
         """Returns the heading in degrees. 0 degrees is East, 90 degrees is North,
         180 degrees is West, 270 degrees is South."""
-        with self.lock:
-            return float(self.readings['heading'])
+        return float(self.readings['heading'])
             # ~ if (self.readings['heading'] != ''):
                 # ~ return self._convertToPolar(self.readings['heading'])
             # ~ else:

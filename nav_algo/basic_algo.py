@@ -65,14 +65,21 @@ class BasicAlgo:
             y_distance = final[1] - currLoc.getY()
         else:
             x_distance = currDest.getX() - currLoc.getX()
+            print("x_distance: " + str(x_distance))
+            print("currDest.getX(): " + str(currDest.getX()))
+            print("currLoc.getX(): " + str(currLoc.getX()))
+
             y_distance = currDest.getY() - currLoc.getY()
+            print("y_distance: " + str(y_distance))
+            print("currDest.getY(): " + str(currDest.getY()))
+            print("currLoc.getY(): " + str(currLoc.getY()))
         # 'final' and 'currLoc' are sometimes 'Vector' or 'tuple' types. Bracket indexing works when they are tuples but not when they are vectors.
         targetBearing = np.arctan2(y_distance, x_distance) * 180 / np.pi
-        # print("TB", targetBearing)
-        diff = np.mod((targetBearing) - (headingDir) + 180, 360) - 180
-        # print("diff", diff)
-        rudderAngle = (diff / 180) * -30
-        # print("rudder angle raw", rudderAngle)
+        print("TB: ", targetBearing)
+        diff = np.mod((headingDir) - (targetBearing) + 180, 360) - 180
+        print("diff: ", diff)
+        rudderAngle = (diff / 180) * 25
+        print("rudder angle raw: ", rudderAngle)
         rudderAngle = np.floor(rudderAngle / 5) * 5
         return rudderAngle       
     
@@ -151,6 +158,7 @@ class BasicAlgo:
             y_TP = y + dist2Dest*np.cos(np.deg2rad(45-windWRThead))*np.cos(np.deg2rad(45+windWRThead))
             tackingPoint = (x_TP, y_TP)
         return tackingPoint
+        
 
     def step(self, currentLoc, destination, tacking, tpoint, tduration, headingDir, windDir):
         """
