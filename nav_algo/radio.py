@@ -1,7 +1,7 @@
 from nav_algo.low_level.SailSensors import UARTDevice
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
-from time import time
+import time
 
 
 class Radio(UARTDevice):
@@ -21,6 +21,7 @@ class Radio(UARTDevice):
         super().__init__(baudrate, serialPort, t, fleetRace)
         self.boatController = boatController
         for i in range(1,6):
+            time.sleep(0.75)
             self.sendUart("B\n".encode('utf-8'))
 
 
