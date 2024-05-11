@@ -70,7 +70,7 @@ class BasicAlgo:
         # print("TB", targetBearing)
         diff = np.mod((targetBearing) - (headingDir) + 180, 360) - 180
         # print("diff", diff)
-        rudderAngle = (diff / 180) * -45
+        rudderAngle = (diff / 180) * -30
         # print("rudder angle raw", rudderAngle)
         rudderAngle = np.floor(rudderAngle / 5) * 5
         return rudderAngle       
