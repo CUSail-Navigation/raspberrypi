@@ -112,6 +112,7 @@ class NavigationConfiguration:
         velocity = self.boat.sensors.velocity
         waypointX = current_waypoint.x if current_waypoint is not None else None
         waypointY = current_waypoint.y if current_waypoint is not None else None
+        tacking = BasicAlgo.inNoGo(yaw, windDir)
 
         msg = ("----------NAVIGATION----------" + ",Origin Latitude: " +
                str(origLat) + ",Origin Longitude: " + str(origLong) +
@@ -124,6 +125,7 @@ class NavigationConfiguration:
                str(ang_vel) + ",X velocity: " + str(velocity.x) +
                ",Y velocity: " + str(velocity.y) + ",X waypoint: " +
                str(waypointX) + ",Y waypoint: " + str(waypointY) +
+               ", Tacking: " + str(tacking) + 
                ",----------END----------" + '\n')
 
         self.write_output(msg)

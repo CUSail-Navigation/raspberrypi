@@ -1,7 +1,7 @@
 from nav_algo.low_level.SailSensors import UARTDevice
 import nav_algo.boat as boat
 import nav_algo.coordinates as coord
-from time import time
+import time
 
 
 class Radio(UARTDevice):
@@ -20,7 +20,8 @@ class Radio(UARTDevice):
                  t=1):
         super().__init__(baudrate, serialPort, t, fleetRace)
         self.boatController = boatController
-        for i in range(1,4):
+        for i in range(1,6):
+            time.sleep(0.75)
             self.sendUart("B\n".encode('utf-8'))
 
 
@@ -29,6 +30,7 @@ class Radio(UARTDevice):
     """
 
     def transmitString(self, message: str):
+        print("in transmit string")
         self.sendUart(message.encode('utf-8'))
     """
     Reads in a line from the XBee. NOTE this assumes that the line ends with \n

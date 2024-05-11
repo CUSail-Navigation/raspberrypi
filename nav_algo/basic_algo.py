@@ -33,7 +33,8 @@ class BasicAlgo:
         return angle % 360
     
     def calibrate_wind_direction(wind_direction, heading_direction):
-        return (wind_direction - heading_direction) % 360
+        return wind_direction % 360
+        # return (wind_direction - heading_direction) % 360
     
     def setSail(windDir, currHead):
         """
