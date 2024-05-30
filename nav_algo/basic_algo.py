@@ -75,19 +75,12 @@ class BasicAlgo:
             print("currLoc.getY(): " + str(currLoc.getY()))
         # 'final' and 'currLoc' are sometimes 'Vector' or 'tuple' types. Bracket indexing works when they are tuples but not when they are vectors.
         targetBearing = np.arctan2(y_distance, x_distance) * 180 / np.pi
-<<<<<<< HEAD
         print("TB: ", targetBearing)
         diff = np.mod((headingDir) - (targetBearing) + 180, 360) - 180
         print("diff: ", diff)
         rudderAngle = (diff / 180) * 25
         print("rudder angle raw: ", rudderAngle)
-=======
-        # print("TB", targetBearing)
-        diff = np.mod((targetBearing) - (headingDir) + 180, 360) - 180
-        # print("diff", diff)
-        rudderAngle = (diff / 180) * -25
-        # print("rudder angle raw", rudderAngle)
->>>>>>> 7da8463ea9f6e681733395323afc82497d3058cd
+
         rudderAngle = np.floor(rudderAngle / 5) * 5
         return rudderAngle       
     
