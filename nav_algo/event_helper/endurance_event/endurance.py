@@ -60,10 +60,10 @@ def counterClockwiseRect(waypoints, boat, buoy_offset=2):
     boat_angle = boat_pos.vectorSubtract(center).angle()
 
     if boat_angle > wa[3][1] or boat_angle < wa[0][1]:
-        return [w_ur, w_ul, w_ll, w_lr]
+        return [w_ur, w_ul, w_ll, w_lr]*10
     elif boat_angle > wa[2][1]:
-        return [w_lr, w_ur, w_ul, w_ll]
+        return [w_lr, w_ur, w_ul, w_ll]*10
     elif boat_angle > wa[1][1]:
-        return [w_ll, w_lr, w_ur, w_ul]
+        return [w_ll, w_lr, w_ur, w_ul]*10
     else:
-        return [w_ul, w_ll, w_lr, w_ur] 
+        return [w_ul, w_ll, w_lr, w_ur]*10
