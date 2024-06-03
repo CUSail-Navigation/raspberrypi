@@ -52,6 +52,41 @@ class BasicAlgo:
         # no go zone (150 <= cWindDir <= 210)
         else:
             return 0
+    def aggroRudder(currLoc, tacking, tackingPoint, headingDir, currDest):
+        """
+        Aggresive rudder setting to push through no-go
+        """
+        if tacking: 
+            final = tackingPoint
+            x_distance = final[0] - currLoc.getX()
+            y_distance = final[1] - currLoc.getY()
+        else:
+            x_distance = currDest.getX() - currLoc.getX()
+            print("x_distance: " + str(x_distance))
+            print("currDest.getX(): " + str(currDest.getX()))
+            print("currLoc.getX(): " + str(currLoc.getX()))
+
+            y_distance = currDest.getY() - currLoc.getY()
+            print("y_distance: " + str(y_distance))
+            print("currDest.getY(): " + str(currDest.getY()))
+            print("currLoc.getY(): " + str(currLoc.getY()))
+        # 'final' and 'currLoc' are sometimes 'Vector' or 'tuple' types. Bracket indexing works when they are tuples but not when they are vectors.
+        targetBearing = np.arctan2(y_distance, x_distance) * 180 / np.pi
+        print("TB: ", targetBearing)
+        diff = np.mod((headingDir) - (targetBearing) + 180, 360) - 180
+
+        if(diff > 20):
+            rudderAngle = 25
+        elif(diff < -20):
+            rudderAngle = -25
+        else:
+            rudderAngle = (diff / 180) * 25
+            rudderAngle = np.floor(rudderAngle / 5) * 5
+
+        print("diff: ", diff)
+        print("rudder angle: ", rudderAngle)
+
+        return rudderAngle     
 
     def setRudder(currLoc, tacking, tackingPoint, headingDir, currDest):
         """
