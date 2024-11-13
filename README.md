@@ -1,6 +1,6 @@
 # raspberrypi
 
-This repository stores the most recent version of the CUSail codebase.
+This repository stores the most recent stable version of the CUSail codebase.
 It is designed to run on a Raspberry Pi 4B (2GB RAM) and is written in
 Python 3.7.3.
 
